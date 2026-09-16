@@ -1,26 +1,111 @@
 @import "tailwindcss";
 
+@theme {
+  /* Brand core */
+  --color-brand-primary: #b79af3;
+  --color-brand-secondary: #6942f1;
+  --color-brand-graphite: #16161d;
+
+  /* Neutral palette */
+  --color-n-0: #ffffff;
+  --color-n-25: #fbfaff;
+  --color-n-50: #f5f3fc;
+  --color-n-100: #ece8f9;
+  --color-n-200: #ddd7f1;
+  --color-n-300: #c3bce0;
+  --color-n-400: #9c93b8;
+  --color-n-500: #766e93;
+  --color-n-600: #565070;
+  --color-n-700: #3c3752;
+  --color-n-800: #262238;
+  --color-n-900: #16161d;
+
+  /* Semantic */
+
+  --color-sem-success: #4fd1a5;
+  --color-sem-success-bg: #e9faf3;
+  --color-sem-success-text: #0f6b52;
+  --color-sem-warning: #f5b34c;
+  --color-sem-warning-bg: #fef4e4;
+  --color-sem-warning-text: #8a5a10;
+  --color-sem-error: #ef6f8e;
+  --color-sem-error-bg: #fdeaf0;
+  --color-sem-error-text: #9c1f43;
+  --color-sem-info: #8a7bf0;
+  --color-sem-info-bg: #f0edfd;
+  --color-sem-info-text: #4b34b8;
+
+  /* Typography */
+  --font-display: var(--font-urbanist), sans-serif;
+  --font-body: var(--font-ibm-plex-sans), sans-serif;
+  --font-mono: var(--font-ibm-plex-mono), monospace;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+
+  /* Breakpoints — match the design system's tablet (601-900px) / desktop (>900px) bands */
+  --breakpoint-sm: 601px;
+  --breakpoint-md: 901px;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --brand-gradient: linear-gradient(60deg, #b79af3, #6942f1);
+  --brand-gradient-soft: linear-gradient(60deg, rgba(183,154,243,0.15), rgba(105,66,241,0.15));
+  --shadow-sm: 0 1px 2px rgba(22,22,29,0.06), 0 1px 1px rgba(22,22,29,0.04);
+  --shadow-md: 0 4px 16px rgba(22,22,29,0.08), 0 2px 6px rgba(22,22,29,0.05);
+  --shadow-lg: 0 12px 32px rgba(22,22,29,0.12), 0 4px 12px rgba(22,22,29,0.06);
+  --shadow-glow: 0 0 0 1px rgba(183,154,243,0.25), 0 8px 32px rgba(105,66,241,0.18);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--color-n-800);
+  background: var(--color-n-25);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-n-900);
+}
+
+a {
+  color: inherit;
+}
+
+/* Gradient fills that Tailwind v4 can't generate a utility for (see vrattiks-design-system §1) */
+.bg-brand-gradient {
+  background: var(--brand-gradient);
+}
+
+.bg-brand-gradient-soft {
+  background: var(--brand-gradient-soft);
+}
+
+.text-brand-gradient {
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Shared focus ring — replaces default outline with the brand glow token, never outline:none alone */
+.focus-glow:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-glow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

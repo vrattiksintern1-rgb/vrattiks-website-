@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vrattiks — Brand &amp; Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+  /* ============================= TOKENS ============================= */
+  :root {
+    /* Brand core */
+    --brand-primary: #b79af3;      /* Soft Lavender */
+    --brand-secondary: #6942f1;    /* Deep Violet */
+    --brand-graphite: #16161d;     /* Graphite Black */
+    --brand-gradient: linear-gradient(60deg, #b79af3, #6942f1);
+    --brand-gradient-soft: linear-gradient(60deg, rgba(183,154,243,0.15), rgba(105,66,241,0.15));
+
+    /* Neutral palette (light greys/whites, tinted cool-violet) */
+    --n-0: #ffffff;
+    --n-25: #fbfaff;
+    --n-50: #f5f3fc;
+    --n-100: #ece8f9;
+    --n-200: #ddd7f1;
+    --n-300: #c3bce0;
+    --n-400: #9c93b8;
+    --n-500: #766e93;
+    --n-600: #565070;
+    --n-700: #3c3752;
+    --n-800: #262238;
+    --n-900: #16161d;
+
+    /* Semantic — tinted toward brand purple/violet, not generic RGB */
+    --sem-success: #4fd1a5;
+    --sem-success-bg: #e9faf3;
+    --sem-success-text: #0f6b52;
+    --sem-warning: #f5b34c;
+    --sem-warning-bg: #fef4e4;
+    --sem-warning-text: #8a5a10;
+    --sem-error: #ef6f8e;
+    --sem-error-bg: #fdeaf0;
+    --sem-error-text: #9c1f43;
+    --sem-info: #8a7bf0;
+    --sem-info-bg: #f0edfd;
+    --sem-info-text: #4b34b8;
+
+    /* Typography */
+    --font-display: 'Urbanist', sans-serif;
+    --font-body: 'IBM Plex Sans', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+
+    /* Elevation */
+    --shadow-sm: 0 1px 2px rgba(22,22,29,0.06), 0 1px 1px rgba(22,22,29,0.04);
+    --shadow-md: 0 4px 16px rgba(22,22,29,0.08), 0 2px 6px rgba(22,22,29,0.05);
+    --shadow-lg: 0 12px 32px rgba(22,22,29,0.12), 0 4px 12px rgba(22,22,29,0.06);
+    --shadow-glow: 0 0 0 1px rgba(183,154,243,0.25), 0 8px 32px rgba(105,66,241,0.18);
+
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 22px;
+    --radius-xl: 32px;
+
+    --max-width: 1180px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    color: var(--n-800);
+    background: var(--n-25);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+
+  img { max-width: 100%; display: block; }
+
+  section {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 96px 32px;
+  }
+
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; margin: 0; color: var(--n-900); }
+
+  .eyebrow {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--brand-secondary);
+    margin: 0 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 22px;
+    height: 2px;
+    background: var(--brand-gradient);
+    border-radius: 2px;
+    display: inline-block;
+  }
+
+  .section-head { max-width: 680px; margin-bottom: 56px; }
+  .section-head h2 { font-size: 38px; letter-spacing: -0.02em; }
+  .section-head p { font-size: 17px; color: var(--n-500); margin-top: 14px; }
+
+  .card {
+    background: var(--n-0);
+    border: 1px solid var(--n-100);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+
+  code, .mono { font-family: var(--font-mono); }
+
+  ::selection { background: var(--brand-primary); color: var(--n-900); }
+
+  /* ============================= COVER ============================= */
+  .cover {
+    position: relative;
+    min-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background:
+      radial-gradient(1200px 600px at 15% -10%, rgba(183,154,243,0.35), transparent 60%),
+      radial-gradient(900px 500px at 100% 10%, rgba(105,66,241,0.4), transparent 55%),
+      linear-gradient(150deg, #16161d 0%, #1c1a2b 45%, #241f3d 75%, #2c2350 100%);
+    color: var(--n-0);
+    overflow: hidden;
+    padding: 32px;
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black, transparent 75%);
+    pointer-events: none;
+  }
+  .cover-glow {
+    position: absolute;
+    width: 560px;
+    height: 560px;
+    border-radius: 50%;
+    background: var(--brand-gradient);
+    filter: blur(140px);
+    opacity: 0.35;
+    top: -160px;
+    right: -120px;
+    pointer-events: none;
+  }
+  .cover-inner {
+    position: relative;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 32px;
+  }
+  .cover-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--n-0);
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.16);
+    padding: 8px 16px;
+    border-radius: 999px;
+    margin-bottom: 36px;
+    backdrop-filter: blur(6px);
+  }
+  .cover-tag .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--brand-primary); }
+  .cover h1 {
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 0.98;
+    color: var(--n-0);
+    margin-bottom: 22px;
+  }
+  .cover-tagline {
+    font-size: clamp(18px, 2.4vw, 24px);
+    color: var(--n-200);
+    max-width: 560px;
+    font-weight: 400;
+    margin-bottom: 56px;
+  }
+  .cover-tagline .placeholder-note {
+    display: block;
+    margin-top: 6px;
+    font-size: 12.5px;
+    font-family: var(--font-mono);
+    color: var(--n-400);
+    letter-spacing: 0.02em;
+  }
+  .cover-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.14);
+  }
+  .cover-meta-item .label {
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--n-500);
+    margin-bottom: 6px;
+  }
+  .cover-meta-item .value {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--n-100);
+    font-family: var(--font-mono);
+  }
+
+  /* ============================= LOGO SECTION ============================= */
+  .logo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+  .logo-card {
+    border-radius: var(--radius-lg);
+    padding: 40px 28px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 220px;
+    gap: 20px;
+  }
+  .logo-card.light {
+    background: var(--n-0);
+    border: 1px solid var(--n-100);
+    box-shadow: var(--shadow-sm);
+  }
+  .logo-card.dark {
+    background: var(--brand-graphite);
+    border: 1px solid #2a2a37;
+    box-shadow: var(--shadow-md);
+  }
+  .logo-card img { max-height: 72px; width: auto; margin: 0 auto; }
+  .logo-card.full img { max-height: 52px; }
+  .logo-card-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--n-500);
+  }
+  .logo-card.dark .logo-card-label { color: var(--n-400); }
+
+  .subsection-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--n-900);
+    margin: 0 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .subsection-title .num {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--brand-secondary);
+    background: var(--n-100);
+    padding: 3px 9px;
+    border-radius: 999px;
+  }
+
+  .clearspace-demo {
+    background: var(--n-0);
+    border: 1px solid var(--n-100);
+    border-radius: var(--radius-lg);
+    padding: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 56px;
+    box-shadow: var(--shadow-sm);
+  }
+  .clearspace-box {
+    position: relative;
+    padding: 44px;
+    border: 1.5px dashed var(--brand-primary);
+    border-radius: 12px;
+  }
+  .clearspace-box::before,
+  .clearspace-box::after {
+    content: '';
+    position: absolute;
+    border-color: var(--brand-primary);
+  }
+  .clearspace-box img { height: 56px; width: auto; }
+  .clearspace-caption {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 13.5px;
+    color: var(--n-500);
+  }
+  .clearspace-caption .mono { color: var(--brand-secondary); font-weight: 500; }
+
+  .dont-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .dont-card {
+    background: var(--n-0);
+    border: 1px solid var(--n-100);
+    border-radius: var(--radius-md);
+    padding: 28px 20px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+  }
+  .dont-visual {
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    position: relative;
+  }
+  .dont-visual img { height: 56px; width: auto; }
+  .dont-visual.stretch img { transform: scaleX(2.1); }
+  .dont-visual.recolor img { filter: invert(28%) sepia(89%) saturate(3200%) hue-rotate(330deg) brightness(95%); }
+  .dont-visual.contrast { background: #e9e6f5; border-radius: 10px; }
+  .dont-visual.contrast img { filter: brightness(1) opacity(0.32) grayscale(0.4); }
+  .dont-visual.rotate img { transform: rotate(35deg); }
+  .dont-badge {
+    position: absolute;
+    top: -6px;
+    right: calc(50% - 60px);
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--sem-error);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(239,111,142,0.4);
+  }
+  .dont-label { font-size: 14.5px; font-weight: 600; color: var(--n-800); margin-bottom: 4px; }
+  .dont-desc { font-size: 12.5px; color: var(--n-500); }
+
+  /* ============================= COLOR ============================= */
+  .color-group-title {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--n-500);
+    margin: 0 0 18px;
+  }
+  .swatch-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 56px; }
+  .swatch {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--n-100);
+  }
+  .swatch-fill { height: 130px; position: relative; }
+  .swatch-fill.grad { background: var(--brand-gradient); }
+  .swatch-info { background: var(--n-0); padding: 18px 20px; }
+  .swatch-name { font-size: 15px; font-weight: 600; color: var(--n-900); margin-bottom: 8px; font-family: var(--font-display); }
+  .swatch-codes { display: flex; flex-direction: column; gap: 3px; }
+  .swatch-codes span { font-family: var(--font-mono); font-size: 12.5px; color: var(--n-500); }
+
+  .neutral-strip { display: grid; grid-template-columns: repeat(9, 1fr); gap: 0; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--n-100); margin-bottom: 12px; }
+  .neutral-chip { height: 84px; display: flex; align-items: flex-end; padding: 8px; }
+  .neutral-chip span { font-family: var(--font-mono); font-size: 10.5px; font-weight: 500; }
+
+  .semantic-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 18px; }
+  .semantic-card { border-radius: var(--radius-md); padding: 20px; }
+  .semantic-dot { width: 12px; height: 12px; border-radius: 50%; margin-bottom: 14px; }
+  .semantic-name { font-size: 14.5px; font-weight: 600; margin-bottom: 4px; }
+  .semantic-hex { font-family: var(--font-mono); font-size: 12px; opacity: 0.75; }
+  .semantic-usage { font-size: 12px; margin-top: 10px; opacity: 0.8; line-height: 1.5; }
+
+  .gradient-showcase {
+    border-radius: var(--radius-xl);
+    background: var(--brand-gradient);
+    padding: 56px;
+    margin-top: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+    box-shadow: var(--shadow-glow);
+  }
+  .gradient-showcase h3 { color: var(--n-900); font-size: 26px; margin-bottom: 8px; }
+  .gradient-showcase p { color: rgba(22,22,29,0.72); font-size: 14.5px; max-width: 360px; }
+  .gradient-code {
+    background: rgba(22,22,29,0.85);
+    color: #e6e1fa;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    padding: 16px 20px;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+  }
+
+  /* ============================= TYPOGRAPHY ============================= */
+  .font-showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 56px; }
+  .font-card { background: var(--n-0); border: 1px solid var(--n-100); border-radius: var(--radius-lg); padding: 36px; box-shadow: var(--shadow-sm); }
+  .font-card .tag { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-secondary); margin-bottom: 18px; display: block; }
+  .font-card .sample { font-size: 46px; color: var(--n-900); margin-bottom: 18px; line-height: 1.1; }
+  .font-card.display .sample { font-family: var(--font-display); font-weight: 700; }
+  .font-card.body .sample { font-family: var(--font-body); font-weight: 400; font-size: 32px; }
+  .font-card .meta { font-size: 13px; color: var(--n-500); font-family: var(--font-mono); }
+  .font-card .weights { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+  .font-card .weight-chip { font-size: 12px; padding: 5px 12px; border-radius: 999px; background: var(--n-50); color: var(--n-600); border: 1px solid var(--n-100); }
+
+  .type-scale { width: 100%; border-collapse: collapse; background: var(--n-0); border: 1px solid var(--n-100); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); }
+  .type-scale th {
+    text-align: left; font-size: 11.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--n-500); background: var(--n-50); padding: 16px 24px; border-bottom: 1px solid var(--n-100);
+  }
+  .type-scale td { padding: 22px 24px; border-bottom: 1px solid var(--n-50); vertical-align: middle; }
+  .type-scale tr:last-child td { border-bottom: none; }
+  .type-scale .label-cell { font-size: 13.5px; font-weight: 600; color: var(--n-800); width: 120px; }
+  .type-scale .spec-cell { font-family: var(--font-mono); font-size: 12.5px; color: var(--n-500); width: 190px; }
+  .type-scale .sample-cell { color: var(--n-900); }
+  .ts-h1 { font-family: var(--font-display); font-weight: 700; font-size: 44px; letter-spacing: -0.02em; }
+  .ts-h2 { font-family: var(--font-display); font-weight: 700; font-size: 32px; letter-spacing: -0.02em; }
+  .ts-h3 { font-family: var(--font-display); font-weight: 600; font-size: 22px; }
+  .ts-body { font-family: var(--font-body); font-weight: 400; font-size: 16px; }
+  .ts-label { font-family: var(--font-body); font-weight: 600; font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  /* ============================= VOICE & TONE ============================= */
+  .voice-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .voice-card {
+    background: var(--n-0);
+    border: 1px solid var(--n-100);
+    border-radius: var(--radius-lg);
+    padding: 34px 30px;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+  }
+  .voice-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--brand-gradient);
+  }
+  .voice-num {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--n-0);
+    background: var(--brand-gradient);
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 22px;
+  }
+  .voice-card h3 { font-size: 19px; margin-bottom: 12px; }
+  .voice-card p { font-size: 14.5px; color: var(--n-500); line-height: 1.65; margin-bottom: 18px; }
+  .voice-example {
+    background: var(--n-50);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    font-size: 13px;
+  }
+  .voice-example .ex-label { font-weight: 600; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+  .voice-example.no { color: var(--sem-error-text); margin-bottom: 8px; }
+  .voice-example.no .ex-label { color: var(--sem-error); }
+  .voice-example.yes { color: var(--sem-success-text); background: var(--sem-success-bg); }
+  .voice-example.yes .ex-label { color: var(--sem-success-text); }
+
+  /* ============================= APPLYING THE SYSTEM ============================= */
+  .apply-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .apply-card { border-radius: var(--radius-lg); padding: 32px; box-shadow: var(--shadow-sm); }
+  .apply-card.do { background: var(--sem-success-bg); border: 1px solid rgba(79,209,165,0.3); }
+  .apply-card.dont { background: var(--sem-error-bg); border: 1px solid rgba(239,111,142,0.3); }
+  .apply-head { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+  .apply-icon { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 17px; color: #fff; flex-shrink: 0; }
+  .apply-card.do .apply-icon { background: var(--sem-success); }
+  .apply-card.dont .apply-icon { background: var(--sem-error); }
+  .apply-card h3 { font-size: 19px; }
+  .apply-card.do h3 { color: var(--sem-success-text); }
+  .apply-card.dont h3 { color: var(--sem-error-text); }
+  .apply-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+  .apply-list li { display: flex; gap: 12px; font-size: 14.5px; line-height: 1.55; }
+  .apply-card.do .apply-list li { color: #0f6b52; }
+  .apply-card.dont .apply-list li { color: #9c1f43; }
+  .apply-list li .mark { flex-shrink: 0; font-weight: 700; margin-top: 1px; }
+
+  /* ============================= COMPONENTS ============================= */
+  .comp-block { margin-bottom: 64px; }
+  .comp-block:last-child { margin-bottom: 0; }
+
+  /* Buttons */
+  .btn {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 14.5px;
+    padding: 13px 26px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  }
+  .btn-primary { background: var(--brand-gradient); color: var(--n-0); box-shadow: var(--shadow-md); }
+  .btn-primary:hover { box-shadow: var(--shadow-glow); transform: translateY(-1px); }
+  .btn-secondary { background: var(--brand-graphite); color: var(--n-0); }
+  .btn-secondary:hover { background: var(--n-800); }
+  .btn-outline { background: transparent; color: var(--brand-secondary); border: 1.5px solid var(--brand-secondary); padding: 11.5px 24.5px; }
+  .btn-outline:hover { background: var(--n-50); }
+  .btn-ghost { background: transparent; color: var(--brand-secondary); padding: 13px 18px; }
+  .btn-ghost:hover { background: var(--n-50); }
+  .btn-disabled { background: var(--n-100); color: var(--n-400); cursor: not-allowed; box-shadow: none; }
+  .btn-sm { font-size: 13px; padding: 9px 18px; }
+  .btn-lg { font-size: 16px; padding: 16px 32px; }
+
+  .button-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 32px; }
+  .button-example {
+    background: var(--n-0);
+    border: 1px solid var(--n-100);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .button-example .preview { display: flex; align-items: center; }
+  .button-example .info .name { font-weight: 600; font-size: 14.5px; color: var(--n-900); margin-bottom: 4px; font-family: var(--font-display); }
+  .button-example .info .desc { font-size: 13px; color: var(--n-500); line-height: 1.55; }
+
+  .btn-sizes-row, .btn-states-row { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .btn-caption { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .btn-caption .mono-label { font-family: var(--font-mono); font-size: 11.5px; color: var(--n-500); }
+
+  /* Cards */
+  .comp-cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .comp-card { background: var(--n-0); border: 1px solid var(--n-100); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: 28px; }
+  .comp-card .badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 600; padding: 4px 11px; border-radius: 999px; margin-bottom: 16px; }
+  .comp-card .badge.success { background: var(--sem-success-bg); color: var(--sem-success-text); }
+  .comp-card .badge.warning { background: var(--sem-warning-bg); color: var(--sem-warning-text); }
+  .comp-card .badge.error { background: var(--sem-error-bg); color: var(--sem-error-text); }
+  .comp-card h4 { font-family: var(--font-display); font-weight: 700; font-size: 17px; margin: 0 0 8px; color: var(--n-900); }
+  .comp-card p { font-size: 13.5px; color: var(--n-500); line-height: 1.6; margin: 0; }
+  .comp-card .card-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--n-50); font-family: var(--font-mono); font-size: 12px; color: var(--n-400); }
+
+  .comp-card.feature { background: var(--brand-gradient); border: none; box-shadow: var(--shadow-glow); }
+  .comp-card.feature h4, .comp-card.feature .card-meta { color: var(--n-0); }
+  .comp-card.feature p { color: rgba(255,255,255,0.82); }
+  .comp-card.feature .card-meta { border-top-color: rgba(255,255,255,0.25); }
+
+  .comp-card.stat .stat-num { font-family: var(--font-display); font-weight: 800; font-size: 36px; color: var(--n-900); margin-bottom: 6px; letter-spacing: -0.02em; }
+  .comp-card.stat .stat-label { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--n-500); margin-bottom: 14px; }
+  .comp-card.stat .stat-delta { display: inline-flex; align-items: center; gap: 4px; font-size: 12.5px; font-weight: 600; color: var(--sem-success-text); background: var(--sem-success-bg); padding: 4px 10px; border-radius: 999px; }
+
+  /* Layout & spacing */
+  .spacing-row { display: flex; align-items: flex-end; gap: 18px; flex-wrap: wrap; margin-bottom: 12px; }
+  .spacing-chip { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .spacing-chip .box { width: 28px; background: var(--brand-gradient); border-radius: 4px; }
+  .spacing-chip .val { font-family: var(--font-mono); font-size: 11px; color: var(--n-500); }
+
+  .grid-demo { display: grid; grid-template-columns: repeat(12, 1fr); gap: 8px; margin-bottom: 14px; }
+  .grid-demo .col {
+    background: var(--n-50);
+    border: 1px dashed var(--brand-primary);
+    border-radius: 6px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--brand-secondary);
+  }
+  .grid-caption { font-size: 13.5px; color: var(--n-500); }
+  .grid-caption .mono { color: var(--brand-secondary); font-weight: 500; }
+
+  /* ============================= RESPONSIVE ============================= */
+  @media (max-width: 900px) {
+    section { padding: 64px 24px; }
+    .logo-grid { grid-template-columns: repeat(2, 1fr); }
+    .dont-grid { grid-template-columns: repeat(2, 1fr); }
+    .swatch-row { grid-template-columns: repeat(2, 1fr); }
+    .neutral-strip { grid-template-columns: repeat(5, 1fr); }
+    .semantic-row { grid-template-columns: repeat(2, 1fr); }
+    .font-showcase { grid-template-columns: 1fr; }
+    .voice-grid { grid-template-columns: 1fr; }
+    .apply-grid { grid-template-columns: 1fr; }
+    .type-scale .spec-cell { display: none; }
+    .button-grid { grid-template-columns: 1fr; }
+    .comp-cards-grid { grid-template-columns: repeat(2, 1fr); }
+    .grid-demo { grid-template-columns: repeat(6, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .logo-grid { grid-template-columns: 1fr; }
+    .dont-grid { grid-template-columns: 1fr; }
+    .swatch-row { grid-template-columns: 1fr; }
+    .neutral-strip { grid-template-columns: repeat(3, 1fr); }
+    .semantic-row { grid-template-columns: 1fr; }
+    .cover-meta { gap: 28px; }
+    .gradient-showcase { padding: 36px 28px; }
+    section { padding: 56px 18px; }
+    .comp-cards-grid { grid-template-columns: 1fr; }
+    .grid-demo { grid-template-columns: repeat(4, 1fr); }
+    .btn-sizes-row, .btn-states-row { gap: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================= 1. COVER ============================= -->
+<header class="cover">
+  <div class="cover-glow"></div>
+  <div class="cover-inner">
+    <div class="cover-tag"><span class="dot"></span> Brand &amp; Design System · v1.0</div>
+    <h1>Vrattiks</h1>
+    <p class="cover-tagline">
+      [ Tagline placeholder — e.g. "AI automation, built for how Indian SMEs actually work." ]
+      <span class="placeholder-note">// replace with final approved tagline before external use</span>
+    </p>
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <div class="label">Prepared for</div>
+        <div class="value">vrattiks.io redesign</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="label">Company</div>
+        <div class="value">Vrattiks Intelligence LLP</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="label">Category</div>
+        <div class="value">AI Automation for SMEs</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="label">Document</div>
+        <div class="value">Brand Guidelines — 2026</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============================= 2. LOGO & USAGE ============================= -->
+<section id="logo">
+  <div class="section-head">
+    <p class="eyebrow">02 · Identity</p>
+    <h2>Logo &amp; Usage</h2>
+    <p>The Vrattiks mark comes in three color treatments and two lockups. Use the version that gives the strongest contrast against its background, and never modify the mark's proportions or color relationships.</p>
+  </div>
+
+  <h3 class="subsection-title"><span class="num">2.1</span> Icon mark</h3>
+  <div class="logo-grid">
+    <div class="logo-card light">
+      <img src="Vrattiks - Logo - Gradient.png" alt="Vrattiks icon, gradient">
+      <div class="logo-card-label">Gradient — light backgrounds</div>
+    </div>
+    <div class="logo-card light">
+      <img src="Vrattiks - Logo - Primary Color .png" alt="Vrattiks icon, primary lavender">
+      <div class="logo-card-label">Primary Color — light backgrounds</div>
+    </div>
+    <div class="logo-card dark">
+      <img src="Vrattiks - Logo - White.png" alt="Vrattiks icon, white">
+      <div class="logo-card-label">White — dark backgrounds</div>
+    </div>
+  </div>
+
+  <h3 class="subsection-title"><span class="num">2.2</span> Full lockup (icon + wordmark)</h3>
+  <div class="logo-grid">
+    <div class="logo-card light full">
+      <img src="Vrattiks - Logo with Name - Gradient.png" alt="Vrattiks logo with name, gradient">
+      <div class="logo-card-label">Gradient — light backgrounds</div>
+    </div>
+    <div class="logo-card light full">
+      <img src="Vrattiks - Logo with Name - Primary Color.png" alt="Vrattiks logo with name, primary lavender">
+      <div class="logo-card-label">Primary Color — light backgrounds</div>
+    </div>
+    <div class="logo-card dark full">
+      <img src="Vrattiks - Logo with Name - White.png" alt="Vrattiks logo with name, white">
+      <div class="logo-card-label">White — dark backgrounds</div>
+    </div>
+  </div>
+
+  <h3 class="subsection-title"><span class="num">2.3</span> Clearspace</h3>
+  <div class="clearspace-demo">
+    <div>
+      <div class="clearspace-box">
+        <img src="Vrattiks - Logo - Gradient.png" alt="Vrattiks icon with clearspace">
+      </div>
+      <p class="clearspace-caption">Minimum clearspace = <span class="mono">1× the height of the icon</span> on all sides. No text, edges, or other elements should enter this zone.</p>
+    </div>
+  </div>
+
+  <h3 class="subsection-title"><span class="num">2.4</span> Don't</h3>
+  <div class="dont-grid">
+    <div class="dont-card">
+      <div class="dont-visual stretch">
+        <img src="Vrattiks - Logo - Gradient.png" alt="Stretched logo example">
+        <span class="dont-badge">✕</span>
+      </div>
+      <div class="dont-label">Stretch or distort</div>
+      <div class="dont-desc">Always scale proportionally, both axes locked.</div>
+    </div>
+    <div class="dont-card">
+      <div class="dont-visual recolor">
+        <img src="Vrattiks - Logo - Gradient.png" alt="Recolored logo example">
+        <span class="dont-badge">✕</span>
+      </div>
+      <div class="dont-label">Recolor off-brand</div>
+      <div class="dont-desc">Only use approved gradient, lavender, or white.</div>
+    </div>
+    <div class="dont-card">
+      <div class="dont-visual contrast">
+        <img src="Vrattiks - Logo - Gradient.png" alt="Low contrast logo example">
+        <span class="dont-badge">✕</span>
+      </div>
+      <div class="dont-label">Place on low contrast</div>
+      <div class="dont-desc">Choose the light/dark variant that stays legible.</div>
+    </div>
+    <div class="dont-card">
+      <div class="dont-visual rotate">
+        <img src="Vrattiks - Logo - Gradient.png" alt="Rotated logo example">
+        <span class="dont-badge">✕</span>
+      </div>
+      <div class="dont-label">Rotate or tilt</div>
+      <div class="dont-desc">The mark always sits upright, never angled.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= 3. COLOR SYSTEM ============================= -->
+<section id="color">
+  <div class="section-head">
+    <p class="eyebrow">03 · Color</p>
+    <h2>Color System</h2>
+    <p>A cool violet palette anchored by Soft Lavender and Deep Violet, supported by a warm-neutral grey scale and a semantic set tinted to stay on-brand.</p>
+  </div>
+
+  <p class="color-group-title">Brand core</p>
+  <div class="swatch-row">
+    <div class="swatch">
+      <div class="swatch-fill" style="background: var(--brand-primary);"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Soft Lavender</div>
+        <div class="swatch-codes">
+          <span>HEX #B79AF3</span>
+          <span>RGB 183, 154, 243</span>
+          <span>--brand-primary</span>
+        </div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-fill" style="background: var(--brand-secondary);"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Deep Violet</div>
+        <div class="swatch-codes">
+          <span>HEX #6942F1</span>
+          <span>RGB 105, 66, 241</span>
+          <span>--brand-secondary</span>
+        </div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-fill" style="background: var(--brand-graphite);"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Graphite Black</div>
+        <div class="swatch-codes">
+          <span>HEX #16161D</span>
+          <span>RGB 22, 22, 29</span>
+          <span>--brand-graphite</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gradient-showcase">
+    <div>
+      <h3>Brand Gradient</h3>
+      <p>The signature gradient — use for hero backgrounds, icon fills, CTA accents, and the primary logo treatment. Always applied at 60° angle.</p>
+    </div>
+    <div class="gradient-code">linear-gradient(60deg, #b79af3, #6942f1)</div>
+  </div>
+
+  <div style="margin-top:56px;">
+    <p class="color-group-title">Neutral palette</p>
+    <div class="neutral-strip">
+      <div class="neutral-chip" style="background:#ffffff;"><span style="color:#766e93;">0</span></div>
+      <div class="neutral-chip" style="background:#fbfaff;"><span style="color:#766e93;">25</span></div>
+      <div class="neutral-chip" style="background:#f5f3fc;"><span style="color:#766e93;">50</span></div>
+      <div class="neutral-chip" style="background:#ece8f9;"><span style="color:#565070;">100</span></div>
+      <div class="neutral-chip" style="background:#ddd7f1;"><span style="color:#3c3752;">200</span></div>
+      <div class="neutral-chip" style="background:#c3bce0;"><span style="color:#262238;">300</span></div>
+      <div class="neutral-chip" style="background:#9c93b8;"><span style="color:#fff;">400</span></div>
+      <div class="neutral-chip" style="background:#766e93;"><span style="color:#fff;">500</span></div>
+      <div class="neutral-chip" style="background:#565070;"><span style="color:#fff;">600</span></div>
+    </div>
+    <div class="neutral-strip" style="grid-template-columns: repeat(3, 1fr);">
+      <div class="neutral-chip" style="background:#3c3752;"><span style="color:#fff;">700</span></div>
+      <div class="neutral-chip" style="background:#262238;"><span style="color:#fff;">800</span></div>
+      <div class="neutral-chip" style="background:#16161d;"><span style="color:#fff;">900</span></div>
+    </div>
+  </div>
+
+  <div style="margin-top:56px;">
+    <p class="color-group-title">Semantic colors</p>
+    <div class="semantic-row">
+      <div class="semantic-card" style="background: var(--sem-success-bg);">
+        <div class="semantic-dot" style="background: var(--sem-success);"></div>
+        <div class="semantic-name" style="color: var(--sem-success-text);">Success</div>
+        <div class="semantic-hex" style="color: var(--sem-success-text);">#4FD1A5</div>
+        <div class="semantic-usage" style="color: var(--sem-success-text);">Completed automations, confirmations, positive metrics.</div>
+      </div>
+      <div class="semantic-card" style="background: var(--sem-warning-bg);">
+        <div class="semantic-dot" style="background: var(--sem-warning);"></div>
+        <div class="semantic-name" style="color: var(--sem-warning-text);">Warning</div>
+        <div class="semantic-hex" style="color: var(--sem-warning-text);">#F5B34C</div>
+        <div class="semantic-usage" style="color: var(--sem-warning-text);">Needs attention, pending approvals, review states.</div>
+      </div>
+      <div class="semantic-card" style="background: var(--sem-error-bg);">
+        <div class="semantic-dot" style="background: var(--sem-error);"></div>
+        <div class="semantic-name" style="color: var(--sem-error-text);">Error</div>
+        <div class="semantic-hex" style="color: var(--sem-error-text);">#EF6F8E</div>
+        <div class="semantic-usage" style="color: var(--sem-error-text);">Failed runs, blocking issues, destructive actions.</div>
+      </div>
+      <div class="semantic-card" style="background: var(--sem-info-bg);">
+        <div class="semantic-dot" style="background: var(--sem-info);"></div>
+        <div class="semantic-name" style="color: var(--sem-info-text);">Info</div>
+        <div class="semantic-hex" style="color: var(--sem-info-text);">#8A7BF0</div>
+        <div class="semantic-usage" style="color: var(--sem-info-text);">Tips, in-progress states, neutral system messages.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= 4. TYPOGRAPHY ============================= -->
+<section id="type">
+  <div class="section-head">
+    <p class="eyebrow">04 · Typography</p>
+    <h2>Typography</h2>
+    <p>Urbanist carries the brand's voice in headings and the wordmark. IBM Plex Sans handles everything users read and interact with — body copy, labels, UI text.</p>
+  </div>
+
+  <div class="font-showcase">
+    <div class="font-card display">
+      <span class="tag">Display / Headings — Urbanist</span>
+      <div class="sample">Aa Bb Cc</div>
+      <div class="meta">Used for: H1–H3, logo wordmark, hero statements</div>
+      <div class="weights">
+        <span class="weight-chip">SemiBold 600</span>
+        <span class="weight-chip">Bold 700</span>
+      </div>
+    </div>
+    <div class="font-card body">
+      <span class="tag">Body / UI — IBM Plex Sans</span>
+      <div class="sample">Aa Bb Cc</div>
+      <div class="meta">Used for: paragraphs, buttons, forms, labels</div>
+      <div class="weights">
+        <span class="weight-chip">Regular 400</span>
+        <span class="weight-chip">Medium 500</span>
+        <span class="weight-chip">SemiBold 600</span>
+      </div>
+    </div>
+  </div>
+
+  <table class="type-scale">
+    <thead>
+      <tr>
+        <th>Style</th>
+        <th>Spec</th>
+        <th>Sample</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="label-cell">H1</td>
+        <td class="spec-cell">Urbanist / 700 / 44px / -2% ls</td>
+        <td class="sample-cell"><span class="ts-h1">Automate what slows you down</span></td>
+      </tr>
+      <tr>
+        <td class="label-cell">H2</td>
+        <td class="spec-cell">Urbanist / 700 / 32px / -2% ls</td>
+        <td class="sample-cell"><span class="ts-h2">Built for how you already work</span></td>
+      </tr>
+      <tr>
+        <td class="label-cell">H3</td>
+        <td class="spec-cell">Urbanist / 600 / 22px</td>
+        <td class="sample-cell"><span class="ts-h3">Custom AI, no rip-and-replace</span></td>
+      </tr>
+      <tr>
+        <td class="label-cell">Body</td>
+        <td class="spec-cell">IBM Plex Sans / 400 / 16px / 1.6 lh</td>
+        <td class="sample-cell"><span class="ts-body">Vrattiks builds automation that fits into the way your team already runs — no new systems to learn, no developers required.</span></td>
+      </tr>
+      <tr>
+        <td class="label-cell">Label / Caption</td>
+        <td class="spec-cell">IBM Plex Sans / 600 / 12.5px / +6% ls / uppercase</td>
+        <td class="sample-cell"><span class="ts-label">Client outcome</span></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================= 5. VOICE & TONE ============================= -->
+<section id="voice">
+  <div class="section-head">
+    <p class="eyebrow">05 · Voice &amp; Tone</p>
+    <h2>Voice &amp; Tone</h2>
+    <p>Vrattiks speaks to business owners running SMEs across India — not to developers. Every sentence should sound like it's explaining a result, not a technology.</p>
+  </div>
+
+  <div class="voice-grid">
+    <div class="voice-card">
+      <div class="voice-num">01</div>
+      <h3>Clear over technical</h3>
+      <p>We write for the business owner, not the engineering team. If a sentence needs a technical dictionary, rewrite it.</p>
+      <div class="voice-example no">
+        <div class="ex-label">Avoid</div>
+        "Our LLM-powered pipeline leverages RAG architecture for contextual inference."
+      </div>
+      <div class="voice-example yes">
+        <div class="ex-label">Instead</div>
+        "Vrattiks reads your documents and answers questions about them instantly."
+      </div>
+    </div>
+
+    <div class="voice-card">
+      <div class="voice-num">02</div>
+      <h3>Confident, not hyped</h3>
+      <p>We talk about outcomes — hours saved, steps removed, errors avoided — not about how impressive the AI is.</p>
+      <div class="voice-example no">
+        <div class="ex-label">Avoid</div>
+        "Revolutionary AI that will transform your business forever."
+      </div>
+      <div class="voice-example yes">
+        <div class="ex-label">Instead</div>
+        "Cuts your invoice processing time from 3 hours to 12 minutes."
+      </div>
+    </div>
+
+    <div class="voice-card">
+      <div class="voice-num">03</div>
+      <h3>Approachable, not intimidating</h3>
+      <p>Many clients are new to AI. Tone should feel like a knowledgeable partner, never like it's talking down to them.</p>
+      <div class="voice-example no">
+        <div class="ex-label">Avoid</div>
+        "You'll need to integrate our API endpoints with your existing stack."
+      </div>
+      <div class="voice-example yes">
+        <div class="ex-label">Instead</div>
+        "We connect it to the tools you already use — no changes on your end."
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= 6. COMPONENTS ============================= -->
+<section id="components">
+  <div class="section-head">
+    <p class="eyebrow">06 · Components</p>
+    <h2>Components</h2>
+    <p>Buttons, cards, and the layout grid — built on the same tokens as the rest of the system, so a screen assembled from these pieces feels unmistakably Vrattiks.</p>
+  </div>
+
+  <h3 class="subsection-title"><span class="num">6.1</span> Buttons</h3>
+  <div class="comp-block">
+    <div class="button-grid">
+      <div class="button-example">
+        <div class="preview"><button class="btn btn-primary">Start automation</button></div>
+        <div class="info">
+          <div class="name">Primary</div>
+          <div class="desc">The single most important action on a screen — one per view. Brand gradient fill, lifts with the glow shadow on hover.</div>
+        </div>
+      </div>
+      <div class="button-example">
+        <div class="preview"><button class="btn btn-secondary">View details</button></div>
+        <div class="info">
+          <div class="name">Secondary</div>
+          <div class="desc">Graphite fill for a strong action that isn't the primary one — e.g. alongside a Primary button in a dialog.</div>
+        </div>
+      </div>
+      <div class="button-example">
+        <div class="preview"><button class="btn btn-outline">Learn more</button></div>
+        <div class="info">
+          <div class="name">Outline</div>
+          <div class="desc">Lower-emphasis action on light backgrounds — cancel, back, or a secondary link inside a card.</div>
+        </div>
+      </div>
+      <div class="button-example">
+        <div class="preview"><button class="btn btn-ghost">Skip for now</button></div>
+        <div class="info">
+          <div class="name">Ghost</div>
+          <div class="desc">The quietest action — dismissive or optional steps, dense toolbars, inline table actions.</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="color-group-title">Sizes</p>
+    <div class="btn-sizes-row" style="margin-bottom: 32px;">
+      <div class="btn-caption"><button class="btn btn-primary btn-sm">Save changes</button><span class="mono-label">sm · 13px</span></div>
+      <div class="btn-caption"><button class="btn btn-primary">Save changes</button><span class="mono-label">md · 14.5px</span></div>
+      <div class="btn-caption"><button class="btn btn-primary btn-lg">Save changes</button><span class="mono-label">lg · 16px</span></div>
+    </div>
+
+    <p class="color-group-title">States</p>
+    <div class="btn-states-row">
+      <div class="btn-caption"><button class="btn btn-primary">Run now</button><span class="mono-label">default</span></div>
+      <div class="btn-caption"><button class="btn btn-primary" style="box-shadow: var(--shadow-glow); transform: translateY(-1px);">Run now</button><span class="mono-label">hover / focus</span></div>
+      <div class="btn-caption"><button class="btn btn-disabled">Run now</button><span class="mono-label">disabled</span></div>
+    </div>
+  </div>
+
+  <h3 class="subsection-title"><span class="num">6.2</span> Cards</h3>
+  <div class="comp-block">
+    <div class="comp-cards-grid">
+      <div class="comp-card">
+        <span class="badge success">✓ Completed</span>
+        <h4>Invoice reconciliation</h4>
+        <p>Standard card — the default container for list items, settings rows, and dashboard tiles. White fill, 1px border, soft shadow.</p>
+        <div class="card-meta"><span>Updated 2m ago</span><span>#INV-1042</span></div>
+      </div>
+      <div class="comp-card stat">
+        <div class="stat-label">Hours saved this month</div>
+        <div class="stat-num">148</div>
+        <span class="stat-delta">↑ 12% vs last month</span>
+      </div>
+      <div class="comp-card feature">
+        <h4>Set up your first workflow</h4>
+        <p>Feature card — gradient fill for a single promoted moment per page: onboarding, an upsell, a hero CTA inside a dashboard.</p>
+        <div class="card-meta"><span>~5 min setup</span><span>→</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="subsection-title"><span class="num">6.3</span> Layout &amp; spacing</h3>
+  <div class="comp-block">
+    <p class="color-group-title">Spacing scale</p>
+    <div class="spacing-row">
+      <div class="spacing-chip"><div class="box" style="height:4px;"></div><span class="val">4</span></div>
+      <div class="spacing-chip"><div class="box" style="height:8px;"></div><span class="val">8</span></div>
+      <div class="spacing-chip"><div class="box" style="height:12px;"></div><span class="val">12</span></div>
+      <div class="spacing-chip"><div class="box" style="height:16px;"></div><span class="val">16</span></div>
+      <div class="spacing-chip"><div class="box" style="height:24px;"></div><span class="val">24</span></div>
+      <div class="spacing-chip"><div class="box" style="height:32px;"></div><span class="val">32</span></div>
+      <div class="spacing-chip"><div class="box" style="height:48px;"></div><span class="val">48</span></div>
+      <div class="spacing-chip"><div class="box" style="height:64px;"></div><span class="val">64</span></div>
+      <div class="spacing-chip"><div class="box" style="height:96px;"></div><span class="val">96</span></div>
+    </div>
+    <p class="grid-caption" style="margin-bottom:40px;">A 4px base unit. Use the closest step rather than an arbitrary value — it keeps every screen feeling like the same product.</p>
+
+    <p class="color-group-title">12-column grid</p>
+    <div class="grid-demo">
+      <div class="col">1</div><div class="col">2</div><div class="col">3</div><div class="col">4</div>
+      <div class="col">5</div><div class="col">6</div><div class="col">7</div><div class="col">8</div>
+      <div class="col">9</div><div class="col">10</div><div class="col">11</div><div class="col">12</div>
+    </div>
+    <p class="grid-caption">Content sits inside a <span class="mono">max-width: 1180px</span> container, centered with 32px side padding. Columns reflow to 6 at tablet and 4 at mobile — see 6.4.</p>
+  </div>
+
+  <h3 class="subsection-title"><span class="num">6.4</span> Responsive breakpoints</h3>
+  <div class="comp-block">
+    <table class="type-scale">
+      <thead>
+        <tr>
+          <th>Breakpoint</th>
+          <th>Range</th>
+          <th>Behavior</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="label-cell">Desktop</td>
+          <td class="spec-cell">&gt; 900px</td>
+          <td class="sample-cell">Full 12-column grid, 3-up card grids, side-padding 32px, section padding 96px vertical.</td>
+        </tr>
+        <tr>
+          <td class="label-cell">Tablet</td>
+          <td class="spec-cell">601px – 900px</td>
+          <td class="sample-cell">Grid reflows to 6 columns; card and logo grids drop to 2-up; section padding tightens to 64px/24px; the type-scale spec column hides.</td>
+        </tr>
+        <tr>
+          <td class="label-cell">Mobile</td>
+          <td class="spec-cell">≤ 600px</td>
+          <td class="sample-cell">Grid reflows to 4 columns; all multi-column grids stack to 1-up (cards stay 2-up); section padding is 56px/18px; buttons wrap and keep full tap-target size.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================= 7. APPLYING THE SYSTEM ============================= -->
+<section id="apply">
+  <div class="section-head">
+    <p class="eyebrow">07 · Summary</p>
+    <h2>Applying the System</h2>
+    <p>A quick reference for anyone building with the Vrattiks identity — designers, developers, and partners alike.</p>
+  </div>
+
+  <div class="apply-grid">
+    <div class="apply-card do">
+      <div class="apply-head">
+        <div class="apply-icon">✓</div>
+        <h3>Do</h3>
+      </div>
+      <ul class="apply-list">
+        <li><span class="mark">•</span> Use the gradient mark for hero moments; solid lavender or white for smaller, repeated placements.</li>
+        <li><span class="mark">•</span> Keep at least 1× icon-height of clearspace around the logo at all times.</li>
+        <li><span class="mark">•</span> Pair Urbanist headings with IBM Plex Sans body copy — never mix in a third typeface.</li>
+        <li><span class="mark">•</span> Write copy that leads with the outcome, in plain language a business owner would use.</li>
+        <li><span class="mark">•</span> Use semantic colors only for their assigned meaning (success, warning, error, info).</li>
+        <li><span class="mark">•</span> Stick to one Primary button per screen; use Secondary, Outline, or Ghost for everything else.</li>
+        <li><span class="mark">•</span> Build layouts on the 4px spacing scale and the 12-column grid so screens reflow consistently.</li>
+      </ul>
+    </div>
+    <div class="apply-card dont">
+      <div class="apply-head">
+        <div class="apply-icon">✕</div>
+        <h3>Don't</h3>
+      </div>
+      <ul class="apply-list">
+        <li><span class="mark">•</span> Stretch, skew, rotate, or recolor the logo outside the approved variants.</li>
+        <li><span class="mark">•</span> Place the logo on backgrounds that break contrast or visual legibility.</li>
+        <li><span class="mark">•</span> Introduce generic red/green/yellow — always use the brand-tinted semantic set.</li>
+        <li><span class="mark">•</span> Use technical or jargon-heavy language aimed at developers in customer-facing copy.</li>
+        <li><span class="mark">•</span> Lean on AI hype language ("revolutionary," "game-changing") in place of real outcomes.</li>
+        <li><span class="mark">•</span> Invent new button styles, card shadows, or spacing values outside this system.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

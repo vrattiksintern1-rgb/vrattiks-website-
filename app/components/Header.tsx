@@ -25,7 +25,11 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-n-100 bg-n-0/90 backdrop-blur">
       <Container className="flex h-16 items-center justify-between md:h-20">
-        <Link href="/" className="focus-glow shrink-0 rounded-sm" aria-label="Vrattiks home">
+        <Link
+          href="/"
+          className="focus-glow shrink-0 rounded-sm"
+          aria-label="Vrattiks home"
+        >
           <Image
             src="/brand/vrattiks-logo.png"
             alt="Vrattiks"
@@ -39,12 +43,12 @@ export default function Header() {
         {/* Full flat nav needs more room than the 6 flat labels would suggest — deferred to
             Tailwind's default lg (1024px) breakpoint so it never overflows at the 1024px
             desktop test width (vrattiks-responsive §1); tablet/901-1023px keeps the compact menu. */}
-        <nav aria-label="Primary" className="hidden items-center gap-4 lg:flex">
+        <nav aria-label="Primary" className="hidden items-center gap-3 lg:flex xl:gap-4">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="focus-glow rounded-sm text-[13.5px] font-medium whitespace-nowrap text-n-700 transition-colors hover:text-brand-secondary"
+              className="focus-glow rounded-sm text-caption font-medium whitespace-nowrap text-n-700 transition-colors hover:text-brand-secondary"
             >
               {link.label}
             </Link>
@@ -70,14 +74,18 @@ export default function Header() {
       </Container>
 
       {open ? (
-        <nav id="mobile-nav" aria-label="Primary" className="border-t border-n-100 bg-n-0 lg:hidden">
+        <nav
+          id="mobile-nav"
+          aria-label="Primary"
+          className="border-t border-n-100 bg-n-0 lg:hidden"
+        >
           <Container className="flex flex-col gap-1 py-4">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="focus-glow rounded-sm px-1 py-3 text-[15px] font-medium text-n-700 hover:text-brand-secondary"
+                className="focus-glow rounded-sm px-1 py-3 text-body font-medium text-n-700 hover:text-brand-secondary"
               >
                 {link.label}
               </Link>

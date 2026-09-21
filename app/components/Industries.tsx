@@ -1,48 +1,68 @@
 import Link from "next/link";
 import Container from "./ui/Container";
-import SectionHeading from "./ui/SectionHeading";
+import Section from "./ui/Section";
+import Eyebrow from "./ui/Eyebrow";
 import Reveal from "./ui/Reveal";
+import Button from "./ui/Button";
 import Icon from "./ui/Icon";
 import { industries } from "@/app/lib/content";
 
+/**
+ * Structure: asymmetric split — framing left, compact index right.
+ *
+ * The first pass made this a ruled two-column list, which put it immediately
+ * after the Use Cases matrix as a second run of hairline rows (taste-skill §4:
+ * no two consecutive sections share a structure). The rows are now unruled
+ * blocks that tint on hover, framed by a sticky left column — so it reads as
+ * an index, not a table, and doesn't echo the section above it.
+ */
 export default function Industries() {
   return (
-    <section className="py-14 md:py-24">
-      <Container>
-        <SectionHeading
-          eyebrow="Industries"
-          title="Built to adapt to how your industry works"
-          description="The same automation foundation, applied to what matters most in your industry."
-        />
+    <Section id="industries" tone="white" labelledBy="industries-heading">
+      <Container className="grid grid-cols-1 gap-12 md:grid-cols-[0.85fr_1.15fr] md:items-start md:gap-20">
+        <Reveal className="md:sticky md:top-28">
+          <Eyebrow>Industries</Eyebrow>
+          <h2
+            id="industries-heading"
+            className="mt-5 font-display text-[clamp(28px,3.4vw,40px)] leading-heading font-bold tracking-[-0.025em] text-n-900 text-balance"
+          >
+            Built to adapt to how your industry works
+          </h2>
+          <p className="mt-5 max-w-[46ch] text-body leading-relaxed text-n-500">
+            The same automation foundation, applied to what matters most in your
+            industry.
+          </p>
+          <div className="mt-8">
+            <Button href="/industries" variant="outline">
+              All industries
+            </Button>
+          </div>
+        </Reveal>
 
-        <div className="mt-10 grid grid-cols-2 gap-4 md:mt-12 md:grid-cols-3 md:gap-5">
+        <ul className="-mx-4 flex flex-col">
           {industries.map((industry, i) => (
-            <Reveal key={industry.slug} delay={(i % 3) * 0.08}>
+            <Reveal as="li" key={industry.slug} delay={i * 0.05}>
               <Link
                 href={`/industries/${industry.slug}`}
-                className="focus-glow group flex h-full flex-col rounded-lg border border-n-100 bg-n-0 p-5 shadow-[var(--shadow-sm)] transition-all duration-150 hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)] md:p-6"
+                className="focus-glow group flex items-start justify-between gap-6 rounded-md px-4 py-4 transition-colors duration-150 hover:bg-n-50 md:py-5"
               >
-                <span className="bg-brand-gradient-soft flex h-11 w-11 items-center justify-center rounded-md text-brand-secondary">
-                  <Icon name={industry.icon} className="h-5.5 w-5.5" />
+                <span className="min-w-0">
+                  <span className="block font-display text-body-lg font-semibold text-n-900 transition-colors duration-150 group-hover:text-brand-secondary">
+                    {industry.name}
+                  </span>
+                  <span className="mt-1 block max-w-[46ch] text-ui leading-normal text-n-500">
+                    {industry.application}
+                  </span>
                 </span>
-                <h3 className="mt-4 text-[16px] font-display font-semibold text-n-900">
-                  {industry.name}
-                </h3>
-                <p className="mt-1.5 flex-1 text-[13.5px] leading-[1.55] text-n-500">
-                  {industry.application}
-                </p>
-                <span className="mt-4 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-brand-secondary">
-                  See use cases
-                  <Icon
-                    name="arrowUpRight"
-                    className="h-3.5 w-3.5 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  />
-                </span>
+                <Icon
+                  name="arrowUpRight"
+                  className="mt-1 h-4 w-4 shrink-0 text-n-300 opacity-0 transition-all duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-brand-secondary group-hover:opacity-100 group-focus-visible:opacity-100"
+                />
               </Link>
             </Reveal>
           ))}
-        </div>
+        </ul>
       </Container>
-    </section>
+    </Section>
   );
 }

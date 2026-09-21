@@ -1,31 +1,40 @@
 import Container from "./ui/Container";
+import Section from "./ui/Section";
 import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
-import Icon, { type IconName } from "./ui/Icon";
 
-const steps: { icon: IconName; title: string; description: string }[] = [
+/**
+ * Structure: numbered horizontal stepper on desktop, vertical timeline on
+ * mobile (ui-ux-pro-max §1).
+ *
+ * The five steps previously each sat in a gradient-filled circle behind an
+ * icon — five gradient surfaces in one viewport, where the budget is one.
+ * The sequence is now carried by mono numerals against a single gradient
+ * hairline rail: the accent is an edge, not five fills, and the numerals do
+ * the ordering work the icons were only decorating.
+ */
+const steps: { title: string; description: string }[] = [
   {
-    icon: "search",
     title: "Discover",
-    description: "We map how your business runs today — where time goes and where leads drop off.",
+    description:
+      "We map how your business runs today — where time goes and where leads drop off.",
   },
   {
-    icon: "layout",
     title: "Design",
-    description: "We design the AI and automation workflows around your actual process.",
+    description:
+      "We design the AI and automation workflows around your actual process.",
   },
   {
-    icon: "workflow",
     title: "Build & Automate",
-    description: "We build and connect the voice agents, chatbots, and workflows.",
+    description:
+      "We build and connect the voice agents, chatbots, and workflows.",
   },
   {
-    icon: "rocket",
     title: "Launch",
-    description: "We roll it out, test it against real conversations, and refine it.",
+    description:
+      "We roll it out, test it against real conversations, and refine it.",
   },
   {
-    icon: "lifeBuoy",
     title: "Support",
     description: "We monitor and improve the system as your business grows.",
   },
@@ -33,40 +42,51 @@ const steps: { icon: IconName; title: string; description: string }[] = [
 
 export default function Process() {
   return (
-    <section className="py-14 md:py-24">
+    <Section id="process" tone="tint" labelledBy="process-heading">
       <Container>
         <SectionHeading
+          id="process-heading"
           eyebrow="Process"
           title="How we work"
           description="A clear path from where you are today to a business that runs on automation."
-          align="center"
         />
 
-        <ol className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 md:mt-16 md:grid-cols-5 md:gap-6">
+        <ol className="relative mt-16 grid grid-cols-1 md:mt-20 md:grid-cols-5 md:gap-8">
+          {/* One continuous rail: vertical on mobile, horizontal on desktop */}
+          <span
+            aria-hidden="true"
+            className="bg-brand-gradient absolute top-2 bottom-2 left-[11px] w-0.5 rounded-full opacity-30 md:top-[11px] md:right-0 md:bottom-auto md:left-0 md:h-0.5 md:w-full"
+          />
+
           {steps.map((step, i) => (
-            <Reveal as="li" key={step.title} delay={i * 0.08} className="relative flex flex-col items-center text-center">
-              {i < steps.length - 1 ? (
-                <span
-                  aria-hidden="true"
-                  className="bg-brand-gradient-soft absolute top-7 left-1/2 hidden h-px w-full md:block"
-                />
-              ) : null}
-              <span className="bg-brand-gradient relative z-10 flex h-14 w-14 items-center justify-center rounded-full text-n-0 shadow-[var(--shadow-md)]">
-                <Icon name={step.icon} className="h-6 w-6" />
+            <Reveal
+              as="li"
+              key={step.title}
+              delay={i * 0.08}
+              className="relative flex gap-5 pb-10 last:pb-0 md:flex-col md:gap-0 md:pb-0"
+            >
+              <span
+                aria-hidden="true"
+                className="bg-n-0 relative z-10 flex h-6 w-6 shrink-0 items-center justify-center rounded-full ring-2 ring-n-50"
+              >
+                <span className="bg-brand-gradient h-2.5 w-2.5 rounded-full" />
               </span>
-              <span className="mt-4 font-mono text-[12px] text-n-400">
-                {String(i + 1).padStart(2, "0")}
+
+              <span className="block md:mt-6">
+                <span className="block font-mono text-label tracking-[0.12em] text-brand-secondary">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className="mt-2 font-display text-h3 leading-snug font-semibold text-n-900">
+                  {step.title}
+                </h3>
+                <p className="mt-2 max-w-[34ch] text-ui leading-normal text-n-600">
+                  {step.description}
+                </p>
               </span>
-              <h3 className="mt-1.5 text-[16px] font-display font-semibold text-n-900">
-                {step.title}
-              </h3>
-              <p className="mt-1.5 max-w-[220px] text-[13.5px] leading-[1.55] text-n-500">
-                {step.description}
-              </p>
             </Reveal>
           ))}
         </ol>
       </Container>
-    </section>
+    </Section>
   );
 }

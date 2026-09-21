@@ -31,13 +31,14 @@ export default function CaseStudies() {
               <Icon name="clock" className="h-6 w-6" />
             </span>
             <div>
-              <h3 className="text-[17px] font-display font-semibold text-n-900">
+              <h3 className="text-body-lg font-display font-semibold text-n-900">
                 Case studies coming soon
               </h3>
-              <p className="mt-1.5 max-w-xl text-[14px] leading-[1.6] text-n-500">
-                We&apos;re documenting client / industry, challenge, solution, and
-                measured results from current engagements. Real case studies with
-                verified outcomes will appear here as they&apos;re completed.
+              <p className="mt-2 max-w-xl text-ui leading-normal text-n-500">
+                We&apos;re documenting client / industry, challenge, solution,
+                and measured results from current engagements. Real case studies
+                with verified outcomes will appear here as they&apos;re
+                completed.
               </p>
             </div>
           </div>

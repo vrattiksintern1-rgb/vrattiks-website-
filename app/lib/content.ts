@@ -97,6 +97,12 @@ export const industries: Industry[] = [
     application: "Qualify site-visit inquiries and follow up on listings automatically.",
   },
   {
+    name: "E-commerce",
+    slug: "e-commerce",
+    icon: "bag",
+    application: "Answer order and returns queries and recover abandoned carts automatically.",
+  },
+  {
     name: "Healthcare",
     slug: "healthcare",
     icon: "pulse",

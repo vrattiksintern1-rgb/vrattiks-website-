@@ -40,6 +40,26 @@
   --font-body: var(--font-ibm-plex-sans), sans-serif;
   --font-mono: var(--font-ibm-plex-mono), monospace;
 
+  /* Type scale — the named steps from docs/index.html §4 (.ts-h1/.ts-h2/.ts-h3/
+     .ts-body/.ts-label) plus the intermediate sizes that doc also uses.
+     Use these utilities (text-h2, text-caption, …) — never text-[14.5px]. */
+  --text-micro: 11.5px;
+  --text-label: 12.5px;
+  --text-caption: 13.5px;
+  --text-ui: 14.5px;
+  --text-body: 16px;
+  --text-body-lg: 17px;
+  --text-h3: 22px;
+  --text-h2: 32px;
+  --text-h1: 44px;
+
+  /* Line-height steps — ratios, paired with the sizes above */
+  --leading-display: 1.05;
+  --leading-heading: 1.15;
+  --leading-snug: 1.45;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.7;
+
   /* Radius */
   --radius-sm: 8px;
   --radius-md: 14px;
@@ -60,23 +80,30 @@
   --shadow-glow: 0 0 0 1px rgba(183,154,243,0.25), 0 8px 32px rgba(105,66,241,0.18);
 }
 
-body {
-  margin: 0;
-  font-family: var(--font-body);
-  color: var(--color-n-800);
-  background: var(--color-n-25);
-  -webkit-font-smoothing: antialiased;
-  line-height: 1.5;
-}
+/* These are element defaults, so they MUST sit in `@layer base`. Unlayered CSS
+   beats anything inside a layer, and Tailwind v4 emits its utilities into
+   `@layer utilities` — so an unlayered `h2 { color: ... }` silently overrides
+   `text-n-0`, which rendered every heading on the graphite bands as #16161d on
+   #16161d. Keep new element selectors in here. */
+@layer base {
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    color: var(--color-n-800);
+    background: var(--color-n-25);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
 
-h1, h2, h3, h4 {
-  font-family: var(--font-display);
-  font-weight: 700;
-  color: var(--color-n-900);
-}
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--color-n-900);
+  }
 
-a {
-  color: inherit;
+  a {
+    color: inherit;
+  }
 }
 
 /* Gradient fills that Tailwind v4 can't generate a utility for (see vrattiks-design-system §1) */
@@ -95,10 +122,26 @@ a {
   color: transparent;
 }
 
-/* Shared focus ring — replaces default outline with the brand glow token, never outline:none alone */
+/* Shared focus ring — replaces the default outline with the brand glow token,
+   never `outline: none` alone.
+
+   --shadow-glow's ring is rgba(183,154,243,0.25), which is close to invisible
+   against brand-graphite. So the ring is drawn as a real `outline` (which is
+   always painted above neighbouring content and is never clipped by an
+   ancestor) in a colour that passes 3:1 on BOTH the light neutrals and the
+   dark band, with the glow kept as the soft halo on light surfaces only. */
 .focus-glow:focus-visible {
-  outline: none;
+  outline: 2px solid var(--color-brand-secondary);
+  outline-offset: 2px;
   box-shadow: var(--shadow-glow);
+}
+
+/* On the graphite bands, brand-secondary is too dark to read as a ring —
+   switch to brand-primary, which clears 3:1 against #16161d. */
+.bg-brand-graphite .focus-glow:focus-visible,
+.focus-glow-dark:focus-visible {
+  outline-color: var(--color-brand-primary);
+  box-shadow: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -108,4 +151,106 @@ a {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+/* ─────────────────────────────────────────────────────────────
+   Premium surface details
+   Fine textures, gradient hairlines, and depth tokens used to give
+   each Home section its own visual identity without inventing new
+   brand colours (see docs/index.html §6).
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* Softer, wider elevation for large premium surfaces */
+  --shadow-xl: 0 32px 80px -20px rgba(22, 22, 29, 0.22), 0 12px 32px -12px rgba(22, 22, 29, 0.12);
+  --shadow-inset-hair: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  /* Expressive easing — confident settle, no bounce */
+  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Very low-contrast film grain. Sits above a background, below content. */
+.bg-noise::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* 64px architectural grid, matching the design doc's cover treatment. */
+.bg-grid-fine::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(22, 22, 29, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(22, 22, 29, 0.045) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 78%);
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 78%);
+}
+
+.bg-grid-fine-dark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 20%, transparent 75%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 20%, transparent 75%);
+}
+
+/* 1px gradient border on a card, drawn as a mask so the fill stays clean. */
+.border-gradient {
+  position: relative;
+}
+.border-gradient::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--brand-gradient);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Hairline that fades out at both ends — used as a section rule. */
+.rule-fade {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(22, 22, 29, 0.12) 20%,
+    rgba(22, 22, 29, 0.12) 80%,
+    transparent
+  );
+}
+.rule-fade-dark {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.14) 20%,
+    rgba(255, 255, 255, 0.14) 80%,
+    transparent
+  );
+}
+
+/* Radial brand washes. These were five inline `radial-gradient(circle, #6942f1 …)`
+   style props — the only hardcoded hex values left in the components. Declared
+   here so the wash reads from the same tokens as everything else. */
+.wash-primary {
+  background: radial-gradient(circle, var(--color-brand-primary) 0%, transparent 70%);
+}
+.wash-secondary {
+  background: radial-gradient(circle, var(--color-brand-secondary) 0%, transparent 70%);
 }

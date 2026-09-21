@@ -22,9 +22,10 @@ export default function Testimonials() {
           <span className="flex h-11 w-11 items-center justify-center rounded-md bg-n-0 text-brand-secondary shadow-[var(--shadow-sm)]">
             <Icon name="quote" className="h-5 w-5" />
           </span>
-          <p className="mt-5 text-[14.5px] leading-[1.6] text-n-600">
-            Client testimonials will appear here as engagements are completed and
-            verified — we don&apos;t publish quotes we can&apos;t stand behind.
+          <p className="mt-5 text-ui leading-normal text-n-600">
+            Client testimonials will appear here as engagements are completed
+            and verified — we don&apos;t publish quotes we can&apos;t stand
+            behind.
           </p>
         </Reveal>
       </Container>

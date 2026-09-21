@@ -4,13 +4,16 @@ import type { AnchorHTMLAttributes, ButtonHTMLAttributes } from "react";
 type Variant = "primary" | "secondary" | "outline" | "ghost";
 type Size = "sm" | "md" | "lg";
 
+/* `active:translate-y-0` cancels the hover lift on press — without it a pressed
+   button stays lifted and the click reads as unregistered (kylezantos-design
+   §2.4: most missing polish is a missing state, not a missing animation). */
 const base =
-  "focus-glow inline-flex items-center justify-center gap-2 rounded-full font-semibold font-body whitespace-nowrap transition-[transform,box-shadow,background-color] duration-150 ease-out";
+  "focus-glow inline-flex items-center justify-center gap-2 rounded-full font-semibold font-body whitespace-nowrap transition-[transform,box-shadow,background-color] duration-150 ease-out active:translate-y-0 disabled:pointer-events-none disabled:opacity-50";
 
 const sizes: Record<Size, string> = {
-  sm: "text-[13px] px-[18px] py-[9px]",
-  md: "text-[14.5px] px-[26px] py-[13px]",
-  lg: "text-[16px] px-8 py-4",
+  sm: "text-label px-[18px] py-[9px]",
+  md: "text-ui px-[26px] py-[13px]",
+  lg: "text-body px-8 py-4",
 };
 
 const variants: Record<Variant, string> = {

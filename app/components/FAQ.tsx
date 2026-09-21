@@ -1,4 +1,5 @@
 import Container from "./ui/Container";
+import Section from "./ui/Section";
 import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
 import Icon from "./ui/Icon";
@@ -38,26 +39,27 @@ const faqs = [
 
 export default function FAQ() {
   return (
-    <section className="py-14 md:py-24">
+    <Section id="faq" tone="paper" labelledBy="faq-heading">
       <Container>
         <SectionHeading
+          id="faq-heading"
           eyebrow="FAQ"
           title="Common questions"
-          align="center"
+          description="If your question isn't here, ask it on the consultation call."
         />
 
-        <div className="mx-auto mt-10 flex max-w-2xl flex-col gap-3 md:mt-12">
+        <div className="mt-14 flex max-w-3xl flex-col gap-3 md:mt-16">
           {faqs.map((faq, i) => (
             <Reveal key={faq.question} delay={i * 0.04}>
-              <details className="group rounded-lg border border-n-100 bg-n-0 open:shadow-[var(--shadow-sm)]">
-                <summary className="focus-glow flex cursor-pointer list-none items-center justify-between gap-4 rounded-lg px-5 py-4 text-[15px] font-semibold text-n-900 marker:content-none">
+              <details className="group rounded-lg border border-n-100 bg-n-0 transition-colors duration-150 hover:border-n-200 open:border-n-200 open:shadow-[var(--shadow-sm)]">
+                <summary className="focus-glow flex cursor-pointer list-none items-center justify-between gap-4 rounded-lg px-5 py-4 text-body font-semibold text-n-900 transition-colors duration-150 hover:text-brand-secondary marker:content-none">
                   {faq.question}
                   <Icon
                     name="chevronDown"
                     className="h-4.5 w-4.5 shrink-0 text-n-400 transition-transform duration-200 group-open:rotate-180"
                   />
                 </summary>
-                <p className="px-5 pb-5 text-[14px] leading-[1.65] text-n-500">
+                <p className="px-5 pb-5 text-ui leading-normal text-n-500">
                   {faq.answer}
                 </p>
               </details>
@@ -65,6 +67,6 @@ export default function FAQ() {
           ))}
         </div>
       </Container>
-    </section>
+    </Section>
   );
 }

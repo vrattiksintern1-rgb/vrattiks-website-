@@ -5,17 +5,22 @@ import Reveal from "./ui/Reveal";
 import Button from "./ui/Button";
 
 /**
- * Structure: asymmetric split — argument left, statement stack right.
+ * Structure: asymmetric split — argument left (sticky), statement stack right.
  *
  * Was a gradient-filled panel holding six icon squares. Two problems with that:
  * ui-ux-pro-max §1 says differentiators must not be "a 6-up icon grid where
  * every item gets equal weight", and it was the page's second full gradient
  * surface, which design-system §3 caps at one promoted moment per page.
  *
- * Now the accent is confined to a 2px edge per row (accent presence without
- * accent dominance), and the items are typographic statements — removing an
- * icon from any of these loses nothing, which is the test for whether it
- * earned its place.
+ * The accent is now ONE continuous gradient spine running the height of the
+ * list, rather than a 2px bar repeated on each of the six rows. Same token,
+ * same colour, but it reads as a single deliberate mark instead of six — which
+ * is the difference between an accent and a texture. Removing an icon from any
+ * of these loses nothing, which is the test for whether it earned its place.
+ *
+ * No hover state on the rows: they are not links, and a hover affordance on a
+ * non-interactive element is decoration pretending to be function
+ * (kylezantos-design §1b).
  */
 const differentiators: string[] = [
   "AI-powered systems, not just scripted replies",
@@ -38,37 +43,46 @@ export default function WhyVrattiks() {
           >
             Automation built for how your business actually runs
           </h2>
-          <p className="mt-5 max-w-[52ch] text-body leading-relaxed text-n-500">
+          <p className="mt-6 max-w-[52ch] text-body leading-relaxed text-n-500">
             We don&apos;t start with the technology — we start with where your
             team loses time and where customers fall through the cracks. Then we
             build AI and automation systems around that, so the result fits your
             business instead of the other way around.
           </p>
-          <div className="mt-8">
+          <div className="mt-9">
             <Button href="/company" variant="outline">
               Learn about our approach
             </Button>
           </div>
         </Reveal>
 
-        <ul className="flex flex-col">
-          {differentiators.map((item, i) => (
-            <Reveal
-              as="li"
-              key={item}
-              delay={i * 0.06}
-              className="group relative border-t border-n-100 py-5 pl-6 last:border-b md:py-6"
-            >
-              <span
-                aria-hidden="true"
-                className="bg-brand-gradient absolute top-5 bottom-5 left-0 w-0.5 rounded-full md:top-6 md:bottom-6"
-              />
-              <span className="block font-display text-body-lg leading-snug font-semibold text-n-800">
-                {item}
-              </span>
-            </Reveal>
-          ))}
-        </ul>
+        {/* One spine for the whole list, not one bar per row. */}
+        <div className="relative pl-7 md:pl-9">
+          <span
+            aria-hidden="true"
+            className="bg-brand-gradient absolute inset-y-0 left-0 w-0.5 rounded-full"
+          />
+          <ul className="flex flex-col">
+            {differentiators.map((item, i) => (
+              <Reveal
+                as="li"
+                key={item}
+                delay={i * 0.06}
+                className="flex items-baseline gap-5 border-b border-n-100 py-5 last:border-b-0 md:gap-6 md:py-6"
+              >
+                <span
+                  aria-hidden="true"
+                  className="shrink-0 font-mono text-micro tracking-[0.12em] text-n-500 tabular-nums"
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="font-display text-[clamp(17px,1.9vw,21px)] leading-snug font-semibold text-n-800 text-balance">
+                  {item}
+                </span>
+              </Reveal>
+            ))}
+          </ul>
+        </div>
       </Container>
     </Section>
   );

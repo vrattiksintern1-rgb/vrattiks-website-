@@ -96,12 +96,12 @@ export const industries: Industry[] = [
     icon: "home",
     application: "Qualify site-visit inquiries and follow up on listings automatically.",
   },
-  {
-    name: "E-commerce",
-    slug: "e-commerce",
-    icon: "bag",
-    application: "Answer order and returns queries and recover abandoned carts automatically.",
-  },
+  /* E-commerce was removed at the user's request on 2026-09-22.
+     ⚠ This is a deliberate deviation from `vrattiks-architecture` §1, which
+     lists it as industry 04.2 (`/industries/e-commerce`) and whose §2 requires
+     six industry cards — that file is the SSOT sourced from the client's
+     "Task 3 | Final Pages List" and has NOT been changed. Restore this entry,
+     or update the architecture skill, rather than letting the two drift. */
   {
     name: "Healthcare",
     slug: "healthcare",

@@ -50,7 +50,7 @@ export default function SectionHeading({
       </h2>
       {description ? (
         <p
-          className={`mt-4 text-body leading-relaxed ${dark ? "text-n-300" : "text-n-500"}`}
+          className={`mt-4 text-body leading-relaxed ${dark ? "text-n-300" : "text-n-600"}`}
         >
           {description}
         </p>

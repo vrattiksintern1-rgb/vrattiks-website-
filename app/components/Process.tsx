@@ -52,12 +52,6 @@ export default function Process() {
         />
 
         <ol className="relative mt-16 grid grid-cols-1 md:mt-20 md:grid-cols-5 md:gap-8">
-          {/* One continuous rail: vertical on mobile, horizontal on desktop */}
-          <span
-            aria-hidden="true"
-            className="bg-brand-gradient absolute top-2 bottom-2 left-[11px] w-0.5 rounded-full opacity-30 md:top-[11px] md:right-0 md:bottom-auto md:left-0 md:h-0.5 md:w-full"
-          />
-
           {steps.map((step, i) => (
             <Reveal
               as="li"
@@ -65,6 +59,25 @@ export default function Process() {
               delay={i * 0.08}
               className="relative flex gap-5 pb-10 last:pb-0 md:flex-col md:gap-0 md:pb-0"
             >
+              {/* The rail used to be ONE span on the <ol> at `md:w-full`, which
+                  ran the full grid width — roughly 185px of gradient line kept
+                  going past the fifth dot at desktop, drawing a sixth step that
+                  does not exist. It is now a connector per step, rendered for
+                  every step except the last, so the rail ends exactly where the
+                  process does.
+
+                  Desktop offsets are derived, not eyeballed: the dot is 24px
+                  wide (centre 12px), and the grid gap is 32px — so the next
+                  dot's centre sits 44px past this item's right edge, hence
+                  `left-6` (24px, the dot's right edge) to `-right-11` (44px).
+                  If `md:gap-8` ever changes, `-right-11` must change with it. */}
+              {i < steps.length - 1 ? (
+                <span
+                  aria-hidden="true"
+                  className="bg-brand-gradient absolute top-6 bottom-0 left-[11px] w-0.5 rounded-full opacity-30 md:top-[11px] md:-right-11 md:bottom-auto md:left-6 md:h-0.5 md:w-auto"
+                />
+              ) : null}
+
               <span
                 aria-hidden="true"
                 className="bg-n-0 relative z-10 flex h-6 w-6 shrink-0 items-center justify-center rounded-full ring-2 ring-n-50"

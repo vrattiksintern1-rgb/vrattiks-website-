@@ -19,6 +19,13 @@ import Eyebrow from "./ui/Eyebrow";
  * When real, measured client results exist: restore numerals here using the
  * metric-in-context pattern (number + what it measures + over what period),
  * and put the CountUp component in app/components/ui/ back to work.
+ *
+ * ⚠ TYPE-SCALE DECISION (2026-09-21). This H2 was clamp(30px,4.4vw,46px) —
+ * the largest on the page. With the Hero H1 capped at 48px that made the two
+ * effectively the same size and the page had no display-scale jump at all.
+ * The H1 is now 68px and this is back on the standard section step
+ * (clamp(28px,3.4vw,40px)). Do not re-inflate it: the band already carries
+ * enough weight from being the only inverted surface this far up the page.
  */
 const outcomes: { headline: string; label: string; description: string }[] = [
   {
@@ -55,6 +62,13 @@ export default function KpiResults() {
       labelledBy="results-heading"
       className="bg-noise bg-grid-fine-dark overflow-hidden"
     >
+      {/* Bright hairline on the band's top edge. A dark section that begins on a
+          hard colour change reads as a gap; a lit edge reads as a plane. */}
+      <span
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-primary/50 to-transparent"
+      />
+
       {/* Single wide wash along the top edge — keeps the band from reading flat black */}
       <div
         aria-hidden="true"
@@ -68,7 +82,7 @@ export default function KpiResults() {
             <Eyebrow tone="dark">Results</Eyebrow>
             <h2
               id="results-heading"
-              className="mt-6 font-display text-[clamp(30px,4.4vw,46px)] leading-display font-bold tracking-[-0.025em] text-n-0 text-balance"
+              className="mt-6 font-display text-[clamp(28px,3.4vw,40px)] leading-heading font-bold tracking-[-0.025em] text-n-0 text-balance"
             >
               What changes once the busywork runs itself
             </h2>
@@ -81,21 +95,31 @@ export default function KpiResults() {
           </Reveal>
         </div>
 
-        <div className="rule-fade-dark mt-14 md:mt-20" aria-hidden="true" />
+        <div className="rule-fade-dark mt-16 md:mt-20" aria-hidden="true" />
 
-        {/* Hairline-divided outcomes — no cards, no boxes */}
+        {/* Hairline-divided outcomes — no cards, no boxes. The mono index is what
+            makes this a ledger rather than a grid, so it stays even though the
+            items aren't sequential. */}
         <dl className="grid grid-cols-1 sm:grid-cols-2">
           {outcomes.map((outcome, i) => (
             <Reveal
               key={outcome.label}
               delay={i * 0.08}
-              className="border-b border-n-0/10 py-10 last:border-b-0 sm:odd:pr-10 sm:even:border-l sm:even:pl-10 sm:nth-last-[-n+2]:border-b-0 md:py-14"
+              className="group border-b border-n-0/10 py-10 transition-colors duration-300 last:border-b-0 sm:odd:pr-12 sm:even:border-l sm:even:pl-12 sm:nth-last-[-n+2]:border-b-0 md:py-14"
             >
-              <dt className="font-mono text-micro tracking-[0.12em] text-brand-primary uppercase">
-                {outcome.label}
-              </dt>
-              <dd>
-                <p className="mt-4 max-w-[20ch] font-display text-[clamp(24px,2.6vw,var(--text-h3))] leading-snug font-semibold text-n-0 text-balance">
+              <div className="flex items-baseline gap-4">
+                <span
+                  aria-hidden="true"
+                  className="font-mono text-micro tracking-[0.12em] text-n-0/25 tabular-nums transition-colors duration-300 group-hover:text-brand-primary"
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <dt className="font-mono text-micro tracking-[0.12em] text-brand-primary uppercase">
+                  {outcome.label}
+                </dt>
+              </div>
+              <dd className="mt-4 pl-[calc(0.75rem+3ch)]">
+                <p className="max-w-[20ch] font-display text-[clamp(22px,2.4vw,26px)] leading-snug font-semibold text-n-0 text-balance">
                   {outcome.headline}
                 </p>
                 <p className="mt-3 max-w-[38ch] text-ui leading-normal text-n-400">

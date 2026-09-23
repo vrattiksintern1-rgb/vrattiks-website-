@@ -73,6 +73,13 @@
 
 :root {
   --brand-gradient: linear-gradient(60deg, #b79af3, #6942f1);
+  /* Contrast-safe ramp for gradient text on light surfaces — see
+     .text-brand-gradient below for the measurements. */
+  --brand-gradient-ink: linear-gradient(
+    60deg,
+    color-mix(in srgb, var(--color-brand-primary) 55%, var(--color-brand-secondary)),
+    var(--color-brand-secondary)
+  );
   --brand-gradient-soft: linear-gradient(60deg, rgba(183,154,243,0.15), rgba(105,66,241,0.15));
   --shadow-sm: 0 1px 2px rgba(22,22,29,0.06), 0 1px 1px rgba(22,22,29,0.04);
   --shadow-md: 0 4px 16px rgba(22,22,29,0.08), 0 2px 6px rgba(22,22,29,0.05);
@@ -104,6 +111,31 @@
   a {
     color: inherit;
   }
+
+  /* The header is sticky (64px tall, 80px from `md` up), so ANY in-page anchor
+     — the skip link's #main, the footer/nav links to #services, #faq,
+     #get-started — lands its target underneath the bar without this. Set on
+     `[id]` rather than on each section so a new anchor target can't forget it.
+
+     Values are header height + a breathing gap, not header height exactly:
+     a heading flush against the bar reads as clipped. */
+  [id] {
+    scroll-margin-top: 88px;
+  }
+
+  @media (min-width: 901px) {
+    [id] {
+      scroll-margin-top: 104px;
+    }
+  }
+
+  /* Tailwind's `marker:content-none` covers Chrome/Firefox, but Safari draws
+     the disclosure triangle through a -webkit pseudo-element that `marker`
+     never reaches — without this the FAQ summaries show a native triangle
+     next to the custom chevron. */
+  summary::-webkit-details-marker {
+    display: none;
+  }
 }
 
 /* Gradient fills that Tailwind v4 can't generate a utility for (see vrattiks-design-system §1) */
@@ -115,8 +147,19 @@
   background: var(--brand-gradient-soft);
 }
 
+/* Gradient TEXT uses a darkened ramp, not --brand-gradient.
+   Measured: #b79af3 (the gradient's light end) on --color-n-25 is 2.26:1, which
+   fails WCAG 1.4.3 even at the 3:1 large-text threshold — so the first word of
+   any gradient headline was effectively unreadable. Stopping the light end at
+   55% primary lifts the worst point to 3.40:1 while still reading clearly as a
+   lavender-to-violet gradient. Derived from the two brand tokens via color-mix,
+   so no new brand colour is introduced.
+
+   ⚠ Small gradient text still fails: at body/label sizes the bar is 4.5:1 and
+   even this ramp only reaches 3.40. Use solid --color-brand-secondary (5.54:1)
+   below ~24px rather than this class. */
 .text-brand-gradient {
-  background: var(--brand-gradient);
+  background: var(--brand-gradient-ink);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -253,4 +296,53 @@
 }
 .wash-secondary {
   background: radial-gradient(circle, var(--color-brand-secondary) 0%, transparent 70%);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Elevated-pass additions (onbbits-inspired structure, Vrattiks tokens)
+
+   The reference site's polish comes from three measurable things, not from
+   colour: a ~1.8x display-scale jump between H1 and H2, ONE radius reused
+   everywhere, and shadows that are wide and very low-alpha rather than dark.
+   The tokens below encode the third; the first two live in the components.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* Wide, low-alpha elevation. --shadow-md/lg are tighter and darker; these
+     are for large card surfaces that should lift without looking heavy. */
+  --shadow-soft: 0 10px 30px -10px rgba(22, 22, 29, 0.07), 0 2px 8px -2px rgba(22, 22, 29, 0.04);
+  --shadow-float: 0 22px 50px -16px rgba(22, 22, 29, 0.13), 0 6px 16px -6px rgba(22, 22, 29, 0.06);
+  /* Brand-tinted lift, for the hovered/promoted card only */
+  --shadow-brand: 0 20px 44px -16px rgba(105, 66, 241, 0.28), 0 2px 10px -3px rgba(105, 66, 241, 0.12);
+}
+
+/* Card hover: a border shift plus a soft lift — never a scale-up
+   (CLAUDE.md Design Taste, reference 3). transform/opacity/shadow only. */
+.card-lift {
+  transition:
+    transform 0.25s var(--ease-premium),
+    box-shadow 0.25s var(--ease-premium),
+    border-color 0.25s var(--ease-premium);
+}
+.card-lift:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-brand-primary);
+  box-shadow: var(--shadow-float);
+}
+
+/* The hero capability strip used to live here as `.marquee-track` /
+   `.marquee-mask` / `@keyframes marquee-x` — a 46s infinite ticker. Removed
+   per kylezantos-design §1b ("nothing on this site should be moving when the
+   user isn't acting"); the strip is now a static wrapped <ul> built from
+   Tailwind utilities in Hero.tsx, so it needs no custom CSS at all.
+
+   NOTE FOR FUTURE PASSES: there is now ZERO looping motion on this page. If
+   you add any, §1b requires you to justify it explicitly in a comment at the
+   point of use — an `infinite` keyword anywhere in this file without that
+   justification is a regression, not a decision. */
+
+@media (prefers-reduced-motion: reduce) {
+  .card-lift:hover {
+    transform: none;
+  }
 }

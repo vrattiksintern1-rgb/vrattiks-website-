@@ -44,19 +44,26 @@ export default function Industries() {
             <Reveal as="li" key={industry.slug} delay={i * 0.05}>
               <Link
                 href={`/industries/${industry.slug}`}
-                className="focus-glow group flex items-start justify-between gap-6 rounded-md px-4 py-4 transition-colors duration-150 hover:bg-n-50 md:py-5"
+                className="focus-glow group flex items-start justify-between gap-6 rounded-md px-4 py-4 transition-colors duration-200 hover:bg-n-50 md:py-5"
               >
                 <span className="min-w-0">
                   <span className="block font-display text-body-lg font-semibold text-n-900 transition-colors duration-150 group-hover:text-brand-secondary">
                     {industry.name}
                   </span>
-                  <span className="mt-1 block max-w-[46ch] text-ui leading-normal text-n-500">
+                  <span className="mt-1 block max-w-[46ch] text-ui leading-normal text-n-600">
                     {industry.application}
                   </span>
                 </span>
+                {/* Was `opacity-0` until hover. On touch there is no hover, so
+                    the affordance never appeared at all and an eight-row list
+                    of real links read as static text — the one place on this
+                    page where the interaction was hidden from the majority of
+                    visitors. It now rests visible at n-400 (4.1:1 on white,
+                    clearing the 3:1 non-text bar) and brightens on hover;
+                    the movement, not the appearance, is the hover reward. */}
                 <Icon
                   name="arrowUpRight"
-                  className="mt-1 h-4 w-4 shrink-0 text-n-300 opacity-0 transition-all duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-brand-secondary group-hover:opacity-100 group-focus-visible:opacity-100"
+                  className="mt-1 h-4 w-4 shrink-0 text-n-400 transition-all duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-brand-secondary"
                 />
               </Link>
             </Reveal>

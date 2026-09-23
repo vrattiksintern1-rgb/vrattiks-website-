@@ -11,6 +11,13 @@
  *
  * Every Home section renders through this — do not hand-roll a `<section>`
  * with its own padding, or the page's rhythm drifts (vrattiks-architecture §2).
+ *
+ * ACCESSIBILITY (vrattiks-accessibility, "Semantic HTML" + "ARIA only when
+ * needed"): this renders a real `<section>` landmark, and `labelledBy` wires
+ * `aria-labelledby` to the id of that section's own heading so each landmark is
+ * named by visible text rather than a duplicated `aria-label`. Every caller on
+ * Home passes it. If you add a section, pass `labelledBy` and give its
+ * SectionHeading the matching `id` — an unnamed landmark is worse than none.
  */
 const tones = {
   /* Page default — faintest neutral */
@@ -25,11 +32,16 @@ const tones = {
 
 /* Two rhythms only. `lg` is for the page's anchor moments (the dark results
    band, the closing CTA); `md` is the default cadence for everything else.
-   `md` matches the section-padding band in docs/index.html §6.4 exactly —
-   56px mobile / 64px tablet / 96px desktop (ui-ux-pro-max §4). */
+
+   ⚠ DEVIATION from docs/index.html §6.4, made deliberately in the 2026-09-21
+   elevated-visual pass: the doc's band is 56/64/96px, which measured tight
+   against the reference site's rhythm (its container sections run 80px of
+   padding around content blocks that are themselves much taller). These are
+   now 64/80/112 and 96/112/144. If the design doc is ever re-issued, reconcile
+   there rather than re-tightening here — the whole page is tuned to this. */
 const sizes = {
-  md: "py-14 sm:py-16 md:py-24",
-  lg: "py-20 sm:py-24 md:py-32",
+  md: "py-16 sm:py-20 md:py-28",
+  lg: "py-24 sm:py-28 md:py-36",
 } as const;
 
 export default function Section({

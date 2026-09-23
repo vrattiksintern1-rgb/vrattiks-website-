@@ -51,15 +51,15 @@ export default function FAQ() {
         <div className="mt-14 flex max-w-3xl flex-col gap-3 md:mt-16">
           {faqs.map((faq, i) => (
             <Reveal key={faq.question} delay={i * 0.04}>
-              <details className="group rounded-lg border border-n-100 bg-n-0 transition-colors duration-150 hover:border-n-200 open:border-n-200 open:shadow-[var(--shadow-sm)]">
-                <summary className="focus-glow flex cursor-pointer list-none items-center justify-between gap-4 rounded-lg px-5 py-4 text-body font-semibold text-n-900 transition-colors duration-150 hover:text-brand-secondary marker:content-none">
+              <details className="group rounded-md border border-n-200 bg-n-0 transition-[border-color,box-shadow] duration-200 hover:border-brand-primary open:border-brand-primary open:shadow-[var(--shadow-soft)]">
+                <summary className="focus-glow flex cursor-pointer list-none items-center justify-between gap-4 rounded-md px-5 py-4 text-body font-semibold text-n-900 transition-colors duration-200 hover:text-brand-secondary marker:content-none md:px-6 md:py-5">
                   {faq.question}
                   <Icon
                     name="chevronDown"
-                    className="h-4.5 w-4.5 shrink-0 text-n-400 transition-transform duration-200 group-open:rotate-180"
+                    className="h-5 w-5 shrink-0 text-n-500 transition-transform duration-200 group-open:rotate-180"
                   />
                 </summary>
-                <p className="px-5 pb-5 text-ui leading-normal text-n-500">
+                <p className="px-5 pb-5 text-ui leading-normal text-n-600 md:px-6 md:pb-6">
                   {faq.answer}
                 </p>
               </details>

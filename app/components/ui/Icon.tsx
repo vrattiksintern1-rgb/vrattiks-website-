@@ -1,4 +1,11 @@
-const paths: Record<string, React.ReactNode> = {
+/* ⚠ Do NOT annotate this as `Record<string, React.ReactNode>`. That widens
+   `keyof typeof paths` to `string`, which silently disables all name checking
+   on <Icon name="..." /> — two names in use on the Home page (`chevronDown`,
+   `menu`) did not exist here and rendered as empty <svg> elements, leaving the
+   FAQ accordion with no chevron and the mobile header with an INVISIBLE
+   hamburger button. The bare object literal keeps the key union exact, so a
+   typo is a compile error. */
+const paths = {
   mic: (
     <>
       <rect x="9" y="3" width="6" height="11" rx="3" />
@@ -28,10 +35,21 @@ const paths: Record<string, React.ReactNode> = {
       <path d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18" />
     </>
   ),
+  /* The handset here is load-bearing: it is the only thing that separates this
+     glyph from `chat`. The previous version drew it as a single bare curve
+     (`M8.5 10.5c0 3 2 5 5 5`), which rendered as a meaningless hook and turned
+     to mush at the 20px size this icon is actually used at — so the mark read
+     as "a speech bubble", not "WhatsApp".
+
+     It is now the real receiver abstraction: two rounded pads joined by an
+     L-bend, which is what makes the shape legible at small sizes. Bubble
+     radius is 8.7 to sit with `globe` (r=9) rather than inventing a third
+     circle size for the set. Checked by rasterising at 20px, not by eye on the
+     path data. */
   whatsapp: (
     <>
-      <path d="M6 21l1.3-3.9A8.5 8.5 0 1 1 10.4 20L6 21Z" />
-      <path d="M8.5 10.5c0 3 2 5 5 5" />
+      <path d="M4 20.3l1.4-3.6a8.7 8.7 0 1 1 3.3 2.8l-4.7.8" />
+      <path d="M9.5 10.4a.55.55 0 0 0 1.1 0V9.3a.55.55 0 0 0-1.1 0v1.1a5 5 0 0 0 5 5h1.1a.55.55 0 0 0 0-1.1h-1.1a.55.55 0 0 0 0 1.1" />
     </>
   ),
   crm: (
@@ -129,13 +147,25 @@ const paths: Record<string, React.ReactNode> = {
       <polyline points="9 6 18 6 18 15" />
     </>
   ),
+  chevronDown: (
+    <>
+      <polyline points="6 9 12 15 18 9" />
+    </>
+  ),
+  menu: (
+    <>
+      <line x1="4" y1="7" x2="20" y2="7" />
+      <line x1="4" y1="12" x2="20" y2="12" />
+      <line x1="4" y1="17" x2="20" y2="17" />
+    </>
+  ),
   quote: (
     <>
       <path d="M7 8a3 3 0 0 0-3 3v2a3 3 0 0 0 3 3h1V9a1 1 0 0 0-1-1Z" />
       <path d="M17 8a3 3 0 0 0-3 3v2a3 3 0 0 0 3 3h1V9a1 1 0 0 0-1-1Z" />
     </>
   ),
-};
+} satisfies Record<string, React.ReactNode>;
 
 export type IconName = keyof typeof paths;
 

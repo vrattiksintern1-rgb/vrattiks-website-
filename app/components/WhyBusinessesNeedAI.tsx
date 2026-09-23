@@ -4,13 +4,30 @@ import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
 
 /**
- * Structure: numbered ledger, not a card grid.
+ * Structure: a uniform six-card grid.
  *
- * ui-ux-pro-max §1 is explicit that problem-framing must not be a 3-up icon
- * grid — "the problem is not three parallel items". These six are a single
- * accumulating list, so they're set as one numbered run split across two
- * columns, separated by hairlines. The mono numerals carry the sequence, which
- * means no item needs a decorative icon to justify its row.
+ * This was a numbered hairline ledger — which was a good structure, but the
+ * section directly above it (KpiResults) is ALSO a two-column hairline ledger,
+ * so the page ran the same shape twice in a row. That breaks CLAUDE.md's
+ * "no two consecutive sections share a layout structure" rule and is a large
+ * part of why the run of sections read as flat.
+ *
+ * ⚠ CLIENT DECISION (2026-09-22): card 03 ("Leads that never get followed up")
+ * used to be a single inverted `bg-brand-graphite` surface among five light
+ * ones — the section's only focal point, and the device that did an accent
+ * colour's job without spending the page's one-gradient-per-viewport budget.
+ * It was asked to be white like the rest, so all six are now uniform.
+ *
+ * The known cost, recorded so a later pass doesn't "rediscover" it: this grid
+ * is now slop tell #4 in CLAUDE.md — everything on white with n-500 text and
+ * an n-200 border, no value contrast, nowhere for the eye to land. If the
+ * section is ever asked to feel stronger again, restoring ONE promoted card
+ * is the cheapest fix; do not reach for a gradient or an icon set instead
+ * (the gradient budget is claimed by Services, the icon-grid budget by
+ * Services too — slop tell #3).
+ *
+ * Still no icons. The icon-card grid budget for this page belongs to Services
+ * (slop tell #3), so sequence here is carried by mono numerals instead.
  */
 const problems: { title: string; description: string }[] = [
   {
@@ -56,33 +73,35 @@ export default function WhyBusinessesNeedAI() {
           description="Most of this isn't a big, dramatic failure — it's small delays and manual steps that quietly add up, cost leads, and wear down a team."
         />
 
-        <ol className="mt-16 grid grid-cols-1 gap-x-16 sm:grid-cols-2 md:mt-20">
+        <ol className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-16 md:grid-cols-3 md:gap-5">
           {problems.map((problem, i) => (
             <Reveal
               as="li"
               key={problem.title}
-              delay={(i % 2) * 0.06}
-              className="border-t border-n-200 py-6 md:py-8"
+              delay={(i % 3) * 0.06}
+              className="h-full"
             >
-              <span
-                aria-hidden="true"
-                className="font-mono text-label tracking-[0.08em] text-brand-secondary"
-              >
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <h3 className="mt-3 font-display text-body-lg font-semibold text-n-900">
-                {problem.title}
-              </h3>
-              <p className="mt-2 max-w-[46ch] text-ui leading-normal text-n-500">
-                {problem.description}
-              </p>
+              <div className="card-lift flex h-full flex-col rounded-md border border-n-200 bg-n-0 p-6 shadow-[var(--shadow-soft)] md:p-7">
+                <span
+                  aria-hidden="true"
+                  className="font-mono text-label tracking-[0.12em] text-brand-secondary tabular-nums"
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className="mt-5 font-display text-body-lg leading-snug font-semibold text-n-900 text-balance">
+                  {problem.title}
+                </h3>
+                <p className="mt-2.5 text-ui leading-normal text-n-500">
+                  {problem.description}
+                </p>
+              </div>
             </Reveal>
           ))}
         </ol>
 
         <Reveal className="mt-16 md:mt-20">
           <div className="rule-fade" aria-hidden="true" />
-          <p className="mt-8 max-w-3xl font-display text-[clamp(20px,2.4vw,var(--text-h3))] leading-snug font-semibold text-n-900 text-balance">
+          <p className="mt-8 max-w-3xl font-display text-[clamp(20px,2.4vw,26px)] leading-snug font-semibold text-n-900 text-balance">
             None of this is a people problem — it&apos;s a systems problem.
             That&apos;s exactly where Vrattiks comes in.
           </p>

@@ -4,6 +4,7 @@ import Section from "./ui/Section";
 import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
 import Icon from "./ui/Icon";
+import Button from "./ui/Button";
 import { useCases } from "@/app/lib/content";
 
 /**
@@ -61,9 +62,16 @@ export default function UseCases() {
             <Reveal as="li" key={useCase.slug} delay={i * 0.08}>
               <Link
                 href={`/use-cases/${useCase.slug}`}
+                /* Without this the link's accessible name is the whole row —
+                   the title plus three full sentences — which is what a screen
+                   reader announces in a links list. The row text stays in the
+                   a11y tree and is still read in browse mode; only the NAME is
+                   shortened to the thing the link actually goes to. */
+                aria-label={`${useCase.name} use case`}
                 className="focus-glow group grid grid-cols-1 gap-6 rounded-md border-t border-n-0/15 py-8 transition-colors duration-150 hover:bg-n-0/[0.04] md:grid-cols-[1.1fr_1fr_1fr_1fr] md:gap-8 md:py-10"
               >
-                <span className="flex items-start justify-between gap-4 md:flex-col md:justify-start">
+                {/* <div>, not <span> — a <span> cannot legally contain an <h3>. */}
+                <div className="flex items-start justify-between gap-4 md:flex-col md:justify-start">
                   <h3 className="font-display text-h3 leading-snug font-semibold text-n-0">
                     {useCase.name}
                   </h3>
@@ -71,7 +79,7 @@ export default function UseCases() {
                     name="arrowUpRight"
                     className="mt-1 h-5 w-5 shrink-0 text-n-400 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-brand-primary md:mt-6"
                   />
-                </span>
+                </div>
 
                 {columns.map((column) => (
                   <span key={column.key} className="block">
@@ -87,6 +95,19 @@ export default function UseCases() {
             </Reveal>
           ))}
         </ul>
+
+        {/* vrattiks-architecture §5: "Home → links out to Services, Industries,
+            Use Cases, Case Studies overviews." The rows below link to the three
+            use-case DETAIL pages, but this section had no link to the
+            `/use-cases` overview itself — the only one of the three catalogue
+            sections missing it (ServicesOverview and Industries both carry the
+            equivalent outline action). `onDark` rather than `outline` because
+            brand-secondary fails contrast on the graphite band (see Button.tsx). */}
+        <Reveal className="mt-14 flex justify-center md:mt-16">
+          <Button href="/use-cases" variant="onDark">
+            All use cases
+          </Button>
+        </Reveal>
       </Container>
     </Section>
   );

@@ -96,12 +96,6 @@ export const industries: Industry[] = [
     icon: "home",
     application: "Qualify site-visit inquiries and follow up on listings automatically.",
   },
-  /* E-commerce was removed at the user's request on 2026-09-22.
-     ⚠ This is a deliberate deviation from `vrattiks-architecture` §1, which
-     lists it as industry 04.2 (`/industries/e-commerce`) and whose §2 requires
-     six industry cards — that file is the SSOT sourced from the client's
-     "Task 3 | Final Pages List" and has NOT been changed. Restore this entry,
-     or update the architecture skill, rather than letting the two drift. */
   {
     name: "Healthcare",
     slug: "healthcare",
@@ -109,10 +103,10 @@ export const industries: Industry[] = [
     application: "Automate appointment reminders and patient follow-up communication.",
   },
   {
-    name: "Finance",
+    name: "Finance & Insurance",
     slug: "finance",
     icon: "finance",
-    application: "Route client inquiries and automate routine servicing communication.",
+    application: "Route client inquiries and send policy renewal and servicing reminders on time.",
   },
   {
     name: "Manufacturing",
@@ -125,5 +119,41 @@ export const industries: Industry[] = [
     slug: "hospitality",
     icon: "hospitality",
     application: "Automate booking confirmations, guest queries, and review follow-ups.",
+  },
+  {
+    name: "EdTech & Coaching",
+    slug: "edtech-coaching",
+    icon: "book",
+    application: "Follow up on course inquiries and send batch, fee, and class reminders automatically.",
+  },
+  {
+    name: "Higher Education",
+    slug: "higher-education",
+    icon: "graduationCap",
+    application: "Answer admission queries and guide applicants through each step of enrolment.",
+  },
+  {
+    name: "Restaurants & Food",
+    slug: "restaurants-food",
+    icon: "utensils",
+    application: "Take table bookings and orders on WhatsApp, then ask for a review after each visit.",
+  },
+  {
+    name: "Salons, Spas & Wellness",
+    slug: "salons-spas-wellness",
+    icon: "scissors",
+    application: "Fill appointment slots, cut no-shows with reminders, and bring regulars back.",
+  },
+  {
+    name: "Automobile Sales & Service",
+    slug: "automobile",
+    icon: "car",
+    application: "Follow up on test-drive leads and remind customers when their service is due.",
+  },
+  {
+    name: "Construction & Infrastructure",
+    slug: "construction",
+    icon: "hardHat",
+    application: "Keep project inquiries, vendor follow-ups, and site updates moving without chasing.",
   },
 ];

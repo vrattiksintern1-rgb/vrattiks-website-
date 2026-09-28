@@ -1,114 +1,111 @@
 import Link from "next/link";
 import Container from "./ui/Container";
-import Section from "./ui/Section";
 import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
 import Icon from "./ui/Icon";
-import Button from "./ui/Button";
 import { useCases } from "@/app/lib/content";
 
-/**
- * Structure: a real Problem → Solution → Benefit matrix on a dark band.
- *
- * Two decisions, both from the Design Taste section in CLAUDE.md:
- *  - Comparison is the job here, so the layout is a matrix rather than three
- *    marketing cards (Stripe translation). The three columns are labelled once
- *    in mono and read across; on mobile each row restates its own labels.
- *  - This is the mid-page dark band that resets the eye after a run of light
- *    sections (Linear translation). Body text sits on n-300, never n-0, and
- *    borders are n-0 at low alpha.
- */
-const columns = [
+const rows = [
   { key: "problem" as const, label: "Problem" },
   { key: "solution" as const, label: "Solution" },
   { key: "benefit" as const, label: "Benefit" },
 ];
 
+/* The page's one full-bleed graphite band. Comparison is the job here, so the
+   three use cases are rows of a Problem / Solution / Benefit matrix rather
+   than three equal cards (CLAUDE.md Design Taste, reference 1). Benefit is
+   the emphasised column, marked by ONE device only: a brand-primary left edge.
+
+   Below md each row stacks and its dt labels become visible; at md+ the dt
+   labels go sr-only and the aria-hidden header row carries them visually.
+   Text sits on the muted n-200/n-300 ramp, borders at n-0/10. */
+const columns = "md:grid-cols-[minmax(0,1.1fr)_minmax(0,3fr)] md:gap-10";
+
 export default function UseCases() {
   return (
-    <Section
-      id="use-cases"
-      tone="dark"
-      labelledBy="use-cases-heading"
-      className="bg-noise bg-grid-fine-dark"
-    >
+    <section className="bg-brand-graphite py-14 md:py-24">
       <Container>
         <SectionHeading
-          id="use-cases-heading"
           eyebrow="Use Cases"
-          tone="dark"
           title="Common business problems, solved end-to-end"
           description="Real situations most growing businesses run into — and how automation changes the outcome."
+          tone="dark"
         />
 
-        {/* Column headers — desktop only; each row repeats them when stacked */}
-        <div
-          aria-hidden="true"
-          className="mt-16 hidden grid-cols-[1.1fr_1fr_1fr_1fr] gap-8 border-b border-n-0/15 pb-4 md:grid md:mt-20"
-        >
-          <span />
-          {columns.map((column) => (
-            <span
-              key={column.key}
-              className="font-mono text-micro tracking-[0.12em] text-n-400 uppercase"
-            >
-              {column.label}
+        <div className="mt-10 border-t border-n-0/10 md:mt-14">
+          <div
+            aria-hidden="true"
+            className={`hidden border-b border-n-0/10 py-4 font-mono text-[12px] tracking-[0.08em] uppercase md:grid ${columns}`}
+          >
+            <span />
+            <span className="grid grid-cols-3 gap-8">
+              {rows.map((row) => (
+                <span
+                  key={row.key}
+                  className={row.key === "benefit" ? "pl-[26px] text-brand-primary" : "text-n-400"}
+                >
+                  {row.label}
+                </span>
+              ))}
             </span>
-          ))}
-        </div>
+          </div>
 
-        <ul className="md:border-t-0">
           {useCases.map((useCase, i) => (
-            <Reveal as="li" key={useCase.slug} delay={i * 0.08}>
-              <Link
-                href={`/use-cases/${useCase.slug}`}
-                /* Without this the link's accessible name is the whole row —
-                   the title plus three full sentences — which is what a screen
-                   reader announces in a links list. The row text stays in the
-                   a11y tree and is still read in browse mode; only the NAME is
-                   shortened to the thing the link actually goes to. */
-                aria-label={`${useCase.name} use case`}
-                className="focus-glow group grid grid-cols-1 gap-6 rounded-md border-t border-n-0/15 py-8 transition-colors duration-150 hover:bg-n-0/[0.04] md:grid-cols-[1.1fr_1fr_1fr_1fr] md:gap-8 md:py-10"
-              >
-                {/* <div>, not <span> — a <span> cannot legally contain an <h3>. */}
-                <div className="flex items-start justify-between gap-4 md:flex-col md:justify-start">
-                  <h3 className="font-display text-h3 leading-snug font-semibold text-n-0">
+            <Reveal
+              key={useCase.slug}
+              delay={i * 0.1}
+              className={`group relative grid grid-cols-1 gap-6 border-b border-n-0/10 py-8 md:py-10 ${columns}`}
+            >
+              <div>
+                <span className="flex h-10 w-10 items-center justify-center rounded-sm border border-n-0/15 text-brand-primary">
+                  <Icon name={useCase.icon} className="h-5 w-5" />
+                </span>
+                <h3 className="mt-4 text-[20px] leading-[1.25] font-display font-semibold text-n-0">
+                  {/* Stretched link: the ::after covers the whole row, so the
+                      row is one click target with one tab stop. */}
+                  <Link
+                    href={`/use-cases/${useCase.slug}`}
+                    className="focus-glow rounded-sm transition-colors duration-150 group-hover:text-brand-primary after:absolute after:inset-0"
+                  >
                     {useCase.name}
-                  </h3>
+                  </Link>
+                </h3>
+                <span className="mt-3 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-brand-primary">
+                  See how it works
                   <Icon
                     name="arrowUpRight"
-                    className="mt-1 h-5 w-5 shrink-0 text-n-400 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-brand-primary md:mt-6"
+                    className="h-3.5 w-3.5 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                   />
-                </div>
+                </span>
+              </div>
 
-                {columns.map((column) => (
-                  <span key={column.key} className="block">
-                    <span className="font-mono text-micro tracking-[0.12em] text-n-400 uppercase md:hidden">
-                      {column.label}
-                    </span>
-                    <span className="mt-2 block text-ui leading-normal text-n-300 md:mt-0">
-                      {useCase[column.key]}
-                    </span>
-                  </span>
+              <dl className="grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-8">
+                {rows.map((row) => (
+                  <div
+                    key={row.key}
+                    className={row.key === "benefit" ? "border-l-2 border-brand-primary pl-4 md:pl-6" : ""}
+                  >
+                    <dt
+                      className={`font-mono text-[11.5px] tracking-[0.08em] uppercase md:sr-only ${
+                        row.key === "benefit" ? "text-brand-primary" : "text-n-400"
+                      }`}
+                    >
+                      {row.label}
+                    </dt>
+                    <dd
+                      className={`mt-1.5 text-[14.5px] leading-[1.6] md:mt-0 ${
+                        row.key === "benefit" ? "text-n-200" : "text-n-300"
+                      }`}
+                    >
+                      {useCase[row.key]}
+                    </dd>
+                  </div>
                 ))}
-              </Link>
+              </dl>
             </Reveal>
           ))}
-        </ul>
-
-        {/* vrattiks-architecture §5: "Home → links out to Services, Industries,
-            Use Cases, Case Studies overviews." The rows below link to the three
-            use-case DETAIL pages, but this section had no link to the
-            `/use-cases` overview itself — the only one of the three catalogue
-            sections missing it (ServicesOverview and Industries both carry the
-            equivalent outline action). `onDark` rather than `outline` because
-            brand-secondary fails contrast on the graphite band (see Button.tsx). */}
-        <Reveal className="mt-14 flex justify-center md:mt-16">
-          <Button href="/use-cases" variant="onDark">
-            All use cases
-          </Button>
-        </Reveal>
+        </div>
       </Container>
-    </Section>
+    </section>
   );
 }

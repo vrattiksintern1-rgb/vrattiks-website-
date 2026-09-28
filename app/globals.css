@@ -36,29 +36,26 @@
   --color-sem-info-text: #4b34b8;
 
   /* Typography */
-  --font-display: var(--font-urbanist), sans-serif;
+  --font-display: var(--font-ibm-plex-mono), monospace; /* headings set in mono (was Urbanist) */
   --font-body: var(--font-ibm-plex-sans), sans-serif;
   --font-mono: var(--font-ibm-plex-mono), monospace;
 
-  /* Type scale — the named steps from docs/index.html §4 (.ts-h1/.ts-h2/.ts-h3/
-     .ts-body/.ts-label) plus the intermediate sizes that doc also uses.
-     Use these utilities (text-h2, text-caption, …) — never text-[14.5px]. */
-  --text-micro: 11.5px;
-  --text-label: 12.5px;
-  --text-caption: 13.5px;
-  --text-ui: 14.5px;
-  --text-body: 16px;
-  --text-body-lg: 17px;
-  --text-h3: 22px;
-  --text-h2: 32px;
+  /* Type scale — docs/index.html §4 (H1–H3 Urbanist, Body/Label IBM Plex Sans) */
   --text-h1: 44px;
-
-  /* Line-height steps — ratios, paired with the sizes above */
-  --leading-display: 1.05;
-  --leading-heading: 1.15;
-  --leading-snug: 1.45;
-  --leading-normal: 1.6;
-  --leading-relaxed: 1.7;
+  --text-h1--line-height: 1.1;
+  --text-h1--letter-spacing: -0.02em;
+  --text-h2: 32px;
+  --text-h2--line-height: 1.15;
+  --text-h2--letter-spacing: -0.02em;
+  --text-h3: 22px;
+  --text-h3--line-height: 1.3;
+  --text-body-lg: 17px;
+  --text-body-lg--line-height: 1.6;
+  --text-body: 16px;
+  --text-body--line-height: 1.6;
+  --text-label: 12.5px;
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 0.06em;
 
   /* Radius */
   --radius-sm: 8px;
@@ -73,13 +70,6 @@
 
 :root {
   --brand-gradient: linear-gradient(60deg, #b79af3, #6942f1);
-  /* Contrast-safe ramp for gradient text on light surfaces — see
-     .text-brand-gradient below for the measurements. */
-  --brand-gradient-ink: linear-gradient(
-    60deg,
-    color-mix(in srgb, var(--color-brand-primary) 55%, var(--color-brand-secondary)),
-    var(--color-brand-secondary)
-  );
   --brand-gradient-soft: linear-gradient(60deg, rgba(183,154,243,0.15), rgba(105,66,241,0.15));
   --shadow-sm: 0 1px 2px rgba(22,22,29,0.06), 0 1px 1px rgba(22,22,29,0.04);
   --shadow-md: 0 4px 16px rgba(22,22,29,0.08), 0 2px 6px rgba(22,22,29,0.05);
@@ -87,11 +77,9 @@
   --shadow-glow: 0 0 0 1px rgba(183,154,243,0.25), 0 8px 32px rgba(105,66,241,0.18);
 }
 
-/* These are element defaults, so they MUST sit in `@layer base`. Unlayered CSS
-   beats anything inside a layer, and Tailwind v4 emits its utilities into
-   `@layer utilities` — so an unlayered `h2 { color: ... }` silently overrides
-   `text-n-0`, which rendered every heading on the graphite bands as #16161d on
-   #16161d. Keep new element selectors in here. */
+/* Element defaults live in @layer base so Tailwind utilities (e.g. text-n-0 on a
+   button link or a heading on a dark band) can override them — unlayered rules
+   would otherwise beat every utility. */
 @layer base {
   body {
     margin: 0;
@@ -111,31 +99,6 @@
   a {
     color: inherit;
   }
-
-  /* The header is sticky (64px tall, 80px from `md` up), so ANY in-page anchor
-     — the skip link's #main, the footer/nav links to #services, #faq,
-     #get-started — lands its target underneath the bar without this. Set on
-     `[id]` rather than on each section so a new anchor target can't forget it.
-
-     Values are header height + a breathing gap, not header height exactly:
-     a heading flush against the bar reads as clipped. */
-  [id] {
-    scroll-margin-top: 88px;
-  }
-
-  @media (min-width: 901px) {
-    [id] {
-      scroll-margin-top: 104px;
-    }
-  }
-
-  /* Tailwind's `marker:content-none` covers Chrome/Firefox, but Safari draws
-     the disclosure triangle through a -webkit pseudo-element that `marker`
-     never reaches — without this the FAQ summaries show a native triangle
-     next to the custom chevron. */
-  summary::-webkit-details-marker {
-    display: none;
-  }
 }
 
 /* Gradient fills that Tailwind v4 can't generate a utility for (see vrattiks-design-system §1) */
@@ -147,44 +110,17 @@
   background: var(--brand-gradient-soft);
 }
 
-/* Gradient TEXT uses a darkened ramp, not --brand-gradient.
-   Measured: #b79af3 (the gradient's light end) on --color-n-25 is 2.26:1, which
-   fails WCAG 1.4.3 even at the 3:1 large-text threshold — so the first word of
-   any gradient headline was effectively unreadable. Stopping the light end at
-   55% primary lifts the worst point to 3.40:1 while still reading clearly as a
-   lavender-to-violet gradient. Derived from the two brand tokens via color-mix,
-   so no new brand colour is introduced.
-
-   ⚠ Small gradient text still fails: at body/label sizes the bar is 4.5:1 and
-   even this ramp only reaches 3.40. Use solid --color-brand-secondary (5.54:1)
-   below ~24px rather than this class. */
 .text-brand-gradient {
-  background: var(--brand-gradient-ink);
+  background: var(--brand-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-/* Shared focus ring — replaces the default outline with the brand glow token,
-   never `outline: none` alone.
-
-   --shadow-glow's ring is rgba(183,154,243,0.25), which is close to invisible
-   against brand-graphite. So the ring is drawn as a real `outline` (which is
-   always painted above neighbouring content and is never clipped by an
-   ancestor) in a colour that passes 3:1 on BOTH the light neutrals and the
-   dark band, with the glow kept as the soft halo on light surfaces only. */
+/* Shared focus ring — replaces default outline with the brand glow token, never outline:none alone */
 .focus-glow:focus-visible {
-  outline: 2px solid var(--color-brand-secondary);
-  outline-offset: 2px;
+  outline: none;
   box-shadow: var(--shadow-glow);
-}
-
-/* On the graphite bands, brand-secondary is too dark to read as a ring —
-   switch to brand-primary, which clears 3:1 against #16161d. */
-.bg-brand-graphite .focus-glow:focus-visible,
-.focus-glow-dark:focus-visible {
-  outline-color: var(--color-brand-primary);
-  box-shadow: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -193,156 +129,5 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-}
-/* ─────────────────────────────────────────────────────────────
-   Premium surface details
-   Fine textures, gradient hairlines, and depth tokens used to give
-   each Home section its own visual identity without inventing new
-   brand colours (see docs/index.html §6).
-   ───────────────────────────────────────────────────────────── */
-
-:root {
-  /* Softer, wider elevation for large premium surfaces */
-  --shadow-xl: 0 32px 80px -20px rgba(22, 22, 29, 0.22), 0 12px 32px -12px rgba(22, 22, 29, 0.12);
-  --shadow-inset-hair: inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  /* Expressive easing — confident settle, no bounce */
-  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Very low-contrast film grain. Sits above a background, below content. */
-.bg-noise::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* 64px architectural grid, matching the design doc's cover treatment. */
-.bg-grid-fine::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(to right, rgba(22, 22, 29, 0.045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(22, 22, 29, 0.045) 1px, transparent 1px);
-  background-size: 64px 64px;
-  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 78%);
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 78%);
-}
-
-.bg-grid-fine-dark::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 64px 64px;
-  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 20%, transparent 75%);
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 20%, transparent 75%);
-}
-
-/* 1px gradient border on a card, drawn as a mask so the fill stays clean. */
-.border-gradient {
-  position: relative;
-}
-.border-gradient::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: var(--brand-gradient);
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
-
-/* Hairline that fades out at both ends — used as a section rule. */
-.rule-fade {
-  height: 1px;
-  background: linear-gradient(
-    to right,
-    transparent,
-    rgba(22, 22, 29, 0.12) 20%,
-    rgba(22, 22, 29, 0.12) 80%,
-    transparent
-  );
-}
-.rule-fade-dark {
-  height: 1px;
-  background: linear-gradient(
-    to right,
-    transparent,
-    rgba(255, 255, 255, 0.14) 20%,
-    rgba(255, 255, 255, 0.14) 80%,
-    transparent
-  );
-}
-
-/* Radial brand washes. These were five inline `radial-gradient(circle, #6942f1 …)`
-   style props — the only hardcoded hex values left in the components. Declared
-   here so the wash reads from the same tokens as everything else. */
-.wash-primary {
-  background: radial-gradient(circle, var(--color-brand-primary) 0%, transparent 70%);
-}
-.wash-secondary {
-  background: radial-gradient(circle, var(--color-brand-secondary) 0%, transparent 70%);
-}
-
-/* ─────────────────────────────────────────────────────────────
-   Elevated-pass additions (onbbits-inspired structure, Vrattiks tokens)
-
-   The reference site's polish comes from three measurable things, not from
-   colour: a ~1.8x display-scale jump between H1 and H2, ONE radius reused
-   everywhere, and shadows that are wide and very low-alpha rather than dark.
-   The tokens below encode the third; the first two live in the components.
-   ───────────────────────────────────────────────────────────── */
-
-:root {
-  /* Wide, low-alpha elevation. --shadow-md/lg are tighter and darker; these
-     are for large card surfaces that should lift without looking heavy. */
-  --shadow-soft: 0 10px 30px -10px rgba(22, 22, 29, 0.07), 0 2px 8px -2px rgba(22, 22, 29, 0.04);
-  --shadow-float: 0 22px 50px -16px rgba(22, 22, 29, 0.13), 0 6px 16px -6px rgba(22, 22, 29, 0.06);
-  /* Brand-tinted lift, for the hovered/promoted card only */
-  --shadow-brand: 0 20px 44px -16px rgba(105, 66, 241, 0.28), 0 2px 10px -3px rgba(105, 66, 241, 0.12);
-}
-
-/* Card hover: a border shift plus a soft lift — never a scale-up
-   (CLAUDE.md Design Taste, reference 3). transform/opacity/shadow only. */
-.card-lift {
-  transition:
-    transform 0.25s var(--ease-premium),
-    box-shadow 0.25s var(--ease-premium),
-    border-color 0.25s var(--ease-premium);
-}
-.card-lift:hover {
-  transform: translateY(-3px);
-  border-color: var(--color-brand-primary);
-  box-shadow: var(--shadow-float);
-}
-
-/* The hero capability strip used to live here as `.marquee-track` /
-   `.marquee-mask` / `@keyframes marquee-x` — a 46s infinite ticker. Removed
-   per kylezantos-design §1b ("nothing on this site should be moving when the
-   user isn't acting"); the strip is now a static wrapped <ul> built from
-   Tailwind utilities in Hero.tsx, so it needs no custom CSS at all.
-
-   NOTE FOR FUTURE PASSES: there is now ZERO looping motion on this page. If
-   you add any, §1b requires you to justify it explicitly in a comment at the
-   point of use — an `infinite` keyword anywhere in this file without that
-   justification is a regression, not a decision. */
-
-@media (prefers-reduced-motion: reduce) {
-  .card-lift:hover {
-    transform: none;
   }
 }

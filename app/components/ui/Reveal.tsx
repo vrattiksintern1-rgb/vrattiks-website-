@@ -2,23 +2,6 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 
-/**
- * The page's only scroll-reveal primitive.
- *
- * vrattiks-accessibility, "Reduced motion": `useReducedMotion` drops `initial`
- * and `whileInView` entirely rather than shortening the duration, so the
- * content renders at its final position with no transform applied — a 0.01s
- * animation is still an animation.
- *
- * kylezantos-design §1b, "On scroll-back": `viewport.once` is true, so a reveal
- * fires a single time and never re-triggers when the user scrolls back up.
- *
- * Also per §1b, this must NOT wrap the hero <h1> — see the comment at that
- * element in Hero.tsx.
- *
- * vrattiks-performance, "Animation performance": opacity + transform only,
- * both GPU-composited; never animate width/height/top/left here.
- */
 export default function Reveal({
   children,
   className = "",
@@ -33,13 +16,19 @@ export default function Reveal({
   const reduceMotion = useReducedMotion();
   const Component = motion[as];
 
+  /* `initial` / `whileInView` must be identical on server and client. The
+     server can't know the user's motion preference, so it always renders the
+     hidden `initial` state; switching the props to `undefined` on the client
+     (the previous approach) left reduced-motion users with every revealed
+     element stuck at opacity 0, plus a hydration mismatch. Reduced motion
+     now sets the duration to 0 instead — content snaps in with no travel. */
   return (
     <Component
       className={className}
-      initial={reduceMotion ? undefined : { opacity: 0, y: 16 }}
-      whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.5, delay, ease: "easeOut" }}
+      transition={reduceMotion ? { duration: 0 } : { duration: 0.5, delay, ease: "easeOut" }}
     >
       {children}
     </Component>

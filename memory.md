@@ -503,6 +503,93 @@ claimed by Services) and not an icon set (same).
 Verified in the built HTML: zero graphite cards in the grid, six white ones.
 `npm run lint` and `npm run build` clean.
 
+## Home redesign — "premium product" pass (2026-09-23)
+
+User brief: the page felt generic/templated; rebuild it to read as a premium
+agency/product homepage. All eleven listed skills were loaded and applied in
+the order given. Three conflicts were surfaced BEFORE any code was written and
+the user chose the resolution for each:
+
+1. **Section count** — `vrattiks-architecture` §2 mandates 12 Home sections;
+   the brief listed 7. Chosen: build the 7 as the spine and FOLD the remaining
+   required topics in as compressed treatments, so nothing required is dropped.
+2. **Positioning** — the brief described Vrattiks as n8n / lead-generation &
+   outreach automation; the repo's confirmed content is 6 broader services.
+   Chosen: the lead-gen pipeline is now Home's hero story, and the 6 services
+   remain the catalogue. No repo content was deleted or rewritten.
+3. **Stat numbers** — the brief asked for editable placeholder figures;
+   `vrattiks-standards` §3 bans invented stats and a previous pass had removed
+   exactly these. Chosen: visibly-marked placeholders in ONE block plus a
+   written honest qualifier rendered on the page.
+
+### New page composition (`app/page.tsx`)
+
+Nine sections, down from eleven, with no two consecutive sections sharing a
+structure and surface value alternating down the page:
+
+| Section | Surface | Structure |
+|---|---|---|
+| Hero | n-25 | centred anchor + product visual |
+| TrustStrip | n-0 | thin band, deliberately breaks the vertical rhythm |
+| WhatWeDo | n-25 | icon card grid — the page's ONLY one |
+| Pipeline | n-50 | horizontal rail (lg+) / vertical timeline |
+| KpiResults | graphite | stat tiles |
+| WhyVrattiks | n-0 | single-column narrative, no cards |
+| CatalogueIndex | n-25 | typographic link index |
+| FAQ | n-0 | accordion |
+| FinalCTA | graphite | centred band, bookends the Hero |
+
+### Files
+
+- **New**: `TrustStrip.tsx`, `WhatWeDo.tsx`, `Pipeline.tsx`, `CatalogueIndex.tsx`.
+- **Rewritten**: `Hero.tsx` (new headline/copy, capability strip moved out),
+  `HeroVisual.tsx` (retargeted to the outreach run), `KpiResults.tsx` (stat
+  numerals + qualifier), `WhyVrattiks.tsx` (now the merged narrative),
+  `page.tsx` (composition + metadata).
+- **Edited**: `FAQ.tsx` (2 answers + surface tone), `FinalCTA.tsx` (copy, CTA
+  label case), `ui/Icon.tsx` (+4 glyphs: sparkle, image, database, mail),
+  `lib/content.ts` (+PLACEHOLDER_STATS, statsQualifier, pipelineStages,
+  capabilities, integrations).
+- **Off Home but INTACT on disk** — do not delete, they are the right
+  components for their own routes: `ServicesOverview` (/services),
+  `UseCases` (/use-cases), `Industries` (/industries), `WhyBusinessesNeedAI`
+  (/company), `Process` (/services — the Discover→Support engagement steps,
+  which is a different thing from the new product Pipeline).
+
+### ⚠ Carry-forward warnings
+
+- **PLACEHOLDER_STATS in `app/lib/content.ts` are invented figures.** They
+  ship with two guardrails that must not be removed while the numbers are
+  fake: one edit location, and `statsQualifier` rendered on the page. Never
+  lift these into JSON-LD.
+- **`integrations` in content.ts is unconfirmed.** n8n / email / data logging
+  are user-stated; WhatsApp and CRM are grounded in the services list;
+  "Google Sheets" and "Web forms" are INFERRED and need confirmation.
+- **n-400 is NOT 4.1:1 on white.** It measures 2.88:1 and fails the 3:1
+  non-text bar. An older comment in `Industries.tsx` claims 4.1:1 and is
+  wrong — `Industries.tsx` still uses n-400 for its row arrows and should be
+  fixed to n-500 when that component is next touched. All new Home components
+  use n-500/n-600.
+- **Contrast must be checked on HOVER surfaces, not just resting ones.** The
+  CatalogueIndex context line is n-600 rather than n-500 purely because the
+  row tints to n-100 on hover, where n-500 drops to 3.95:1.
+- **Deviation from `vrattiks-architecture` §2 is recorded in `page.tsx`'s top
+  comment**, approved by the user on 2026-09-23. Reconcile there if the
+  client's Task 3 pages list is re-issued.
+
+### Verified / not verified
+
+- Verified: `npm run lint` and `npm run build` clean; heading structure from
+  the prerendered HTML (exactly one h1, h2 per section, no skipped levels, no
+  invalid `<dl>`); every `lg:` utility Pipeline depends on is emitted and
+  `lg` = 1024px; 24 foreground/background pairs contrast-checked by script.
+- **NOT verified: rendered layout at any viewport width.** No browser
+  automation was available in that session, so the responsive pass was
+  class-level reasoning only. `vrattiks-responsive`'s 1440/1280/1024/768/430/
+  390/375 matrix still needs a real visual check — Pipeline at 1024 (5 columns
+  at ~176px each) and the WhatWeDo featured card at 901–1024 are the two most
+  likely places to find a problem.
+
 ## Pending / not started
 
 - No content/copy finalized beyond the design doc's placeholder examples.
@@ -517,3 +604,80 @@ Verified in the built HTML: zero graphite cards in the grid, six white ones.
 ## Open questions
 
 - **The Hero H1 (48px) is now only 1.04x the largest section H2** — `KpiResults` uses `clamp(30px,4.4vw,46px)`. The two are never on screen together and the H1 still beats its own subtext 2.8:1, but at page scale the "display-scale jump" that CLAUDE.md's Design Taste section calls for is effectively gone. Fix is to bring `KpiResults` down (e.g. to the standard `clamp(28px,3.4vw,40px)` the other sections use) rather than to re-inflate the H1 — awaiting user call.
+
+## Headings switched to monospace — client request (2026-09-28)
+
+- Client asked for "headings in mono". `--font-display` in `app/globals.css` now points at IBM Plex Mono (was Urbanist), so every `font-display` heading changed in one place; body stays IBM Plex Sans. This **departs from docs/index.html §4** (Urbanist headings) — a client decision, not a brand-doc update.
+- Urbanist no longer loaded; Plex Mono now loads 400/500/600/700 (headings use 600/700). Logo is an image, so unaffected.
+- Hero H1 mobile size 36px → 32px (mono is wider; keeps line count reasonable at 375px).
+- Added type-scale tokens to `@theme` (`text-h1/h2/h3/body/body-lg/label`) — `text-label` and `text-body-lg` were used by components but previously undefined.
+- **Regression re-fixed:** font `.variable` classes had drifted back onto `<body>`; moved to `<html>` again (see 2026-09-18 entry).
+- To revert to Urbanist: restore `Urbanist` import in `layout.tsx` and set `--font-display: var(--font-urbanist), sans-serif`.
+
+## KpiResults copy rewritten with numbers — client request (2026-09-28)
+
+- "What automation changes for your business" got a section description and sharper card copy that uses numbers.
+- The numbers are **illustrative scenarios** (an 11 PM enquiry, day 1/3/7 follow-ups, 24 hours a day, 7 days a week, 10 vs 500 leads). They are not measured results, so they stay within vrattiks-standards §3. Swap in real metrics only once case-study data exists.
+
+## Industries expanded to eleven (2026-09-28)
+
+At the user's request, `industries` in `app/lib/content.ts` now also lists EdTech
+& Coaching, Higher Education, Restaurants & Food, Salons, Spas & Wellness,
+Automobile Sales & Service, and Construction & Infrastructure. "Finance" was
+renamed "Finance & Insurance" and kept slug `finance`, so it still matches
+`vrattiks-architecture` 04.4. New glyphs added to `ui/Icon.tsx`: `book`,
+`graduationCap`, `utensils`, `scissors`, `car`, `hardHat`.
+
+**⚠ `vrattiks-architecture` §1 was NOT updated.** It is sourced from the client's
+PDF and still lists six industries. The new slugs (`edtech-coaching`,
+`higher-education`, `restaurants-food`, `salons-spas-wellness`, `automobile`,
+`construction`) are not in the SSOT yet, and no `/industries/*` routes exist.
+
+Verification was blocked. `tsc` and `next build` fail on the untracked
+`CatalogueIndex`, `Pipeline`, `TrustStrip`, and `WhatWeDo` components, which
+import `pipelineStages`/`integrations`/`capabilities` (not in `content.ts`) and
+pass `id` to `SectionHeading`. The changed files themselves have no type errors.
+
+## Per-section card redesign — tried and REVERTED (2026-09-28)
+
+A pass gave every Home section its own card treatment (stat ledger, dark
+Use Cases matrix, Industries mosaic, timeline Process, etc.). **The user asked
+for it to be removed**, so all ten section components, the `plus` glyph and the
+`.bg-hatch` utility were restored to their prior state. Don't redo it unasked.
+
+Kept from that pass: the **`ui/Reveal.tsx` reduced-motion fix**. Under OS
+reduced motion every Reveal stayed at opacity 0 forever (SSR rendered the
+hidden `initial`; the client then set `initial`/`whileInView` to undefined, so
+nothing animated) — a blank page plus a hydration mismatch. Props are now the
+same on server and client, and reduced motion uses `duration: 0`.
+`HeroVisual.tsx` still has the same bug (the three hero chips).
+
+Open: `ui/Container.tsx` has no max-width (an uncommitted change removed
+`max-w-[1180px]`), so sections stretch edge-to-edge on wide screens.
+
+## Per-section card redesign — done at user request (2026-09-28)
+
+The user explicitly asked again for every Home card section to get its own
+treatment, with **no copy changes**. This supersedes the "don't redo it
+unasked" note above. Pre-change copies of all ten components +
+`ui/SectionHeading.tsx` were saved to the session scratchpad
+(`backup-before-cards/`) — if the user asks to revert again, `git diff` is not
+enough (the working tree was already uncommitted), restore from there or ask.
+
+| Section | Treatment |
+|---|---|
+| KpiResults | open stat ledger — hairline column rules, label at display scale, no boxes/hover (gradient icon squares removed) |
+| WhyBusinessesNeedAI | one joined panel, cells share 1px dividers, text bottom-pinned |
+| WhyVrattiks | n-50 tray of white pill rows with graphite icon discs (gradient panel removed) |
+| ServicesOverview | outlined-circle icon, ruled footer + arrow disc; hover = border shift + glow |
+| UseCases | **full-bleed graphite band**, Problem/Solution/Benefit matrix, Benefit = primary left edge; stretched row link |
+| Industries | ruled directory — top hairline per entry, no box; icon square fills on hover |
+| CaseStudies | editorial split card, hatched cover panel |
+| Process | numbered ringed nodes on one 2px gradient rail (md+), vertical timeline below md; heading now left-aligned |
+| Testimonials | speech-bubble card with tail + placeholder avatar/bars (plain divs, not blockquote — it's a notice) |
+| FAQ | sticky-heading split + divider accordion with CSS +/− toggle (Icon import dropped) |
+
+`SectionHeading` gained optional `tone="dark"`. Verified with Playwright
+(playwright-core in scratchpad, cached chromium-1234) at 1440/1024/768/375:
+no horizontal overflow, layouts checked visually. Lint clean; tsc adds no new
+errors (the 13 remaining are the four known untracked off-page files).

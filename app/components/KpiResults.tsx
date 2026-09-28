@@ -1,135 +1,73 @@
 import Container from "./ui/Container";
-import Section from "./ui/Section";
 import Reveal from "./ui/Reveal";
-import Eyebrow from "./ui/Eyebrow";
+import SectionHeading from "./ui/SectionHeading";
+import Icon, { type IconName } from "./ui/Icon";
 
-/**
- * ⚠ CONTENT DECISION — read before editing.
- *
- * This section previously rendered "60%", "3x", "0" and "24/7" as 76px display
- * numerals with a disclaimer line underneath. Those figures were never measured;
- * they were layout placeholders. A fabricated number set at display scale is a
- * stronger claim than the empty "coming soon" blocks that were just removed from
- * this page, and vrattiks-standards §3 forbids inventing stats outright.
- *
- * So the section keeps its job — showing what changes after automation — but
- * states outcomes in words instead of invented precision. Nothing here asserts a
- * quantity we cannot source.
- *
- * When real, measured client results exist: restore numerals here using the
- * metric-in-context pattern (number + what it measures + over what period),
- * and put the CountUp component in app/components/ui/ back to work.
- *
- * ⚠ TYPE-SCALE DECISION (2026-09-21). This H2 was clamp(30px,4.4vw,46px) —
- * the largest on the page. With the Hero H1 capped at 48px that made the two
- * effectively the same size and the page had no display-scale jump at all.
- * The H1 is now 68px and this is back on the standard section step
- * (clamp(28px,3.4vw,40px)). Do not re-inflate it: the band already carries
- * enough weight from being the only inverted surface this far up the page.
- */
-const outcomes: { headline: string; label: string; description: string }[] = [
+/* No verified KPI numbers exist yet for this project — showing outcome
+   descriptors instead of fabricated statistics. Replace with real metrics
+   once case-study data is approved (see vrattiks-standards §3).
+   The numbers below are illustrative scenarios (times, days, volumes),
+   not measured results — keep it that way until real data exists. */
+const outcomes: { icon: IconName; label: string; description: string }[] = [
   {
-    headline: "Nights and weekends stop being gaps",
-    label: "Always-on coverage",
+    icon: "clock",
+    label: "Faster response",
     description:
-      "Calls and messages get answered outside office hours and on holidays.",
+      "An enquiry that lands at 11 PM gets a reply in seconds — not at 10 AM the next morning.",
   },
   {
-    headline: "Follow-up stops depending on memory",
-    label: "Nothing slips",
-    description:
-      "Every enquiry is captured, tracked, and followed up automatically.",
-  },
-  {
-    headline: "Enquiries hear back in minutes",
-    label: "Faster first response",
-    description:
-      "Not the next working day, and not after someone gets to their inbox.",
-  },
-  {
-    headline: "Your team stops re-typing things",
+    icon: "repeat",
     label: "Less manual work",
     description:
-      "Routine follow-ups, data entry, and hand-offs stop needing a person.",
+      "Day 1, day 3 and day 7 follow-ups go out on their own, and lead details reach your CRM without retyping.",
+  },
+  {
+    icon: "headset",
+    label: "Always-on coverage",
+    description:
+      "Calls and chats are answered 24 hours a day, 7 days a week — Sundays and holidays included.",
+  },
+  {
+    icon: "shield",
+    label: "Nothing falls through",
+    description:
+      "Whether you get 10 leads a day or 500, each one is tracked from the first message to the final reply.",
   },
 ];
 
 export default function KpiResults() {
   return (
-    <Section
-      tone="dark"
-      size="lg"
-      labelledBy="results-heading"
-      className="bg-noise bg-grid-fine-dark overflow-hidden"
-    >
-      {/* Bright hairline on the band's top edge. A dark section that begins on a
-          hard colour change reads as a gap; a lit edge reads as a plane. */}
-      <span
-        aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-primary/50 to-transparent"
-      />
-
-      {/* Single wide wash along the top edge — keeps the band from reading flat black */}
-      <div
-        aria-hidden="true"
-        className="wash-secondary pointer-events-none absolute -top-56 left-1/2 -z-10 h-[420px] w-[820px] -translate-x-1/2 rounded-full opacity-30 blur-[130px]"
-      />
-
+    <section className="py-14 md:py-16">
       <Container>
-        {/* Asymmetric head: statement left, context right and baseline-aligned */}
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-[1.25fr_1fr] md:items-end md:gap-16">
-          <Reveal>
-            <Eyebrow tone="dark">Results</Eyebrow>
-            <h2
-              id="results-heading"
-              className="mt-6 font-display text-[clamp(28px,3.4vw,40px)] leading-heading font-bold tracking-[-0.025em] text-n-0 text-balance"
-            >
-              What changes once the busywork runs itself
-            </h2>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <p className="text-body leading-relaxed text-n-300 md:pb-2">
-              The gains show up in ordinary places — an enquiry answered at 11pm,
-              a follow-up that happens without anyone remembering it.
-            </p>
-          </Reveal>
-        </div>
+        <SectionHeading
+          title="What automation changes for your business"
+          description="Same team, same customers. The first reply, the follow-ups and the tracking just stop depending on someone remembering."
+          align="center"
+          className="mx-auto"
+        />
 
-        <div className="rule-fade-dark mt-16 md:mt-20" aria-hidden="true" />
-
-        {/* Hairline-divided outcomes — no cards, no boxes. The mono index is what
-            makes this a ledger rather than a grid, so it stays even though the
-            items aren't sequential. */}
-        <dl className="grid grid-cols-1 sm:grid-cols-2">
-          {outcomes.map((outcome, i) => (
+        {/* Stat ledger — no boxes. Columns are separated by hairline rules
+            only, and the outcome label is set at display scale so it does the
+            job a big number would (no verified metrics exist yet). No hover:
+            these aren't links. */}
+        <div className="mt-10 grid grid-cols-1 border-y border-n-200 sm:grid-cols-2 md:mt-14 md:grid-cols-4">
+          {outcomes.map((item, i) => (
             <Reveal
-              key={outcome.label}
+              key={item.label}
               delay={i * 0.08}
-              className="group border-b border-n-0/10 py-10 transition-colors duration-300 last:border-b-0 sm:odd:pr-12 sm:even:border-l sm:even:pl-12 sm:nth-last-[-n+2]:border-b-0 md:py-14"
+              className="border-n-200 py-7 sm:px-6 md:py-9 [&:not(:first-child)]:border-t sm:[&:nth-child(2)]:border-t-0 sm:[&:nth-child(even)]:border-l md:[&:not(:first-child)]:border-t-0 md:[&:not(:first-child)]:border-l"
             >
-              <div className="flex items-baseline gap-4">
-                <span
-                  aria-hidden="true"
-                  className="font-mono text-micro tracking-[0.12em] text-n-0/25 tabular-nums transition-colors duration-300 group-hover:text-brand-primary"
-                >
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <dt className="font-mono text-micro tracking-[0.12em] text-brand-primary uppercase">
-                  {outcome.label}
-                </dt>
-              </div>
-              <dd className="mt-4 pl-[calc(0.75rem+3ch)]">
-                <p className="max-w-[20ch] font-display text-[clamp(22px,2.4vw,26px)] leading-snug font-semibold text-n-0 text-balance">
-                  {outcome.headline}
-                </p>
-                <p className="mt-3 max-w-[38ch] text-ui leading-normal text-n-400">
-                  {outcome.description}
-                </p>
-              </dd>
+              <Icon name={item.icon} className="h-5 w-5 text-brand-secondary" />
+              <p className="mt-5 text-[22px] leading-[1.15] tracking-[-0.02em] font-display font-semibold text-n-900 md:text-[24px]">
+                {item.label}
+              </p>
+              <p className="mt-3 text-[14px] leading-[1.6] text-n-600">
+                {item.description}
+              </p>
             </Reveal>
           ))}
-        </dl>
+        </div>
       </Container>
-    </Section>
+    </section>
   );
 }

@@ -1,16 +1,9 @@
 import Reveal from "./Reveal";
-import Eyebrow from "./Eyebrow";
 
-/**
- * Standard section head. The eyebrow always renders through `Eyebrow` so the
- * gradient-dash treatment from docs/index.html §6 is consistent everywhere —
- * do not hand-roll an uppercase label span in a section file.
- *
- * `id` is required wherever the parent `Section` sets `labelledBy`, so each
- * section landmark is named by its own heading.
- */
+/* `tone="dark"` is for headings sitting on the graphite band (Use Cases):
+   heading goes to n-0, body copy to the muted n-300 ramp rather than pure
+   white (CLAUDE.md Design Taste, reference 2). */
 export default function SectionHeading({
-  id,
   eyebrow,
   title,
   description,
@@ -18,9 +11,8 @@ export default function SectionHeading({
   tone = "light",
   className = "",
 }: {
-  id?: string;
   eyebrow?: string;
-  title: React.ReactNode;
+  title: string;
   description?: string;
   align?: "left" | "center";
   tone?: "light" | "dark";
@@ -33,25 +25,23 @@ export default function SectionHeading({
       className={`max-w-2xl ${align === "center" ? "mx-auto text-center" : ""} ${className}`}
     >
       {eyebrow ? (
-        <Eyebrow
-          tone={tone}
-          className={align === "center" ? "justify-center" : ""}
+        <span
+          className={`mb-3 block font-body text-label font-semibold uppercase ${
+            dark ? "text-brand-primary" : "text-brand-secondary"
+          }`}
         >
           {eyebrow}
-        </Eyebrow>
+        </span>
       ) : null}
       <h2
-        id={id}
-        className={`mt-5 font-display text-[clamp(28px,3.4vw,40px)] leading-heading font-bold tracking-[-0.025em] text-balance ${
+        className={`text-[28px] leading-[1.15] tracking-[-0.02em] font-display font-bold md:text-h2 ${
           dark ? "text-n-0" : "text-n-900"
         }`}
       >
         {title}
       </h2>
       {description ? (
-        <p
-          className={`mt-4 text-body leading-relaxed ${dark ? "text-n-300" : "text-n-600"}`}
-        >
+        <p className={`mt-4 text-body-lg ${dark ? "text-n-300" : "text-n-500"}`}>
           {description}
         </p>
       ) : null}

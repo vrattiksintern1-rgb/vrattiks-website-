@@ -1,8 +1,6 @@
 import Container from "./ui/Container";
-import Section from "./ui/Section";
 import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
-import Icon from "./ui/Icon";
 
 const faqs = [
   {
@@ -39,27 +37,36 @@ const faqs = [
 
 export default function FAQ() {
   return (
-    <Section id="faq" tone="paper" labelledBy="faq-heading">
-      <Container>
-        <SectionHeading
-          id="faq-heading"
-          eyebrow="FAQ"
-          title="Common questions"
-          description="If your question isn't here, ask it on the consultation call."
-        />
+    <section className="py-14 md:py-24">
+      {/* Split layout: heading sticks in the left column (below the 80px
+          sticky header) while the questions scroll. No boxes — each item is a
+          divider row, and the toggle is a +/− drawn from two bars, the
+          vertical one rotating flat when open. */}
+      <Container className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)] md:gap-16">
+        <div className="md:sticky md:top-28 md:self-start">
+          <SectionHeading
+            eyebrow="FAQ"
+            title="Common questions"
+          />
+        </div>
 
-        <div className="mt-14 flex max-w-3xl flex-col gap-3 md:mt-16">
+        <div className="border-t border-n-200">
           {faqs.map((faq, i) => (
             <Reveal key={faq.question} delay={i * 0.04}>
-              <details className="group rounded-md border border-n-200 bg-n-0 transition-[border-color,box-shadow] duration-200 hover:border-brand-primary open:border-brand-primary open:shadow-[var(--shadow-soft)]">
-                <summary className="focus-glow flex cursor-pointer list-none items-center justify-between gap-4 rounded-md px-5 py-4 text-body font-semibold text-n-900 transition-colors duration-200 hover:text-brand-secondary marker:content-none md:px-6 md:py-5">
-                  {faq.question}
-                  <Icon
-                    name="chevronDown"
-                    className="h-5 w-5 shrink-0 text-n-500 transition-transform duration-200 group-open:rotate-180"
-                  />
+              <details className="group border-b border-n-200">
+                <summary className="focus-glow flex cursor-pointer list-none items-start justify-between gap-6 rounded-sm py-5 marker:content-none md:py-6 [&::-webkit-details-marker]:hidden">
+                  <span className="text-[16px] leading-[1.45] font-semibold text-n-900 transition-colors duration-150 group-open:text-brand-secondary md:text-[17px]">
+                    {faq.question}
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className="relative mt-px h-7 w-7 shrink-0 rounded-full border border-n-300 transition-colors duration-150 group-hover:border-brand-secondary group-open:border-brand-secondary group-open:bg-brand-secondary"
+                  >
+                    <span className="absolute top-1/2 left-1/2 h-[1.5px] w-3 -translate-x-1/2 -translate-y-1/2 bg-n-700 group-open:bg-n-0" />
+                    <span className="absolute top-1/2 left-1/2 h-3 w-[1.5px] -translate-x-1/2 -translate-y-1/2 bg-n-700 transition-transform duration-200 group-open:rotate-90 group-open:bg-n-0" />
+                  </span>
                 </summary>
-                <p className="px-5 pb-5 text-ui leading-normal text-n-600 md:px-6 md:pb-6">
+                <p className="max-w-[60ch] pr-12 pb-6 text-[15px] leading-[1.65] text-n-600">
                   {faq.answer}
                 </p>
               </details>
@@ -67,6 +74,6 @@ export default function FAQ() {
           ))}
         </div>
       </Container>
-    </Section>
+    </section>
   );
 }

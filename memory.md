@@ -832,3 +832,13 @@ your industry here?" / "Talk to us about your industry").
 - Verified with playwright-core + local Chrome against the dev server at
   1440/1280/1024/768/430/390/375: zero overflow, one h1, 3 h2s, 0 empty svgs,
   all 11 jump anchors resolve. Lint clean. tsc shows only the 10 known errors.
+
+## Production build fixed — unused components removed (2026-09-29)
+
+Vercel deploys were failing at `npm run build` (TypeScript step) because the
+unused `Pipeline.tsx`, `TrustStrip.tsx` and `WhatWeDo.tsx` imported
+`pipelineStages` / `integrations` / `capabilities`, which were never committed
+to `content.ts`. At the user's request the three files were deleted (they
+belonged to a dropped Home layout; recoverable from git history). The earlier
+notes above saying "`npm run build` still fails on those" are now resolved:
+`npm run build` passes locally and prerenders all 16 routes.

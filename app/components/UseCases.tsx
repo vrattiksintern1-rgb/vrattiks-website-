@@ -35,7 +35,7 @@ export default function UseCases() {
         <div className="mt-10 border-t border-n-0/10 md:mt-14">
           <div
             aria-hidden="true"
-            className={`hidden border-b border-n-0/10 py-4 font-mono text-[12px] tracking-[0.08em] uppercase md:grid ${columns}`}
+            className={`hidden border-b border-n-0/10 py-4 font-body text-[12px] tracking-[0.08em] uppercase md:grid ${columns}`}
           >
             <span />
             <span className="grid grid-cols-3 gap-8">
@@ -86,7 +86,7 @@ export default function UseCases() {
                     className={row.key === "benefit" ? "border-l-2 border-brand-primary pl-4 md:pl-6" : ""}
                   >
                     <dt
-                      className={`font-mono text-[11.5px] tracking-[0.08em] uppercase md:sr-only ${
+                      className={`font-body text-[11.5px] tracking-[0.08em] uppercase md:sr-only ${
                         row.key === "benefit" ? "text-brand-primary" : "text-n-400"
                       }`}
                     >

@@ -36,9 +36,9 @@
   --color-sem-info-text: #4b34b8;
 
   /* Typography */
-  --font-display: var(--font-ibm-plex-mono), monospace; /* headings set in mono (was Urbanist) */
+  /* Two faces only — design system §4: "never mix in a third typeface". */
+  --font-display: var(--font-urbanist), sans-serif;
   --font-body: var(--font-ibm-plex-sans), sans-serif;
-  --font-mono: var(--font-ibm-plex-mono), monospace;
 
   /* Type scale — docs/index.html §4 (H1–H3 Urbanist, Body/Label IBM Plex Sans) */
   --text-h1: 44px;

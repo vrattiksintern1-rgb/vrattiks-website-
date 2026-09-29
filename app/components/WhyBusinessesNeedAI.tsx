@@ -54,7 +54,7 @@ export default function WhyBusinessesNeedAI() {
               delay={i * 0.05}
               className={`grid grid-cols-[40px_minmax(0,1fr)] gap-x-3 gap-y-2 border-t border-n-200 py-6 md:items-baseline md:py-7 ${row}`}
             >
-              <span className="font-mono text-[13px] leading-[1.6] text-n-600">
+              <span className="font-body text-[13px] leading-[1.6] text-n-600">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <h3 className="text-[18px] leading-[1.3] font-display font-semibold text-n-900 md:text-[20px]">

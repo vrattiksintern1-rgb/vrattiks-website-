@@ -58,10 +58,11 @@ State in your report which technique you applied and what problem it solved.
   after a run of white sections and makes the next light section feel new.
   *Vrattiks use:* the band before Final CTA, or behind Process;
   `bg-brand-graphite`, text `n-100/n-200`, borders `white/10`.
-- **Vercel's mono-label eyebrow** — a small uppercase monospace label above
+- **Vercel's mono-label eyebrow** — a small uppercase label above
   each section heading, doing navigational work. *Why it works:* it gives the
   page a consistent spine and lets headings stay short. *Vrattiks use:* the
-  existing `Eyebrow` component in `app/components/ui/` with `font-mono`.
+  existing `Eyebrow` component in `app/components/ui/` — set in `font-body`
+  uppercase with positive tracking, never a mono face (brand allows two faces only).
 - **Notion's one-large-plus-grid** — a featured item at double size, with the
   rest in a smaller uniform grid. *Why it works:* creates a focal point in
   content that is otherwise a flat list. *Vrattiks use:* Case Studies and Use
@@ -86,8 +87,9 @@ State in your report which technique you applied and what problem it solved.
 - **Stripe's short-headline / specific-subhead pair** — 3–6 word headline, one
   concrete sentence under it. *Why it works:* scannable plus substantive.
   *Vrattiks use:* every section heading; pairs with `vrattiks-design-system` §5.
-- **Mono microcopy for units and labels** — stat units, timeline steps, table
-  headers set in mono at small size with positive tracking. *Why it works:*
+- **Tracked microcopy for units and labels** — stat units, timeline steps, table
+  headers set small, uppercase, with positive tracking (in `font-body`; Vercel
+  uses mono, we don't). *Why it works:*
   signals precision and separates data from prose without adding colour.
 
 ### Proof & trust

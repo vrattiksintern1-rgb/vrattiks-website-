@@ -53,11 +53,11 @@ export default function TrustStrip() {
           <div className="flex flex-col gap-3 md:items-end">
             <span
               id="integrations-label"
-              className="font-mono text-micro tracking-[0.14em] text-n-500 uppercase"
+              className="font-body text-micro tracking-[0.14em] text-n-500 uppercase"
             >
               Workflows run on
             </span>
-            {/* A real list, labelled by the visible mono line above it, so a
+            {/* A real list, labelled by the visible label line above it, so a
                 screen reader announces "Workflows run on, list, 6 items"
                 rather than six orphaned words. */}
             <ul

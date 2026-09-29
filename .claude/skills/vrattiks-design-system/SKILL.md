@@ -17,7 +17,7 @@ From `app/globals.css` `@theme`:
 - Neutrals: `text-n-0` … `text-n-900` (white → near-black), body copy defaults to `n-800`, headings to `n-900`
 - Semantic: `sem-success`, `sem-warning`, `sem-error`, `sem-info`
 - Radius: `rounded-sm` (8px), `rounded-md` (14px), `rounded-lg` (22px), `rounded-xl` (32px)
-- Fonts: `font-display` (Urbanist, headings), `font-body` (IBM Plex Sans, default), `font-mono` (IBM Plex Mono, code/labels)
+- Fonts: `font-display` (Urbanist, headings), `font-body` (IBM Plex Sans, default — also labels/eyebrows). No mono face: the design system forbids a third typeface.
 
 Plain CSS custom properties on `:root` (Tailwind v4 doesn't generate classes
 for these — reference directly via `style={{ background: 'var(--brand-gradient)' }}` or a small utility class):
@@ -67,10 +67,10 @@ placeholder.
 
 ## 6. Fonts
 
-Loaded via `next/font/google` in `app/layout.tsx` (Urbanist, IBM Plex Sans,
-IBM Plex Mono) and exposed as CSS variables consumed by the `font-display` /
-`font-body` / `font-mono` Tailwind classes. Never add a new `<link>` font tag
-or a different typeface — use these three via their Tailwind classes.
+Loaded via `next/font/google` in `app/layout.tsx` (Urbanist, IBM Plex Sans)
+and exposed as CSS variables consumed by the `font-display` / `font-body`
+Tailwind classes. The design system PDF says "never mix in a third typeface",
+so never add a new `<link>` font tag, a mono face, or any other typeface.
 
 ## Used by
 

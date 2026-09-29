@@ -21,7 +21,7 @@ Pick by what the content *is*, not by what looks full.
 | Content shape | Use this structure | Avoid |
 |---|---|---|
 | Hero / positioning | Left-aligned copy column (max ~60ch) + asymmetric visual; one primary CTA + one text link | Centred stack with two equal buttons |
-| Proof / KPI row | 3–4 stat cards in a single band, numbers at display scale, labels small caps/mono | Burying numbers inside paragraph cards |
+| Proof / KPI row | 3–4 stat cards in a single band, numbers at display scale, labels small uppercase, tracked | Burying numbers inside paragraph cards |
 | Problem framing | Two-column: problem list left, consequence/outcome right — or a single-column narrative with generous leading | 3-up icon card grid (the problem is not three parallel items) |
 | Differentiators ("why us") | 2-up or alternating split rows with one supporting visual each | 6-up icon grid where every item gets equal weight |
 | Service/product catalogue | Card grid, 3-up desktop → 2-up tablet → 2-up mobile, each card a real link | Accordion list for browsable items |
@@ -69,18 +69,18 @@ Vrattiks has one accent family (`brand-primary` #b79af3, `brand-secondary`
 
 ## 3. Font pairing principles
 
-The three faces are fixed: Urbanist (`font-display`), IBM Plex Sans
-(`font-body`), IBM Plex Mono (`font-mono`). Pairing work is about *roles and
+The two faces are fixed: Urbanist (`font-display`) and IBM Plex Sans
+(`font-body`). The design system forbids a third typeface — there is no mono. Pairing work is about *roles and
 scale*, not picking typefaces.
 
 - **One face per role.** Display → headings only. Body → all prose, buttons,
-  nav, form labels. Mono → eyebrows, small caps labels, code, stat units.
+  nav, form labels, eyebrows, small caps labels, stat units.
   Never body text in the display face.
 - **Contrast by size and weight, not by adding a face.** A clear ramp beats
   variety: display heading much larger and tighter-tracked, section heading
   clearly smaller, card title only slightly above body.
 - **Tighten tracking as size grows**, loosen it as size shrinks. Large
-  Urbanist headings want slightly negative letter-spacing; mono eyebrows at
+  Urbanist headings want slightly negative letter-spacing; Plex Sans eyebrows at
   11–12px want positive tracking and uppercase.
 - **Line length 60–75ch for prose**, ~45–60ch for hero subheads. Full-width
   paragraphs at 1440px are unreadable regardless of font.
@@ -89,7 +89,7 @@ scale*, not picking typefaces.
 - **Two weights per face, max, per screen.** Usually 600/700 for display and
   400/500 for body. A third weight rarely reads as anything but inconsistency.
 - **Numbers in stats use the display face at large scale**, with the unit or
-  label in mono at small scale — that pairing is what makes a KPI row read as
+  label in Plex Sans uppercase at small scale — that pairing is what makes a KPI row read as
   designed rather than as text.
 
 ## 4. Spacing and rhythm systems
@@ -162,7 +162,7 @@ visible process/timeline (what the first 30 days look like), honest
 - [ ] Colour budget respects 60/30/10; hierarchy comes from value, not hue
 - [ ] At most one gradient surface in this viewport
 - [ ] Dark surfaces use the dark text ramp and alpha borders, not `n-200`
-- [ ] Type roles correct (display=headings, body=prose/UI, mono=labels); ≤2 weights per face
+- [ ] Type roles correct (display=headings, body=prose/UI/labels, no third face); ≤2 weights per face
 - [ ] Prose line length 60–75ch; line height scaled inversely to size
 - [ ] All spacing on the 4px scale; section padding matches the band
 - [ ] Grouping done by proximity — inner gaps clearly tighter than outer gaps

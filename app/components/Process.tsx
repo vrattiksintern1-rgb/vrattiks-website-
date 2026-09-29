@@ -67,7 +67,7 @@ export default function Process() {
                 ) : null}
                 <span
                   aria-hidden="true"
-                  className="relative z-10 flex h-9 w-9 items-center justify-center rounded-full border-2 border-brand-secondary bg-n-25 font-mono text-[12px] font-semibold text-brand-secondary"
+                  className="relative z-10 flex h-9 w-9 items-center justify-center rounded-full border-2 border-brand-secondary bg-n-25 font-body text-[12px] font-semibold text-brand-secondary"
                 >
                   {String(i + 1).padStart(2, "0")}
                 </span>

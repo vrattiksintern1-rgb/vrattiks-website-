@@ -681,3 +681,11 @@ enough (the working tree was already uncommitted), restore from there or ask.
 (playwright-core in scratchpad, cached chromium-1234) at 1440/1024/768/375:
 no horizontal overflow, layouts checked visually. Lint clean; tsc adds no new
 errors (the 13 remaining are the four known untracked off-page files).
+
+## Mono removed, back to the design-system fonts (2026-09-29)
+
+- User asked for the design-system font everywhere. This **reverses the 2026-09-28 "headings in mono" client request.** `vrattiks-design-system.pdf` §4 allows exactly two faces, Urbanist (H1–H3, 600/700) and IBM Plex Sans (body, buttons, forms, labels, 400/500/600), and says "never mix in a third typeface".
+- `layout.tsx` loads Urbanist + IBM Plex Sans. IBM Plex Mono is no longer loaded, and `--font-mono` is gone from `@theme`. All 8 `font-mono` usages (eyebrow-style labels, table headers, the Process step numbers, HeroVisual chip subtext) are now `font-body`. They keep their uppercase and tracking.
+- Hero H1 mobile size is back to 36px. The 32px size was only there because mono runs wider.
+- CLAUDE.md and the `vrattiks-design-system`, `ui-ux-pro-max`, and `awesome-design` skills used to recommend mono for labels and eyebrows. They now say Plex Sans, uppercase and tracked, so mono doesn't come back through later work.
+- Verified on the running dev server: `<html>` carries both font variables, the served CSS has `--font-display: var(--font-urbanist)`, and there are zero Plex Mono or `.font-mono` references. `tsc` still reports the same 13 pre-existing errors in the unused `Pipeline`/`TrustStrip`/`WhatWeDo`/`CatalogueIndex` components, with or without this change.

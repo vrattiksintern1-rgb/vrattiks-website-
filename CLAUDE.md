@@ -18,7 +18,7 @@ Marketing website for Vrattiks Intelligence LLP (AI automation for Indian SMEs) 
 
 - Color tokens and radii are mapped into Tailwind's `@theme` in [app/globals.css](app/globals.css) (`--color-brand-primary`, `--color-n-0`…`--color-n-900`, `--color-sem-*`, `--radius-sm/md/lg/xl`). Use these Tailwind classes (e.g. `bg-brand-primary`, `text-n-500`, `rounded-lg`) rather than hardcoding hex values.
 - Brand gradient (`linear-gradient(60deg, #b79af3, #6942f1)`) and shadow tokens (`--shadow-sm/md/lg/glow`) are plain CSS custom properties on `:root` in globals.css — reference them directly in inline styles or a small utility class since Tailwind v4 doesn't generate classes for them automatically.
-- Fonts are loaded via `next/font/google` in [app/layout.tsx](app/layout.tsx): Urbanist (`--font-display`, headings), IBM Plex Sans (`--font-body`, body/UI), IBM Plex Mono (`--font-mono`, code/labels). Use the Tailwind font classes wired to these variables — don't add new `<link>` font tags.
+- Fonts are loaded via `next/font/google` in [app/layout.tsx](app/layout.tsx): Urbanist (`--font-display`, headings), IBM Plex Sans (`--font-body`, body/UI/labels). The design system allows exactly these two faces — "never mix in a third typeface" — so there is no mono font; eyebrows and small labels are IBM Plex Sans, uppercase, tracked. Use the Tailwind font classes wired to these variables — don't add new `<link>` font tags.
 - Voice & tone: write for business owners, not developers. Lead with outcomes, avoid AI hype language and technical jargon in customer-facing copy (see docs/index.html §5 for do/don't examples).
 - One primary (gradient) button per screen/section; use secondary/outline/ghost for everything else.
 
@@ -63,7 +63,7 @@ not from live sites. Replace this section once real reference sites are chosen.
 
 ### Reference 3 — Vercel: *a constant spine lets structure vary underneath*
 
-- **A small uppercase mono eyebrow** above each section heading does navigational
+- **A small uppercase eyebrow** (theirs is mono; ours is IBM Plex Sans, tracked) above each section heading does navigational
   work, which lets the headings themselves stay short.
 - **Hover and focus are a border shift plus a soft glow**, never a scale-up.
 - **Refused:** long headings; colour change as the only focus affordance.

@@ -47,7 +47,7 @@ export default function HeroVisual() {
             </span>
             <span>
               <span className="block text-[13.5px] font-semibold text-n-900">{chip.label}</span>
-              <span className="block font-mono text-[11.5px] text-n-500">{chip.sub}</span>
+              <span className="block font-body text-[11.5px] text-n-500">{chip.sub}</span>
             </span>
           </motion.div>
         ))}

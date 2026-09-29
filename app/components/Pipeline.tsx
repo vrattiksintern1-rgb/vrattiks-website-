@@ -70,7 +70,7 @@ export default function Pipeline() {
               </span>
 
               <div className="min-w-0 lg:mt-7">
-                <span className="flex items-center gap-2.5 font-mono text-micro tracking-[0.14em] text-brand-secondary uppercase">
+                <span className="flex items-center gap-2.5 font-body text-micro tracking-[0.14em] text-brand-secondary uppercase">
                   {/* The numeral is the ordering device the icons only
                       decorate — keep it even though the icons differ. */}
                   {/* n-600, not n-400: n-400 on the n-50 tint measures

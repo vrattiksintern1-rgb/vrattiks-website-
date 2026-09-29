@@ -80,7 +80,7 @@ export default function CatalogueIndex() {
           {columns.map((column, columnIndex) => (
             <Reveal key={column.heading} delay={columnIndex * 0.06}>
               <div className="border-t border-n-200 pt-6">
-                <h3 className="font-mono text-label tracking-[0.14em] text-n-500 uppercase">
+                <h3 className="font-body text-label tracking-[0.14em] text-n-500 uppercase">
                   {column.heading}
                 </h3>
 

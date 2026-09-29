@@ -5,6 +5,11 @@ export type Service = {
   slug: string;
   icon: IconName;
   description: string;
+  /* Intro paragraph on the /services/{slug} detail page (the rest of that
+     page's copy lives in service-details.ts). Describes what the service
+     does, not results — no figures until real data exists
+     (vrattiks-standards §3). */
+  details: string;
 };
 
 export const services: Service[] = [
@@ -13,36 +18,48 @@ export const services: Service[] = [
     slug: "ai-voice-agent",
     icon: "mic",
     description: "Answers and makes calls around the clock, so no customer inquiry waits for a free line.",
+    details:
+      "The voice agent picks up every call at any hour, answers common questions, takes down the caller's details and passes the call to your team when a person is needed. It can also call new leads back while they're still interested.",
   },
   {
     name: "AI Chatbot",
     slug: "ai-chatbot",
     icon: "chat",
     description: "Handles website and app conversations instantly, and hands off to your team when needed.",
+    details:
+      "The chatbot sits on your website or app and replies the moment a visitor asks something. It answers from your own business information, collects contact details, and brings in your team for anything it shouldn't handle alone.",
   },
   {
     name: "Workflow Automation",
     slug: "workflow-automation",
     icon: "workflow",
     description: "Connects the tools you already use so information moves between them without manual work.",
+    details:
+      "Takes the copy-paste out of your day. When something happens in one tool, like a form being filled, an order coming in or a payment falling due, the next steps run on their own in the others.",
   },
   {
     name: "Website Development",
     slug: "website-development",
     icon: "globe",
     description: "A fast, conversion-ready website built to work with your automation from day one.",
+    details:
+      "A fast website that tells visitors what you do and makes it easy to get in touch. Enquiry forms connect straight to your CRM, chatbot and WhatsApp, so no lead gets lost between your website and your team.",
   },
   {
     name: "WhatsApp Automation",
     slug: "whatsapp-automation",
     icon: "whatsapp",
     description: "Automated replies, updates, and follow-ups on the channel your customers already use.",
+    details:
+      "Reply to customers on WhatsApp as soon as they message, send order and appointment updates, and follow up with new leads. Nobody has to watch the phone all day.",
   },
   {
     name: "CRM",
     slug: "crm",
     icon: "crm",
     description: "One place to track every lead and customer, kept up to date automatically.",
+    details:
+      "Every lead and customer in one place, with each call, chat and message logged against them. Your team can see who needs a reply next, and records update themselves as conversations happen.",
   },
 ];
 
@@ -86,6 +103,8 @@ export type Industry = {
   name: string;
   slug: string;
   icon: IconName;
+  /* Unsplash License stock photo — illustrative, not a client. */
+  image: string;
   application: string;
 };
 
@@ -93,66 +112,77 @@ export const industries: Industry[] = [
   {
     name: "Real Estate",
     slug: "real-estate",
+    image: "/images/industries/real-estate.jpg",
     icon: "home",
     application: "Qualify site-visit inquiries and follow up on listings automatically.",
   },
   {
     name: "Healthcare",
     slug: "healthcare",
+    image: "/images/industries/healthcare-consultation.jpg",
     icon: "pulse",
     application: "Automate appointment reminders and patient follow-up communication.",
   },
   {
     name: "Finance & Insurance",
     slug: "finance",
+    image: "/images/industries/finance.jpg",
     icon: "finance",
     application: "Route client inquiries and send policy renewal and servicing reminders on time.",
   },
   {
     name: "Manufacturing",
     slug: "manufacturing",
+    image: "/images/industries/manufacturing.jpg",
     icon: "factory",
     application: "Connect order, inventory, and dispatch updates across your systems.",
   },
   {
     name: "Hospitality",
     slug: "hospitality",
+    image: "/images/industries/hospitality.jpg",
     icon: "hospitality",
     application: "Automate booking confirmations, guest queries, and review follow-ups.",
   },
   {
     name: "EdTech & Coaching",
     slug: "edtech-coaching",
+    image: "/images/industries/edtech-coaching.jpg",
     icon: "book",
     application: "Follow up on course inquiries and send batch, fee, and class reminders automatically.",
   },
   {
     name: "Higher Education",
     slug: "higher-education",
+    image: "/images/industries/higher-education.jpg",
     icon: "graduationCap",
     application: "Answer admission queries and guide applicants through each step of enrolment.",
   },
   {
     name: "Restaurants & Food",
     slug: "restaurants-food",
+    image: "/images/industries/restaurants-food.jpg",
     icon: "utensils",
     application: "Take table bookings and orders on WhatsApp, then ask for a review after each visit.",
   },
   {
     name: "Salons, Spas & Wellness",
     slug: "salons-spas-wellness",
+    image: "/images/industries/salons-spas-wellness.jpg",
     icon: "scissors",
     application: "Fill appointment slots, cut no-shows with reminders, and bring regulars back.",
   },
   {
     name: "Automobile Sales & Service",
     slug: "automobile",
+    image: "/images/industries/automobile.jpg",
     icon: "car",
     application: "Follow up on test-drive leads and remind customers when their service is due.",
   },
   {
     name: "Construction & Infrastructure",
     slug: "construction",
+    image: "/images/industries/construction.jpg",
     icon: "hardHat",
     application: "Keep project inquiries, vendor follow-ups, and site updates moving without chasing.",
   },

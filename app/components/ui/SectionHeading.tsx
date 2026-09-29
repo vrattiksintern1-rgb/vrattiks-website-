@@ -9,6 +9,7 @@ export default function SectionHeading({
   description,
   align = "left",
   tone = "light",
+  id,
   className = "",
 }: {
   eyebrow?: string;
@@ -16,6 +17,8 @@ export default function SectionHeading({
   description?: string;
   align?: "left" | "center";
   tone?: "light" | "dark";
+  /** id on the h2 — pass it as the parent Section's `labelledBy` */
+  id?: string;
   className?: string;
 }) {
   const dark = tone === "dark";
@@ -34,6 +37,7 @@ export default function SectionHeading({
         </span>
       ) : null}
       <h2
+        id={id}
         className={`text-[28px] leading-[1.15] tracking-[-0.02em] font-display font-bold md:text-h2 ${
           dark ? "text-n-0" : "text-n-900"
         }`}

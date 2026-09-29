@@ -6,20 +6,32 @@ import Button from "./ui/Button";
 import Icon from "./ui/Icon";
 import { services } from "@/app/lib/content";
 
-export default function ServicesOverview() {
+/* Shared by Home and /services. On /services, pass `showAllLink={false}` —
+   the "View all services" button would link the page to itself — and a
+   `headingId` so the section landmark is named by its h2. */
+export default function ServicesOverview({
+  showAllLink = true,
+  headingId,
+}: {
+  showAllLink?: boolean;
+  headingId?: string;
+}) {
   return (
-    <section className="py-14 md:py-24">
+    <section aria-labelledby={headingId} className="py-14 md:py-24">
       <Container>
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
           <SectionHeading
+            id={headingId}
             eyebrow="Services"
             title="Six core services, plus custom automation for the rest"
             description="Use one on its own or connect them into one system. If a repetitive task doesn't fit these six — payment reminders, appointment booking, daily reports, stock alerts — we can automate that too."
             className="max-w-xl"
           />
-          <Button href="/services" variant="outline" className="shrink-0">
-            View all services
-          </Button>
+          {showAllLink ? (
+            <Button href="/services" variant="outline" className="shrink-0">
+              View all services
+            </Button>
+          ) : null}
         </div>
 
         {/* Service card — the page's one icon + title + text grid. Icon sits

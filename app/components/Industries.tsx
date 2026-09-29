@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import Container from "./ui/Container";
 import SectionHeading from "./ui/SectionHeading";
@@ -5,30 +6,53 @@ import Reveal from "./ui/Reveal";
 import Icon from "./ui/Icon";
 import { industries } from "@/app/lib/content";
 
-export default function Industries() {
+/* Optional props let /industries retitle the section so it doesn't repeat
+   its own H1, and name the landmark by its heading. Home passes none. */
+export default function Industries({
+  eyebrow = "Industries",
+  title = "Built to adapt to how your industry works",
+  description = "The same automation foundation, applied to what matters most in your industry.",
+  headingId,
+}: {
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  headingId?: string;
+}) {
   return (
-    <section className="py-14 md:py-24">
+    <section aria-labelledby={headingId} className="py-14 md:py-24">
       <Container>
         <SectionHeading
-          eyebrow="Industries"
-          title="Built to adapt to how your industry works"
-          description="The same automation foundation, applied to what matters most in your industry."
+          id={headingId}
+          eyebrow={eyebrow}
+          title={title}
+          description={description}
         />
 
         {/* Ruled directory, not a card wall: eleven entries hang off hairline
-            top rules with no box, background or radius, so the section can't
-            be mistaken for the Services cards above it. Composition is
-            horizontal (icon square left, text right). Hover fills the icon
-            square and turns the name brand-secondary; nothing moves. */}
+            top rules with no box or background, so the section can't be
+            mistaken for the Services cards above it. Each entry leads with a
+            photo of that industry — a thumbnail beside the text on phones,
+            a full-width photo above it from sm up. The photo is decorative
+            (alt=""): the link text already names the industry. Hover turns
+            the rule and name brand-secondary; nothing moves or scales. */}
         <div className="mt-10 grid grid-cols-1 gap-x-8 sm:grid-cols-2 md:mt-12 md:grid-cols-3 md:gap-x-10">
           {industries.map((industry, i) => (
             <Reveal key={industry.slug} delay={(i % 3) * 0.06}>
+              {/* id = slug: the jump-list target in IndustriesIntro */}
               <Link
+                id={industry.slug}
                 href={`/industries/${industry.slug}`}
-                className="focus-glow group flex h-full items-start gap-4 border-t border-n-200 pt-5 pb-7 transition-colors duration-150 hover:border-brand-secondary"
+                className="focus-glow group flex h-full items-start gap-4 border-t border-n-200 pt-5 pb-7 transition-colors duration-150 hover:border-brand-secondary sm:flex-col sm:items-stretch sm:gap-4"
               >
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-n-50 text-brand-secondary transition-colors duration-150 group-hover:bg-brand-secondary group-hover:text-n-0">
-                  <Icon name={industry.icon} className="h-5 w-5" />
+                <span className="relative aspect-[4/3] w-24 shrink-0 overflow-hidden rounded-sm bg-n-50 sm:aspect-[3/2] sm:w-full md:aspect-[16/9]">
+                  <Image
+                    src={industry.image}
+                    alt=""
+                    fill
+                    sizes="(min-width: 901px) 33vw, (min-width: 601px) 50vw, 96px"
+                    className="object-cover"
+                  />
                 </span>
                 <div className="flex min-w-0 flex-1 flex-col">
                   <h3 className="text-[15px] leading-[1.3] font-display font-semibold text-n-900 transition-colors duration-150 group-hover:text-brand-secondary">

@@ -385,7 +385,7 @@ Generator script is in the session scratchpad, not the repo. Re-run from
 `public/brand/vrattiks-logo-white.png` + `vrattiks-icon.png` if the brand
 changes.
 
-**Still true: there is no photography or product imagery anywhere in this repo.**
+**Superseded 2026-09-29 — see "Stock photography added to Home" below.** ~~Still true: there is no photography or product imagery anywhere in this repo.~~
 Every image asset is a logo variant or the brand mark, and the hero "visual" is
 a coded sketch (`HeroVisual.tsx`), deliberately so. Any request to put a real
 photo or product screenshot on a page needs the asset supplied first —
@@ -689,3 +689,146 @@ errors (the 13 remaining are the four known untracked off-page files).
 - Hero H1 mobile size is back to 36px. The 32px size was only there because mono runs wider.
 - CLAUDE.md and the `vrattiks-design-system`, `ui-ux-pro-max`, and `awesome-design` skills used to recommend mono for labels and eyebrows. They now say Plex Sans, uppercase and tracked, so mono doesn't come back through later work.
 - Verified on the running dev server: `<html>` carries both font variables, the served CSS has `--font-display: var(--font-urbanist)`, and there are zero Plex Mono or `.font-mono` references. `tsc` still reports the same 13 pre-existing errors in the unused `Pipeline`/`TrustStrip`/`WhatWeDo`/`CatalogueIndex` components, with or without this change.
+
+## Stock photography added to Home (2026-09-29)
+
+User asked to "add images in home page according to content". No client-supplied
+photos exist, so these are **Unsplash License stock photos** (free for commercial
+use, no attribution required). They show generic industry scenes only: no photo
+stands in for a client, a team member, a founder or a result. Posed office
+portraits were deliberately rejected because they would read as "the Vrattiks
+team". **Replace any of them with client-supplied or approved photography when
+available.** Files live in `public/images/`; each is ~80–200 KB, and `next/image`
+serves resized WebP.
+
+- **Hero**: a stock photo (shop owner on a call) was added, then **removed at the
+  user's request the same day**. `HeroVisual.tsx` is back to the coded gradient
+  panel + status chips. Don't re-add a hero photo without asking.
+- **Industries** (`Industries.tsx`): each of the 11 entries leads with a photo.
+  Phones show a 96px thumbnail beside the text; `sm` and up show a full-width photo
+  above it (3:2, then 16:9 from `md`). The icon square was dropped from this
+  section, but the `icon` field stays in `content.ts`. The photos are decorative
+  (`alt=""`) because the link text names the industry. The path is on the new
+  `Industry.image` field in `content.ts`.
+
+Sources (Unsplash photo ID → photographer):
+real-estate hmlP-v0vJ5o (Elite Prop) ·
+healthcare-consultation BUNNEclz-yQ (Vitaly Gariev) · finance hdfPDesgEw8 (NinthGrid) ·
+manufacturing HNLlzPGbTBM (MGR P) · hospitality kfnWOD1Tbp8 (Neon Wang) ·
+edtech-coaching 6MePtA9EVDA (Thomas Park) · higher-education LCwo5opgr9M (Sanket Mishra) ·
+restaurants-food ZEfHrVDF3NM (Mustafa Fatemi) · salons-spas-wellness FkAZqQJTbXM (Adam Winger) ·
+automobile bC5NNbwuoB0 (Crosby Hinze) · construction 2wqCQc9WpIw (Saumya Jain).
+Rejected: a hard-hat crew photo whose vests carry a real company's logo.
+
+Verified: lint clean; no type errors in changed files; rendered in headless Chrome
+at 1440/1024/768/390 with no horizontal overflow, and the chips clear the subject
+at every width (hero check now moot). `npm run build` still fails, but only on the four pre-existing
+untracked-component errors noted above.
+
+## Company page built — `/company` (2026-09-29)
+
+Built via `vrattiks-page-builder`, sections in `vrattiks-architecture` §2 order:
+`CompanyIntro` (H1 + confirmed-facts `<dl>`) → `OurStory` (sticky split) →
+`MissionVision` (graphite band, the page's one dark reset) → `CompanyValues`
+(five-element ruled strip, 5 columns at lg, rows below) → `Founders` (two
+monogram cards) → `WhyVrattiks` (reused) → `FinalCTA` (reused, the page's only
+gradient surface).
+
+- **Content status:** brand story and co-founder names (Hitesh Dave, Arpit
+  Patel) are the user-provided copy from 2026-09-12, used verbatim — still
+  pending client sign-off. **Mission & Vision are drafted placeholder copy**
+  (commented in `MissionVision.tsx`) — replace with approved wording. Founders
+  show names + "Co-Founder" only, with initials monograms instead of photos; no
+  bios/roles invented. Founder names also appear in the page's AboutPage JSON-LD
+  — keep the two in step.
+- `WhyVrattiks` gained an optional `cta` prop (defaults to the Home link to
+  `/company`); the Company page passes `/services` so it doesn't self-link.
+- `ui/SectionHeading` gained an optional `id` (on the h2) for `Section`'s
+  `labelledBy`. This also cleared 3 of the 13 pre-existing tsc errors
+  (Pipeline/WhatWeDo passed `id`); 10 remain, all in the unused
+  Pipeline/TrustStrip/WhatWeDo files, so `npm run build` still fails on those.
+- Verified on the running dev server over CDP at 1440/1024/768/375: zero
+  horizontal overflow, one h1, h2 per section, title "Company | Vrattiks
+  Intelligence", canonical `/company`. Lint clean on all touched files.
+
+## Services page built — `/services` (2026-09-29)
+
+Built via `vrattiks-page-builder`, sections in `vrattiks-architecture` §2 order:
+`ServicesIntro` (new: H1 + a graphite "How they fit together" panel grouping
+the six services into three jobs: answer / keep track / follow through) →
+`ServicesOverview` (reused, the 6 cards) → `Process` (reused) → `FinalCTA`
+(reused, the page's only gradient surface).
+
+- `ServicesOverview` gained optional `showAllLink` (default true; /services
+  passes false so it doesn't link to itself) and `headingId`. `Process` gained
+  `headingId`. Home passes neither, so Home is unchanged.
+- The three-job grouping in `ServicesIntro` is our framing, not client copy.
+  Its service names come from `content.ts`.
+- JSON-LD is an `ItemList` of `Service` built from `content.ts` only. It has
+  no pricing, ratings or results.
+- The six `/services/*` detail routes still don't exist, so every card link 404s
+  (same as Home).
+- Verified in headless Chrome against the running dev server at
+  1440/1280/1024/768/430/390/375: zero horizontal overflow, one h1, h2 per
+  section, no self-link, title "Services | Vrattiks Intelligence", canonical
+  `/services`. Lint is clean. tsc shows only the 10 known errors in the unused
+  Pipeline/TrustStrip/WhatWeDo files, so `npm run build` still fails on those.
+- **Update (same day):** "Learn more" briefly expanded cards in place
+  (`ServiceCard.tsx`). The user then asked for a real page per service, so that
+  card and the `expandable` prop were removed. See the next entry.
+
+## Service detail pages built — `/services/[slug]` (2026-09-29)
+
+One dynamic route, `app/services/[slug]/page.tsx`, prerenders all six via
+`generateStaticParams`. `dynamicParams = false`, so an unknown slug returns 404
+(verified). `params` is a Promise in Next 16 and is awaited in both the page
+and `generateMetadata`. The section order follows the `vrattiks-architecture`
+§2 service-detail template:
+
+`ServiceHero` (breadcrumb back to /services, 60px name, headline, primary CTA
++ ghost "See how it works" → `#how-it-works`) → `ServiceProblems` (sticky
+split, numbered ruled list) → `ServiceSteps` (graphite band, 4 steps) →
+`ServiceFeatures` (2-col ruled checklist, deliberately not a 3-up card grid)
+→ `ServiceBenefits` (display-scale `<dl>` ledger) → `ServiceFit` (industry +
+use-case link lists) → `RelatedServices` (3 link cards, no icon) → `FinalCTA`.
+
+- **Copy lives in `app/lib/service-details.ts`**, keyed by slug. It is drafted
+  descriptive copy with no figures, client names or promised results. It is
+  pending client approval. Tool names are kept generic because the integrations
+  list is unconfirmed. `content.ts` `Service.details` is the hero paragraph.
+  The earlier `points` field was removed.
+- `FinalCTA` gained optional `title` / `description` / `buttonLabel`. The
+  defaults are the old copy, so Home, Company and /services are unchanged.
+  Detail pages use "Talk to us about {name}".
+- JSON-LD per page: `Service` + `BreadcrumbList`, from the page's own copy only.
+- Industry and use-case links still 404 (those routes aren't built). The
+  industry slugs include the seven added 2026-09-28 that aren't in the
+  architecture SSOT yet.
+- Verified over CDP: all 6 pages at 1440 and 375, plus two pages at
+  1024/768/430/390. Zero overflow, one h1, 7 h2s, no empty icons. Clicking a
+  card on /services lands on the right page. Lint is clean. tsc shows only the
+  10 known errors.
+
+## Industries overview page built — `/industries` (2026-09-29)
+
+Built via `vrattiks-page-builder`. Order: `IndustriesIntro` (new: H1 + a
+desktop-only "Jump to your industry" nav linking to `#{slug}` anchors in the
+directory) → `Industries` (reused, 11 photo entries) → `UseCases` (reused,
+retitled "The same three problems, in every industry") → `FinalCTA` ("Don't see
+your industry here?" / "Talk to us about your industry").
+
+- **UseCases is an addition to §2's Industries list** (overview → cards → CTA),
+  kept because it's the page's only non-white band and its links into
+  `/use-cases`. Reason is commented at the top of `app/industries/page.tsx`.
+- **Lists 11 industries from content.ts, not the 6 in `vrattiks-architecture`
+  §1.** The SSOT is still not updated. Same open question as the 09-22/09-28 entries.
+- `Industries` gained optional `eyebrow`/`title`/`description`/`headingId`; each
+  entry's `<Link>` now carries `id={slug}` (the jump target, on Home too; harmless).
+  `UseCases` gained optional `title`/`description`/`headingId`. Home passes none,
+  so Home is unchanged.
+- JSON-LD: `ItemList` of industry names + URLs from content.ts only.
+- All `/industries/*` detail routes still 404. Build them next with an
+  `industry-details.ts` + `[slug]` route, mirroring `/services/[slug]`.
+- Verified with playwright-core + local Chrome against the dev server at
+  1440/1280/1024/768/430/390/375: zero overflow, one h1, 3 h2s, 0 empty svgs,
+  all 11 jump anchors resolve. Lint clean. tsc shows only the 10 known errors.

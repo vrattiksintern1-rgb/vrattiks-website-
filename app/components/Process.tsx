@@ -31,11 +31,12 @@ const steps: { icon: IconName; title: string; description: string }[] = [
   },
 ];
 
-export default function Process() {
+export default function Process({ headingId }: { headingId?: string }) {
   return (
-    <section className="py-14 md:py-24">
+    <section aria-labelledby={headingId} className="py-14 md:py-24">
       <Container>
         <SectionHeading
+          id={headingId}
           eyebrow="Process"
           title="How we work"
           description="A clear path from where you are today to a business that runs on automation."

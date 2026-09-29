@@ -12,7 +12,13 @@ const differentiators: { icon: IconName; text: string }[] = [
   { icon: "check", text: "Focused on outcomes you can actually see" },
 ];
 
-export default function WhyVrattiks() {
+/* `cta` defaults to the Company page link used on Home. The Company page
+   itself overrides it so the section doesn't link to the page it sits on. */
+export default function WhyVrattiks({
+  cta = { label: "Learn about our approach", href: "/company" },
+}: {
+  cta?: { label: string; href: string };
+}) {
   return (
     <section className="py-14 md:py-24">
       <Container className="grid grid-cols-1 gap-10 md:grid-cols-2 md:items-center md:gap-14">
@@ -30,8 +36,8 @@ export default function WhyVrattiks() {
             of the other way around.
           </p>
           <div className="mt-7">
-            <Button href="/company" variant="outline">
-              Learn about our approach
+            <Button href={cta.href} variant="outline">
+              {cta.label}
             </Button>
           </div>
         </Reveal>

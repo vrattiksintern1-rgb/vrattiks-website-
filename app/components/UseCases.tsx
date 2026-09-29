@@ -21,14 +21,25 @@ const rows = [
    Text sits on the muted n-200/n-300 ramp, borders at n-0/10. */
 const columns = "md:grid-cols-[minmax(0,1.1fr)_minmax(0,3fr)] md:gap-10";
 
-export default function UseCases() {
+/* Optional props let /industries reframe the matrix as "the same problems in
+   every industry". Home passes none. */
+export default function UseCases({
+  title = "Common business problems, solved end-to-end",
+  description = "Real situations most growing businesses run into — and how automation changes the outcome.",
+  headingId,
+}: {
+  title?: string;
+  description?: string;
+  headingId?: string;
+}) {
   return (
-    <section className="bg-brand-graphite py-14 md:py-24">
+    <section aria-labelledby={headingId} className="bg-brand-graphite py-14 md:py-24">
       <Container>
         <SectionHeading
+          id={headingId}
           eyebrow="Use Cases"
-          title="Common business problems, solved end-to-end"
-          description="Real situations most growing businesses run into — and how automation changes the outcome."
+          title={title}
+          description={description}
           tone="dark"
         />
 

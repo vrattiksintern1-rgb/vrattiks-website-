@@ -52,47 +52,52 @@ const outcomes: {
   },
 ];
 
+/* Dark results band with four EQUAL tiles. The previous bento (one large
+   promoted tile + three mixed shapes) read as unbalanced, so every tile now
+   shares one shape and one baseline: the metric line reserves the same height
+   in each tile so the dividers, labels and descriptions line up across the
+   row. Value contrast comes from the band itself (CLAUDE.md Design Taste,
+   ref 2) — text on the n-300 ramp, hairlines at n-0/10, no gradient surface.
+   No hover: none of these are links. */
 export default function KpiResults() {
   return (
-    <section className="py-10 md:py-12">
+    <section className="bg-brand-graphite py-14 text-n-200 md:py-24">
       <Container>
         <SectionHeading
+          tone="dark"
+          eyebrow="The difference"
           title="What automation changes for your business"
           description="Same team, same customers. The first reply, the follow-ups and the tracking just stop depending on someone remembering."
-          align="center"
-          className="mx-auto"
         />
 
-        {/* Stat ledger — no boxes. Columns are separated by hairline rules
-            only. The KPI numeral is the one display-scale element per column
-            (where the eye lands); its metric line says what it measures, then
-            the outcome label and the scenario that backs the number. No
-            hover: these aren't links. */}
-        <div className="mt-10 grid grid-cols-1 border-y border-n-200 sm:grid-cols-2 md:mt-14 md:grid-cols-4">
+        <ul className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-14 lg:grid-cols-4 lg:gap-5">
           {outcomes.map((item, i) => (
             <Reveal
               key={item.label}
+              as="li"
               delay={i * 0.08}
-              className="border-n-200 py-7 sm:px-6 md:py-9 [&:not(:first-child)]:border-t sm:[&:nth-child(2)]:border-t-0 sm:[&:nth-child(even)]:border-l md:[&:not(:first-child)]:border-t-0 md:[&:not(:first-child)]:border-l"
+              className="flex h-full flex-col rounded-md border border-n-0/10 bg-n-0/[0.04] p-6 md:p-7"
             >
-              <div className="flex items-center justify-between gap-4">
-                <p className="font-display text-[44px] font-semibold leading-none tracking-[-0.03em] text-n-900 md:text-[52px]">
-                  {item.value}
-                </p>
-                <Icon name={item.icon} className="h-5 w-5 shrink-0 text-brand-secondary" />
-              </div>
-              <p className="mt-3 text-[12px] font-medium uppercase leading-[1.4] tracking-[0.08em] text-n-600">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full border border-n-0/15 text-brand-primary">
+                <Icon name={item.icon} className="h-5 w-5" />
+              </span>
+              <p className="mt-8 font-display text-[48px] font-semibold leading-none tracking-[-0.03em] text-n-0 md:text-[56px]">
+                {item.value}
+              </p>
+              <p className="mt-3 text-[12px] font-medium uppercase leading-[1.4] tracking-[0.08em] text-n-300 sm:min-h-[4.2em]">
                 {item.metric}
               </p>
-              <p className="mt-6 border-t border-n-200 pt-5 font-display text-[18px] font-semibold leading-[1.2] tracking-[-0.01em] text-n-900">
-                {item.label}
-              </p>
-              <p className="mt-2 text-[14px] leading-[1.6] text-n-600">
-                {item.description}
-              </p>
+              <div className="mt-6 border-t border-n-0/10 pt-5">
+                <h3 className="font-display text-[18px] font-semibold leading-[1.25] tracking-[-0.01em] text-n-0">
+                  {item.label}
+                </h3>
+                <p className="mt-2 text-[14px] leading-[1.6] text-n-300">
+                  {item.description}
+                </p>
+              </div>
             </Reveal>
           ))}
-        </div>
+        </ul>
       </Container>
     </section>
   );

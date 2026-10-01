@@ -606,7 +606,7 @@ structure and surface value alternating down the page:
 - All brand art is small — the wordmark is 413x126 and the mark 126x126. Anything needing a larger rendition (a big hero lockup, print) needs a new export from the source file, not an upscale. `Vrattiks Logo - Final.pdf` at the repo root is the likely source.
 - `public/` still contains `next.svg`, `vercel.svg`, `file.svg`, `globe.svg`, `window.svg` — unused create-next-app boilerplate, and the first two are Vercel/Next *branding* in a client marketing site. Delete in a cleanup pass.
 - KPI/Results, Case Studies, and Testimonials sections on Home use honest non-numeric/pending placeholders (no verified stats, case studies, or testimonials exist yet per `vrattiks-standards` §3) — replace with real content once available.
-- Only Home exists as a route — all other pages in `vrattiks-architecture` §1 (Company, Services + 6 detail pages, Industries + 6, Use Cases + 3, Case Studies, Products, Blog, Contact) are linked to from Home/nav/footer but not yet built, so those links currently 404.
+- ~~Only Home exists as a route~~ (outdated: Company, Services + details, Industries and Contact now exist) — all other pages in `vrattiks-architecture` §1 (Company, Services + 6 detail pages, Industries + 6, Use Cases + 3, Case Studies, Products, Blog, Contact) are linked to from Home/nav/footer but not yet built, so those links currently 404.
 - Header nav is a flat link list (no dropdown submenus for Services/Industries/Use Cases yet) and only shows the full desktop nav at Tailwind's default `lg` (1024px) breakpoint — cramming all 9 top-level items + logo + CTA overflowed right at the 1024px test width when tried at the custom 901px `md` breakpoint, so it was deferred to 1024px where there's enough room. Revisit if nav items are ever trimmed.
 - Added `--breakpoint-sm: 601px` / `--breakpoint-md: 901px` to `app/globals.css` `@theme` to match the design system's tablet/desktop bands (previously undefined in Tailwind config, only present in `docs/index.html`'s own stylesheet) — applies project-wide now, not just Home.
 
@@ -935,15 +935,133 @@ doesn't add a second gradient surface to the screen.
 - Every layer is `aria-hidden`, `pointer-events-none` and `-z-10` inside a
   `relative isolate overflow-hidden` section.
 - **FAQ:** uses a *different* motif from the grid: a "plexus" network (nodes
-  joined by hairlines, glowing hubs, blurred bokeh), modelled on reference
-  images the user supplied but in brand violet instead of blue. It lives in
-  `ui/NetworkBackdrop.tsx` as a static server-rendered SVG generated from a
-  **fixed seed** (deterministic, so there are no hydration issues and nothing
-  animates). It sits on a `bg-n-50` band, is faded out to the right by
-  `.mask-fade-left` (so the answers stay clean), and drops to 50% opacity below
-  md, where the columns stack. A blurred `bg-n-50/85` halo behind the sticky
-  heading keeps lines off the eyebrow and H2. A `.wash-brand` glow sits in the
-  bottom-left corner. The section uses **`overflow-clip`, not
-  `overflow-hidden`**, so nothing bleeds into FinalCTA and the `md:sticky`
-  heading still works. To change the picture, change the seed or node counts
-  in `NetworkBackdrop.tsx`.
+  joined by hairlines, glowing hubs, blurred bokeh) in brand violet, in
+  `ui/NetworkBackdrop.tsx` as a static server-rendered SVG from a **fixed seed**
+  (deterministic, no hydration issues, nothing animates). To change the picture,
+  change the seed or node counts there.
+
+### FAQ background reworked (2026-10-01, later the same day)
+
+The first version spread the network across the whole band, which cropped it
+hard at the viewport edge, left a visible blurred "halo" rectangle behind the
+heading, and on mobile ran lines through the question text. User asked for a
+"proper background design". Now:
+
+- Band is `bg-n-50` plus `.bg-dot-fade` (24px dot texture in `n-300`, masked to
+  fade out from the top-left).
+- The network is a **bounded square cluster** (600x600 viewBox, polar scatter)
+  under the sticky heading, max 400px, faded out on every side with
+  `.mask-fade-radial`, with a `.wash-brand` glow behind it. **Hidden below md**
+  (901px). The halo div and `.mask-fade-left` are gone.
+- The questions sit on **one white panel** (`rounded-lg`, `border-n-200`,
+  `--shadow-md`) for value contrast against the band. The dividers are on the
+  `Reveal` wrappers (`last:border-b-0`), not the `<details>`, because each
+  `<details>` is an only child.
+- The section still uses `overflow-clip` so the sticky column works.
+- Verified in headless Chrome at 1440/768/375, closed and open: zero overflow.
+  eslint and `tsc --noEmit` are clean.
+- **Pre-existing, not fixed:** `ServicesSlider` has a hydration mismatch under
+  reduced motion (the server renders "Pause" and the client renders "Start", and
+  the slide styles differ too). The Next dev overlay shows it as "1 Issue".
+
+### FAQ background removed (2026-10-01, later again)
+
+At the user's request the FAQ's decorative layers are gone: the dot texture,
+the network cluster and its glow. `ui/NetworkBackdrop.tsx` was deleted (it had
+no other users; recoverable from git) along with `.bg-dot-fade` and
+`.mask-fade-radial` in globals.css. `.wash-brand` stays because Hero and
+UseCases use it. The section is now a plain `bg-n-50` band. The heading is
+sticky on the left and the questions sit in the white panel. **Don't add a
+background motif back unless asked.** That makes the bullets above about the
+FAQ network historical. Verified at 1440/768/375 with zero overflow; eslint and
+tsc are clean.
+
+## Use Cases overview page — built, then removed (2026-10-01)
+
+A `/use-cases` overview (UseCasesIntro + reused UseCases matrix +
+UseCaseSolutions + FinalCTA) was built and then **removed at the user's request
+the same day**. The three files were never committed. `/use-cases` is back to
+a 404. Don't rebuild it unless asked.
+
+## Contact page built — `/contact` (2026-10-01)
+
+Built via `vrattiks-page-builder` against `vrattiks-architecture` §2 (Contact
+details → inquiry form → consultation CTA → email/phone → business info):
+
+- `ContactHero` (paper): H1, direct channels (email / phone / WhatsApp) and the
+  inquiry form on a raised white panel (`#inquiry`), all above the fold.
+- `ContactConsultation` (graphite band): 3 numbered steps for what happens after
+  someone gets in touch, plus an `inverse` button back to `#inquiry`.
+- `ContactBusinessInfo` (white): ruled `<dl>` with registered name, location,
+  hours, audience, service links and an industries link.
+- **No FinalCTA.** It would link the page to itself. The form's submit is the
+  page's one gradient/primary CTA. The reason is commented in `app/contact/page.tsx`.
+
+**Contact details are placeholders (user's choice).** `contactDetails` in
+`app/lib/content.ts` is all `null`, so email, phone, WhatsApp, location and
+hours render as "Pending confirmation" with no link and are left out of the
+ContactPage JSON-LD. Fill them in there before launch. No other file needs to change.
+
+**Form delivery is a Server Action + Resend (user's choice).** The action is
+`app/contact/actions.ts` and posts to Resend's REST API with `fetch`, so no SDK
+is added. It needs these env vars on Vercel:
+- `RESEND_API_KEY` (required)
+- `CONTACT_TO_EMAIL` (required, comma-separated list allowed)
+- `CONTACT_FROM_EMAIL` (optional; defaults to `onboarding@resend.dev`, which
+  only delivers to the Resend account owner's own address. Verify a domain in
+  Resend and set this for real use.)
+Without the required vars the visitor sees "We couldn't send your message
+just now", the server logs `[contact] … not set`, and nothing is silently
+dropped. The form has server-side validation, a honeypot field (`website`),
+inline errors, focus moved to the first invalid field or to the success
+heading, and `inquiryTopics` (content.ts) for the select. There is no rate
+limiting yet; add it if spam shows up.
+- The form submits via `onSubmit` + `startTransition`, deliberately. React's
+  automatic reset after an action wiped the `<select>` on a failed submit, even
+  when it was a controlled select.
+- `ui/Icon.tsx` gained `mail`, `phone` and `mapPin`.
+- Verified with `next start` + headless Chrome at 1440/1280/1024/768/430/390/375:
+  zero overflow, one h1, all fields labelled. Empty submit → 3 errors and focus
+  on `#name`. Bad email → focus on `#email`, values kept. A valid submit without
+  env vars → error banner, values kept (select too). Honeypot → success state
+  with the heading focused. The dark-band CTA lands at `#inquiry`. Lint, tsc and
+  `npm run build` are clean. The only console errors are 404 prefetches for the
+  unbuilt `/use-cases`, `/case-studies`, `/products` and `/blog` routes, which
+  every page shows.
+- **Not verified:** an actual email delivery through Resend (no key available).
+
+## CRM service image added (2026-10-01)
+
+The user supplied an illustration: a CRM dashboard on a laptop, with "Track
+leads / Manage contacts / Close deals / Get insights" around it. It was resized
+from 3840x2560 to 1920x1280 (3:2, 337 KB) as
+`public/images/services/crm.png` and set as `Service.image` for `crm` in
+content.ts. It now shows in the `/services/crm` hero and on the CRM card
+(/services grid + Home slider).
+- The dashboard's figures (1,245 contacts, 342 deals, $86,420, +18.4%) and
+  names (Kavya Iyer, etc.) are **mock UI inside an illustration**, not Vrattiks
+  results. Never quote them as stats.
+- Two things worth raising with the client: it uses **$**, not ₹, and a **blue**
+  palette rather than the brand violet.
+- Verified at 1440 and 375 with `next start`: the image loads, there's no
+  overflow, and the 3:2 card crop shows the whole picture. Lint and build are clean.
+
+## WhatsApp Automation service image added (2026-10-01)
+
+The user supplied an illustration: a WhatsApp chat on a phone, with an
+automation flow, "Campaign Performance" and "Engagement" cards. The 1216x1294
+source was palette-quantised with sharp (1.5 MB → 579 KB, no visible banding)
+to `public/images/services/whatsapp-automation.png`, with
+`position: "50% 35%"` so the 3:2 card crop keeps the flow, the chat and the
+campaign card. **All six services now have an image.**
+- As with CRM, the figures (152,320 sent, 98.5% / 45.3% / 32.7%) are mock UI in
+  an illustration. Never quote them. It also shows the real WhatsApp logo
+  and a "secure service from Meta" notice. That's nominative use for a WhatsApp
+  service, but it's the client's call if Meta brand rules matter to them.
+- **Open:** `ServiceHero` bottom-aligns its columns (`md:items-end`), so
+  near-square images push the H1 down. At 1440x900 the H1 top is at 893px for
+  WhatsApp and 869px for AI Chatbot (it was already like this), against
+  603–724px for the 3:2 images. Fix if asked: cap the hero image height or
+  top-align the grid.
+- Verified with `next start` at 1440 and 375: the image loads, there's no
+  overflow, and the card crop looks right. Lint and build are clean.

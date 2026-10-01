@@ -58,6 +58,7 @@ export const services: Service[] = [
     name: "WhatsApp Automation",
     slug: "whatsapp-automation",
     icon: "whatsapp",
+    image: { src: "/images/services/whatsapp-automation.png", width: 1216, height: 1294, position: "50% 35%" },
     description: "Automated replies, updates, and follow-ups on the channel your customers already use.",
     details:
       "Reply to customers on WhatsApp as soon as they message, send order and appointment updates, and follow up with new leads. Nobody has to watch the phone all day.",
@@ -66,6 +67,7 @@ export const services: Service[] = [
     name: "CRM",
     slug: "crm",
     icon: "crm",
+    image: { src: "/images/services/crm.png", width: 1920, height: 1280 },
     description: "One place to track every lead and customer, kept up to date automatically.",
     details:
       "Every lead and customer in one place, with each call, chat and message logged against them. Your team can see who needs a reply next, and records update themselves as conversations happen.",
@@ -196,3 +198,27 @@ export const industries: Industry[] = [
     application: "Keep project inquiries, vendor follow-ups, and site updates moving without chasing.",
   },
 ];
+
+/* ⚠ PLACEHOLDER contact details (vrattiks-standards §3): none are confirmed
+   yet, so every value is `null` and the Contact page renders "Pending
+   confirmation" without a link. Fill these in here, the one place they are
+   used, before launch. Write `phone` and `whatsapp` as they should be shown,
+   with the country code (e.g. "+91 98000 00000"); the links are derived from
+   the digits. Values left null are also kept out of the JSON-LD. */
+export const contactDetails: {
+  email: string | null;
+  phone: string | null;
+  whatsapp: string | null;
+  location: string | null;
+  hours: string | null;
+} = {
+  email: null,
+  phone: null,
+  whatsapp: null,
+  location: null,
+  hours: null,
+};
+
+/* Options for the Contact form's "What can we help with?" select. The server
+   action accepts only these values. */
+export const inquiryTopics: string[] = [...services.map((s) => s.name), "Not sure yet"];

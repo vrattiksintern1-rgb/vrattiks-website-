@@ -1,7 +1,6 @@
 import Container from "./ui/Container";
 import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
-import NetworkBackdrop from "./ui/NetworkBackdrop";
 
 const faqs = [
   {
@@ -38,39 +37,24 @@ const faqs = [
 
 export default function FAQ() {
   return (
-    <section className="relative isolate overflow-clip bg-n-50 py-10 md:py-16">
-      {/* Background design: tinted band + a node-and-line network fading out
-          from the left, with one soft glow low in the corner. A different motif
-          from the hero grid on purpose. Uses overflow-clip, not overflow-hidden,
-          so the sticky heading column below keeps working. Below md the
-          heading and questions stack, so the network is dimmed there. */}
-      <NetworkBackdrop className="mask-fade-left absolute inset-0 -z-10 h-full w-full opacity-50 md:opacity-100" />
-      <div
-        aria-hidden="true"
-        className="wash-brand pointer-events-none absolute -bottom-24 -left-24 -z-10 h-[320px] w-[420px] opacity-60"
-      />
+    <section className="bg-n-50 py-14 md:py-24">
       {/* Split layout: heading sticks in the left column (below the 80px
-          sticky header) while the questions scroll. No boxes — each item is a
-          divider row, and the toggle is a +/− drawn from two bars, the
+          sticky header) while the questions scroll. The questions sit on one
+          white panel for contrast against the tinted band; inside it each item
+          is a divider row, and the toggle is a +/− drawn from two bars, the
           vertical one rotating flat when open. */}
-      <Container className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)] md:gap-16">
-        <div className="relative md:sticky md:top-28 md:self-start">
-          {/* Soft halo in the band colour so the network never runs through
-              the eyebrow/heading. It travels with the sticky column. */}
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -inset-x-6 -inset-y-5 -z-10 rounded-xl bg-n-50/85 blur-lg"
-          />
+      <Container className="grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)] md:gap-16">
+        <div className="md:sticky md:top-28 md:self-start">
           <SectionHeading
             eyebrow="FAQ"
             title="Common questions"
           />
         </div>
 
-        <div className="border-t border-n-200">
+        <div className="rounded-lg border border-n-200 bg-n-0 px-5 shadow-[var(--shadow-md)] sm:px-8">
           {faqs.map((faq, i) => (
-            <Reveal key={faq.question} delay={i * 0.04}>
-              <details className="group border-b border-n-200">
+            <Reveal key={faq.question} delay={i * 0.04} className="border-b border-n-200 last:border-b-0">
+              <details className="group">
                 <summary className="focus-glow flex cursor-pointer list-none items-start justify-between gap-6 rounded-sm py-5 marker:content-none md:py-6 [&::-webkit-details-marker]:hidden">
                   <span className="text-[16px] leading-[1.45] font-semibold text-n-900 transition-colors duration-150 group-open:text-brand-secondary md:text-[17px]">
                     {faq.question}

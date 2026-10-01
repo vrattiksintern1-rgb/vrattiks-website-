@@ -25,7 +25,7 @@ export default function CompanyIntro() {
             id="company-heading"
             className="max-w-[16ch] text-[36px] leading-[1.1] tracking-[-0.02em] font-display font-bold text-n-900 md:text-[52px]"
           >
-            We build the systems that take busywork off your team
+            Your team focuses on customers. We handle the repetitive work.
           </h1>
           <p className="mt-6 max-w-xl text-body-lg text-n-600">
             Vrattiks Intelligence is an AI automation company. We design and build

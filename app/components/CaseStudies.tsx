@@ -8,7 +8,7 @@ import Icon from "./ui/Icon";
    instead of fabricated client names or results (vrattiks-standards §3). */
 export default function CaseStudies() {
   return (
-    <section className="py-14 md:py-24">
+    <section className="py-10 md:py-16">
       <Container>
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
           <SectionHeading

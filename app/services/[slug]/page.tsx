@@ -6,13 +6,12 @@ import ServiceSteps from "../../components/ServiceSteps";
 import ServiceFeatures from "../../components/ServiceFeatures";
 import ServiceBenefits from "../../components/ServiceBenefits";
 import ServiceFit from "../../components/ServiceFit";
-import RelatedServices from "../../components/RelatedServices";
 import FinalCTA from "../../components/FinalCTA";
 import { industries, services, useCases } from "../../lib/content";
 import { serviceDetails } from "../../lib/service-details";
 
 /* Service detail template (vrattiks-architecture §2): Hero → Problem → How it
-   works → Key features → Benefits → Who it's for → Related services → CTA.
+   works → Key features → Benefits → Who it's for → CTA.
    All six pages come from this one route, driven by content.ts +
    service-details.ts. */
 
@@ -62,9 +61,6 @@ export default async function ServiceDetailPage({ params }: { params: Params }) 
 
   const fitIndustries = industries.filter((i) => detail.industries.includes(i.slug));
   const fitUseCases = useCases.filter((u) => detail.useCases.includes(u.slug));
-  const related = detail.related
-    .map((s) => services.find((x) => x.slug === s))
-    .filter((s) => s !== undefined);
 
   /* Grounded in the page's own copy only — no offers, pricing, ratings or
      areaServed claims (vrattiks-seo, vrattiks-standards §3). */
@@ -99,7 +95,6 @@ export default async function ServiceDetailPage({ params }: { params: Params }) 
       <ServiceFeatures features={detail.features} />
       <ServiceBenefits benefits={detail.benefits} />
       <ServiceFit industries={fitIndustries} useCases={fitUseCases} />
-      <RelatedServices services={related} />
       <FinalCTA
         title={`Talk to us about ${service.name}`}
         description="Book a free consultation. We'll look at how you work today and show you where this fits."

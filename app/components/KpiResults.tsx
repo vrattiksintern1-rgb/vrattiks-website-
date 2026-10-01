@@ -37,7 +37,7 @@ const outcomes: { icon: IconName; label: string; description: string }[] = [
 
 export default function KpiResults() {
   return (
-    <section className="py-14 md:py-16">
+    <section className="py-10 md:py-12">
       <Container>
         <SectionHeading
           title="What automation changes for your business"

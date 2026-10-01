@@ -33,7 +33,7 @@ export default function UseCases({
   headingId?: string;
 }) {
   return (
-    <section aria-labelledby={headingId} className="bg-brand-graphite py-14 md:py-24">
+    <section aria-labelledby={headingId} className="bg-brand-graphite py-10 md:py-16">
       <Container>
         <SectionHeading
           id={headingId}

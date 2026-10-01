@@ -14,7 +14,7 @@ export default function FinalCTA({
   buttonLabel?: string;
 }) {
   return (
-    <section className="py-14 md:py-20">
+    <section className="py-10 md:py-16">
       <Container>
         <Reveal className="bg-brand-gradient flex flex-col items-center gap-6 rounded-xl px-8 py-14 text-center shadow-[var(--shadow-glow)] md:px-16 md:py-16">
           <h2 className="max-w-xl text-[26px] leading-[1.2] tracking-[-0.02em] font-display font-bold text-n-0 md:text-h2">

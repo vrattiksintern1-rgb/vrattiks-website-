@@ -27,10 +27,10 @@ export default function Header() {
       <Container className="flex h-16 items-center justify-between md:h-20">
         <Link href="/" className="focus-glow shrink-0 rounded-sm" aria-label="Vrattiks home">
           <Image
-            src="/brand/vrattiks-logo.png"
+            src="/brand/vrattiks-logo-wordmark.png"
             alt="Vrattiks"
-            width={413}
-            height={126}
+            width={418}
+            height={134}
             priority
             className="h-8 w-auto md:h-9"
           />

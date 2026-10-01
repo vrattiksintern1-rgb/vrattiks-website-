@@ -58,7 +58,7 @@ export default function Home() {
       <WhyVrattiks />
       <ServicesOverview />
       <UseCases />
-      <Industries />
+      <Industries showImages={false} />
       <CaseStudies />
       <Process />
       <Testimonials />

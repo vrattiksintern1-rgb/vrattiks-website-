@@ -17,7 +17,7 @@ export default function ServicesOverview({
   headingId?: string;
 }) {
   return (
-    <section aria-labelledby={headingId} className="py-14 md:py-24">
+    <section aria-labelledby={headingId} className="py-10 md:py-16">
       <Container>
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
           <SectionHeading

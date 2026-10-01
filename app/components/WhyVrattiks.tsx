@@ -20,7 +20,7 @@ export default function WhyVrattiks({
   cta?: { label: string; href: string };
 }) {
   return (
-    <section className="py-14 md:py-24">
+    <section className="py-10 md:py-16">
       <Container className="grid grid-cols-1 gap-10 md:grid-cols-2 md:items-center md:gap-14">
         <Reveal>
           <span className="mb-3 block text-label font-semibold uppercase text-brand-secondary">

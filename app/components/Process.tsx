@@ -33,7 +33,7 @@ const steps: { icon: IconName; title: string; description: string }[] = [
 
 export default function Process({ headingId }: { headingId?: string }) {
   return (
-    <section aria-labelledby={headingId} className="py-14 md:py-24">
+    <section aria-labelledby={headingId} className="py-10 md:py-16">
       <Container>
         <SectionHeading
           id={headingId}

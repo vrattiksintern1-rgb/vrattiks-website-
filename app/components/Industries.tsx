@@ -7,20 +7,23 @@ import Icon from "./ui/Icon";
 import { industries } from "@/app/lib/content";
 
 /* Optional props let /industries retitle the section so it doesn't repeat
-   its own H1, and name the landmark by its heading. Home passes none. */
+   its own H1, and name the landmark by its heading. Home passes
+   showImages={false} to keep the section a text-only directory. */
 export default function Industries({
   eyebrow = "Industries",
   title = "Built to adapt to how your industry works",
   description = "The same automation foundation, applied to what matters most in your industry.",
   headingId,
+  showImages = true,
 }: {
   eyebrow?: string;
   title?: string;
   description?: string;
   headingId?: string;
+  showImages?: boolean;
 }) {
   return (
-    <section aria-labelledby={headingId} className="py-14 md:py-24">
+    <section aria-labelledby={headingId} className="py-10 md:py-16">
       <Container>
         <SectionHeading
           id={headingId}
@@ -45,15 +48,23 @@ export default function Industries({
                 href={`/industries/${industry.slug}`}
                 className="focus-glow group flex h-full items-start gap-4 border-t border-n-200 pt-5 pb-7 transition-colors duration-150 hover:border-brand-secondary sm:flex-col sm:items-stretch sm:gap-4"
               >
-                <span className="relative aspect-[4/3] w-24 shrink-0 overflow-hidden rounded-sm bg-n-50 sm:aspect-[3/2] sm:w-full md:aspect-[16/9]">
-                  <Image
-                    src={industry.image}
-                    alt=""
-                    fill
-                    sizes="(min-width: 901px) 33vw, (min-width: 601px) 50vw, 96px"
-                    className="object-cover"
-                  />
-                </span>
+                {showImages && (
+                  <span className="relative aspect-[4/3] w-24 shrink-0 overflow-hidden rounded-sm bg-n-50 sm:aspect-[3/2] sm:w-full md:aspect-[16/9]">
+                    <Image
+                      src={industry.image}
+                      alt=""
+                      fill
+                      sizes="(min-width: 901px) 33vw, (min-width: 601px) 50vw, 96px"
+                      className="object-cover"
+                    />
+                    {/* Inset hairline so the bright photos (finance, construction)
+                        keep an edge against the n-25 page instead of bleeding into it. */}
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-0 rounded-[inherit] ring-1 ring-n-900/10 ring-inset"
+                    />
+                  </span>
+                )}
                 <div className="flex min-w-0 flex-1 flex-col">
                   <h3 className="text-[15px] leading-[1.3] font-display font-semibold text-n-900 transition-colors duration-150 group-hover:text-brand-secondary">
                     {industry.name}

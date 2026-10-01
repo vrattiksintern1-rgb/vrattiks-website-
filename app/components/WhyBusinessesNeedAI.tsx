@@ -38,7 +38,7 @@ const row = "md:grid-cols-[56px_minmax(0,1fr)_minmax(0,1.25fr)] md:gap-8";
 
 export default function WhyBusinessesNeedAI() {
   return (
-    <section className="py-14 md:py-24">
+    <section className="py-10 md:py-16">
       <Container>
         <SectionHeading
           eyebrow="The Problem"

@@ -5,7 +5,7 @@ import HeroVisual from "./HeroVisual";
 
 export default function Hero() {
   return (
-    <section className="overflow-hidden py-14 md:py-20">
+    <section className="overflow-hidden py-10 md:py-16">
       <Container className="flex flex-col items-center gap-12 md:flex-row md:gap-10">
         <Reveal className="max-w-xl text-center md:text-left">
           <span className="mb-5 inline-flex items-center rounded-full bg-n-50 px-4 py-1.5 text-label font-semibold uppercase text-brand-secondary">

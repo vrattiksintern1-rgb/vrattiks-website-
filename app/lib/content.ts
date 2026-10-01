@@ -119,7 +119,7 @@ export const industries: Industry[] = [
   {
     name: "Healthcare",
     slug: "healthcare",
-    image: "/images/industries/healthcare-consultation.jpg",
+    image: "/images/industries/healthcare.jpg",
     icon: "pulse",
     application: "Automate appointment reminders and patient follow-up communication.",
   },

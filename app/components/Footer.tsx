@@ -23,10 +23,10 @@ export default function Footer() {
         <div>
           <Link href="/" className="focus-glow rounded-sm" aria-label="Vrattiks home">
             <Image
-              src="/brand/vrattiks-logo.png"
+              src="/brand/vrattiks-logo-wordmark.png"
               alt="Vrattiks"
-              width={413}
-              height={126}
+              width={418}
+              height={134}
               className="h-8 w-auto"
             />
           </Link>

@@ -7,8 +7,8 @@ import SectionHeading from "./ui/SectionHeading";
    beyond "Co-Founder", bios, photos or quotes until the client supplies them.
    Monograms stand in for photos rather than a stock face. */
 const founders = [
-  { name: "Hitesh Dave", initials: "HD" },
   { name: "Arpit Patel", initials: "AP" },
+  { name: "Hitesh Dave", initials: "HD" },
 ];
 
 export default function Founders() {

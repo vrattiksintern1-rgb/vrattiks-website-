@@ -842,3 +842,59 @@ to `content.ts`. At the user's request the three files were deleted (they
 belonged to a dropped Home layout; recoverable from git history). The earlier
 notes above saying "`npm run build` still fails on those" are now resolved:
 `npm run build` passes locally and prerenders all 16 routes.
+
+## Industries photos — graded, four replaced (2026-09-29)
+
+The 11 stock photos didn't read as one set (heavy amber, saturated blue, blown
+whites), and four of them didn't look like India at all.
+
+- **Every file in `public/images/industries/` carries one grade**, applied with
+  sharp: 40% of the way to gray-world white balance, luminance pulled halfway
+  toward a common mean (128), saturation x0.85, mozjpeg. The script
+  (`grade.cjs` / `prep.cjs`) is in the session scratchpad. **Re-apply the same
+  grade to any photo added later** so the set stays uniform. Originals are in git.
+- **Four photos replaced with India-context Unsplash License photos, approved by
+  the user from a before/after preview:** EdTech `rwmYLRgkjsE` (Faisal Qureshi,
+  coaching classroom, Mumbai) · Healthcare `etw3NOpgKDI` (drtondons dentalclinic,
+  dentist with child, Lucknow; cropped from portrait, now `healthcare.jpg`, the old
+  `healthcare-consultation.jpg` was deleted) · Finance `JhevWHCbVyw` (Towfiqu
+  barbhuiya, hands on calculator) · Salons/Spas `g2u8gq5XcwE` (Tile Merchant
+  Ireland, empty modern salon interior, Dublin; no readable branding). New ones are
+  1200x800 (3:2), crops baked into the file.
+  The first salon pick, `kvf5kfVMqng` (shirodhara, bare-shouldered client), was
+  **rejected by the user the same day** and replaced by the interior. For this
+  industry, prefer the business space over a close-up of a client's body.
+- **Automobile replaced** with `XP8o9_Arwqg` (Dextar Studio, mechanic at a car
+  in a bright service bay, Erbil, Iraq). User chose it over a garlanded Indian
+  new-car delivery whose Mahindra logo was prominent. At full size it has a small
+  "AMG Performance Center" sign and a Mercedes wheel-hub star; neither is legible
+  at card size. Car photos almost always carry a maker's badge, so judge
+  legibility at card size (~440px desktop, 96px mobile), not full size.
+- **EdTech and Higher Education replaced (user's picks from a shortlist):**
+  EdTech `6RTM8EsD1T8` (Kyle Gregory Devaras, young woman studying at a bright
+  table) replaces the coaching-classroom photo above. Higher Education
+  `ZsVCAQCXDFM` (Abhishek Choudhary, two students with backpacks on campus, Navi
+  Mumbai), cropped from portrait with the window at y=450 so the 16:9 card crop
+  keeps both heads. Rejected for this pair: a domed building that looks like a
+  real IIT (implies an affiliation), a laptop shot with a prominent Apple logo, and
+  a "MITTAL SCHOOL" building sign.
+- **Higher Education replaced again the same day** — the user rejected the
+  two-students photo. Now `k-fBdU_TdSo` (Muhammad Shakir, four students in college
+  blazers walking on a campus path), cropped from portrait with the window at
+  y=850 of 2700. Blazer/tie crests are unreadable; background flags are generic.
+  Note: Unsplash IDs can contain hyphens, so take the ID from the full slug, not
+  `split('-').pop()`.
+  Known and accepted: the students' shirts carry a tiny institute badge that can't
+  be read; the dental photo came from a real clinic's account but shows no branding.
+- Still the old photos: real estate, hospitality, restaurants, manufacturing,
+  construction. Replace the same way if asked.
+- `Industries.tsx` adds an inset `ring-n-900/10` hairline over each photo so the
+  bright ones keep an edge on the n-25 page.
+- **Finding photos:** Unsplash blocks plain curl/API requests without a key.
+  playwright-core driving local Chrome over `unsplash.com/s/photos/<q>?license=free`
+  works; filter to `images.unsplash.com` srcs (plus.unsplash.com = paid Unsplash+).
+  Bank searches return real bank logos, and office searches return posed portraits
+  that read as "the team". Skip both.
+- **Trap:** after replacing an image file, the dev server keeps serving the old
+  optimised copy. Delete `.next/dev/cache/images` (and `.next/cache/images`).
+- Verified in Chrome at 1440 and 390; eslint and `tsc --noEmit` are clean.

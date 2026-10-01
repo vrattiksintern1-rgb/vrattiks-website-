@@ -590,6 +590,15 @@ structure and surface value alternating down the page:
   at ~176px each) and the WhatWeDo featured card at 901–1024 are the two most
   likely places to find a problem.
 
+## Home services → slider (2026-10-01)
+
+- Client asked for the Home services section as a slide. `ServicesOverview` now takes `layout?: "grid" | "slider"` (default `grid`); only `app/page.tsx` passes `layout="slider"`. `/services` still renders the full grid.
+- Card markup extracted to `app/components/ServiceCard.tsx` (shared by both layouts). Slider is `app/components/ServicesSlider.tsx` (client): native CSS scroll-snap track (swipe/trackpad/keyboard focus work natively), prev/next round buttons, and a hairline progress bar whose brand-primary thumb is the section's one accent. 3 cards visible ≥md, 2 at sm, 85% width on mobile so the next card peeks.
+- Added `arrowLeft` / `arrowRight` to `ui/Icon.tsx`. Smooth scroll is disabled under reduced motion.
+- Verified: tsc, lint, `npm run build` pass.
+- **Follow-up (same day): autoplay + centre zoom.** Client asked for the slider to auto-advance and for the centred card to be zoomed. Now: `snap-center`, the active (centred) card gets `scale-105` (an active-slide state, deliberately *not* a hover scale — the no-hover-scale rule still holds). Autoplay every 3.5s via one timeout per active slide (any manual swipe/click restarts the countdown). Infinite loop: the list renders 3× and silently jumps by one copy width when a scroll settles in an outer copy; outer copies are `inert` + `aria-hidden`. Pauses on mouse hover, keyboard focus (`:focus-visible` only — mouse clicks on arrows must not pause it), off-screen, hidden tab; reduced-motion users start paused. Controls: 6 segment buttons (active = brand-primary), prev / pause-play / next. Added `pause`/`play` icons.
+- Verified headless (CDP, `next start`) at 1440/768/375: autoplay advances one card per tick, active card exactly centred (0px off), scale 1.05 not clipped, zero page overflow-x, and next-past-last loops back to service #1 in the middle copy.
+
 ## Pending / not started
 
 - No content/copy finalized beyond the design doc's placeholder examples.
@@ -618,6 +627,7 @@ structure and surface value alternating down the page:
 
 - "What automation changes for your business" got a section description and sharper card copy that uses numbers.
 - The numbers are **illustrative scenarios** (an 11 PM enquiry, day 1/3/7 follow-ups, 24 hours a day, 7 days a week, 10 vs 500 leads). They are not measured results, so they stay within vrattiks-standards §3. Swap in real metrics only once case-study data exists.
+- **KPI numerals added (2026-10-01, user request):** each column now leads with a display-scale value (`<60s` / `3` / `24/7` / `100%`) plus an uppercase metric line saying what it measures. Every value restates a *capability* already in that card's copy (reply in seconds, 3 follow-ups, always-on, every lead tracked). None is an outcome claim like "60% more leads". Replace with measured figures once case-study data exists.
 
 ## Industries expanded to eleven (2026-09-28)
 
@@ -898,3 +908,42 @@ whites), and four of them didn't look like India at all.
 - **Trap:** after replacing an image file, the dev server keeps serving the old
   optimised copy. Delete `.next/dev/cache/images` (and `.next/cache/images`).
 - Verified in Chrome at 1440 and 390; eslint and `tsc --noEmit` are clean.
+
+## Home Industries trimmed to six (2026-10-01)
+
+At the user's request, Home now shows only the first 6 of the 11 industries
+(Real Estate, Healthcare, Finance, Manufacturing, Hospitality, EdTech & Coaching)
+via a new `limit` prop on `Industries.tsx` (`<Industries showImages={false} limit={6} />`).
+When `limit` is set, an outline "View all industries" button links to
+`/industries`, using the same pattern as ServicesOverview. `/industries` passes no
+limit and still lists all 11. The data in `content.ts` is unchanged.
+
+## Home background design (2026-10-01)
+
+Added a background layer to the page. It is decorative and kept quiet, so it
+doesn't add a second gradient surface to the screen.
+
+- New utilities in `globals.css`: `.bg-grid-fade` (48px hairline grid in
+  `n-300` at 35%, masked to fade out from the top centre), `.bg-grid-fade-dark`
+  (the same grid at 6% white for graphite) and `.wash-brand` (a blurred radial
+  glow built from the brand tokens with `color-mix`, so there are no hex
+  literals).
+- **Hero:** grid plus one glow behind the headline column. On mobile the glow is
+  smaller and at 50% opacity, so it doesn't sit behind the `n-500` subhead.
+- **UseCases dark band:** the same grid motif plus a faint glow at 30%. The
+  component is also used on `/industries`, which therefore gets it too.
+- Every layer is `aria-hidden`, `pointer-events-none` and `-z-10` inside a
+  `relative isolate overflow-hidden` section.
+- **FAQ:** uses a *different* motif from the grid: a "plexus" network (nodes
+  joined by hairlines, glowing hubs, blurred bokeh), modelled on reference
+  images the user supplied but in brand violet instead of blue. It lives in
+  `ui/NetworkBackdrop.tsx` as a static server-rendered SVG generated from a
+  **fixed seed** (deterministic, so there are no hydration issues and nothing
+  animates). It sits on a `bg-n-50` band, is faded out to the right by
+  `.mask-fade-left` (so the answers stay clean), and drops to 50% opacity below
+  md, where the columns stack. A blurred `bg-n-50/85` halo behind the sticky
+  heading keeps lines off the eyebrow and H2. A `.wash-brand` glow sits in the
+  bottom-left corner. The section uses **`overflow-clip`, not
+  `overflow-hidden`**, so nothing bleeds into FinalCTA and the `md:sticky`
+  heading still works. To change the picture, change the seed or node counts
+  in `NetworkBackdrop.tsx`.

@@ -5,7 +5,14 @@ import HeroVisual from "./HeroVisual";
 
 export default function Hero() {
   return (
-    <section className="overflow-hidden py-10 md:py-16">
+    <section className="relative isolate overflow-hidden py-10 md:py-16">
+      {/* Background design: fading hairline grid + one soft brand glow behind
+          the headline side. Decorative only — hidden from assistive tech. */}
+      <div aria-hidden="true" className="bg-grid-fade pointer-events-none absolute inset-0 -z-10" />
+      <div
+        aria-hidden="true"
+        className="wash-brand pointer-events-none absolute -top-24 left-1/2 -z-10 h-[300px] w-[420px] -translate-x-1/2 opacity-50 md:-top-32 md:left-[30%] md:h-[420px] md:w-[680px] md:opacity-70"
+      />
       <Container className="flex flex-col items-center gap-12 md:flex-row md:gap-10">
         <Reveal className="max-w-xl text-center md:text-left">
           <span className="mb-5 inline-flex items-center rounded-full bg-n-50 px-4 py-1.5 text-label font-semibold uppercase text-brand-secondary">

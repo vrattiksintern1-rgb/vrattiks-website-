@@ -249,6 +249,25 @@ const paths: Record<string, React.ReactNode> = {
     </>
   ),
   chevronDown: <polyline points="6 9 12 15 18 9" />,
+  arrowLeft: (
+    <>
+      <line x1="19" y1="12" x2="5" y2="12" />
+      <polyline points="11 6 5 12 11 18" />
+    </>
+  ),
+  arrowRight: (
+    <>
+      <line x1="5" y1="12" x2="19" y2="12" />
+      <polyline points="13 6 19 12 13 18" />
+    </>
+  ),
+  pause: (
+    <>
+      <line x1="9" y1="6" x2="9" y2="18" />
+      <line x1="15" y1="6" x2="15" y2="18" />
+    </>
+  ),
+  play: <path d="M8 5.5v13l10-6.5-10-6.5Z" />,
   menu: (
     <>
       <line x1="4" y1="7" x2="20" y2="7" />

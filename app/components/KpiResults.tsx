@@ -7,28 +7,45 @@ import Icon, { type IconName } from "./ui/Icon";
    descriptors instead of fabricated statistics. Replace with real metrics
    once case-study data is approved (see vrattiks-standards §3).
    The numbers below are illustrative scenarios (times, days, volumes),
-   not measured results — keep it that way until real data exists. */
-const outcomes: { icon: IconName; label: string; description: string }[] = [
+   not measured results — keep it that way until real data exists.
+   Each `value` is a capability the description already states (reply in
+   seconds, day 1/3/7 follow-ups, 24/7, every lead tracked), never an
+   outcome claim like "60% more leads". `metric` says what it measures. */
+const outcomes: {
+  icon: IconName;
+  value: string;
+  metric: string;
+  label: string;
+  description: string;
+}[] = [
   {
     icon: "clock",
+    value: "<60s",
+    metric: "To first reply, any hour",
     label: "Faster response",
     description:
       "An enquiry that lands at 11 PM gets a reply in seconds — not at 10 AM the next morning.",
   },
   {
     icon: "repeat",
+    value: "3",
+    metric: "Follow-ups per lead, sent automatically",
     label: "Less manual work",
     description:
       "Day 1, day 3 and day 7 follow-ups go out on their own, and lead details reach your CRM without retyping.",
   },
   {
     icon: "headset",
+    value: "24/7",
+    metric: "Calls and chats answered",
     label: "Always-on coverage",
     description:
       "Calls and chats are answered 24 hours a day, 7 days a week — Sundays and holidays included.",
   },
   {
     icon: "shield",
+    value: "100%",
+    metric: "Of leads tracked, first message to last",
     label: "Nothing falls through",
     description:
       "Whether you get 10 leads a day or 500, each one is tracked from the first message to the final reply.",
@@ -47,9 +64,10 @@ export default function KpiResults() {
         />
 
         {/* Stat ledger — no boxes. Columns are separated by hairline rules
-            only, and the outcome label is set at display scale so it does the
-            job a big number would (no verified metrics exist yet). No hover:
-            these aren't links. */}
+            only. The KPI numeral is the one display-scale element per column
+            (where the eye lands); its metric line says what it measures, then
+            the outcome label and the scenario that backs the number. No
+            hover: these aren't links. */}
         <div className="mt-10 grid grid-cols-1 border-y border-n-200 sm:grid-cols-2 md:mt-14 md:grid-cols-4">
           {outcomes.map((item, i) => (
             <Reveal
@@ -57,11 +75,19 @@ export default function KpiResults() {
               delay={i * 0.08}
               className="border-n-200 py-7 sm:px-6 md:py-9 [&:not(:first-child)]:border-t sm:[&:nth-child(2)]:border-t-0 sm:[&:nth-child(even)]:border-l md:[&:not(:first-child)]:border-t-0 md:[&:not(:first-child)]:border-l"
             >
-              <Icon name={item.icon} className="h-5 w-5 text-brand-secondary" />
-              <p className="mt-5 text-[22px] leading-[1.15] tracking-[-0.02em] font-display font-semibold text-n-900 md:text-[24px]">
+              <div className="flex items-center justify-between gap-4">
+                <p className="font-display text-[44px] font-semibold leading-none tracking-[-0.03em] text-n-900 md:text-[52px]">
+                  {item.value}
+                </p>
+                <Icon name={item.icon} className="h-5 w-5 shrink-0 text-brand-secondary" />
+              </div>
+              <p className="mt-3 text-[12px] font-medium uppercase leading-[1.4] tracking-[0.08em] text-n-600">
+                {item.metric}
+              </p>
+              <p className="mt-6 border-t border-n-200 pt-5 font-display text-[18px] font-semibold leading-[1.2] tracking-[-0.01em] text-n-900">
                 {item.label}
               </p>
-              <p className="mt-3 text-[14px] leading-[1.6] text-n-600">
+              <p className="mt-2 text-[14px] leading-[1.6] text-n-600">
                 {item.description}
               </p>
             </Reveal>

@@ -117,6 +117,49 @@
   color: transparent;
 }
 
+/* Background design — decorative layers, always aria-hidden + pointer-events-none.
+   .bg-grid-fade: hairline 48px grid that fades out from the top centre, so it
+   reads as texture behind the content rather than a pattern on top of it.
+   .bg-grid-fade-dark: same grid at low white alpha, for the graphite band.
+   .wash-brand: soft blurred brand-colour glow. Built from tokens via color-mix
+   so no hex literals leak into components. */
+.bg-grid-fade,
+.bg-grid-fade-dark {
+  background-size: 48px 48px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 30%, transparent 100%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 30%, transparent 100%);
+}
+
+.bg-grid-fade {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-n-300) 35%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-n-300) 35%, transparent) 1px, transparent 1px);
+}
+
+.bg-grid-fade-dark {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-n-0) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-n-0) 6%, transparent) 1px, transparent 1px);
+}
+
+/* Fade a decorative layer out from the left edge. Used on the FAQ's
+   NetworkBackdrop so the network sits behind the sticky heading column and
+   the answers' reading area stays clean. */
+.mask-fade-left {
+  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 20%, transparent 50%);
+  mask-image: linear-gradient(to right, #000 0%, #000 20%, transparent 50%);
+}
+
+.wash-brand {
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--color-brand-primary) 40%, transparent),
+    color-mix(in srgb, var(--color-brand-secondary) 12%, transparent) 60%,
+    transparent
+  );
+  filter: blur(40px);
+}
+
 /* Shared focus ring — replaces default outline with the brand glow token, never outline:none alone */
 .focus-glow:focus-visible {
   outline: none;

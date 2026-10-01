@@ -56,9 +56,9 @@ export default function Home() {
       <KpiResults />
       <WhyBusinessesNeedAI />
       <WhyVrattiks />
-      <ServicesOverview />
+      <ServicesOverview layout="slider" />
       <UseCases />
-      <Industries showImages={false} />
+      <Industries showImages={false} limit={6} />
       <CaseStudies />
       <Process />
       <Testimonials />

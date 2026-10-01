@@ -10,6 +10,11 @@ export type Service = {
      does, not results — no figures until real data exists
      (vrattiks-standards §3). */
   details: string;
+  /* Optional illustration. Shown in full in the detail-page hero; on the
+     service card it's cropped to a shared 3:2 frame so cards in a row line
+     up. `position` (CSS object-position) picks what that crop keeps —
+     defaults to the centre. */
+  image?: { src: string; width: number; height: number; position?: string };
 };
 
 export const services: Service[] = [
@@ -17,6 +22,7 @@ export const services: Service[] = [
     name: "AI Voice Agent",
     slug: "ai-voice-agent",
     icon: "mic",
+    image: { src: "/images/services/ai-voice-agent-assistant.png", width: 1536, height: 1024 },
     description: "Answers and makes calls around the clock, so no customer inquiry waits for a free line.",
     details:
       "The voice agent picks up every call at any hour, answers common questions, takes down the caller's details and passes the call to your team when a person is needed. It can also call new leads back while they're still interested.",
@@ -25,6 +31,7 @@ export const services: Service[] = [
     name: "AI Chatbot",
     slug: "ai-chatbot",
     icon: "chat",
+    image: { src: "/images/services/ai-chatbot.png", width: 1309, height: 1201, position: "50% 20%" },
     description: "Handles website and app conversations instantly, and hands off to your team when needed.",
     details:
       "The chatbot sits on your website or app and replies the moment a visitor asks something. It answers from your own business information, collects contact details, and brings in your team for anything it shouldn't handle alone.",
@@ -33,6 +40,7 @@ export const services: Service[] = [
     name: "Workflow Automation",
     slug: "workflow-automation",
     icon: "workflow",
+    image: { src: "/images/services/workflow-automation.png", width: 1672, height: 941 },
     description: "Connects the tools you already use so information moves between them without manual work.",
     details:
       "Takes the copy-paste out of your day. When something happens in one tool, like a form being filled, an order coming in or a payment falling due, the next steps run on their own in the others.",
@@ -41,6 +49,7 @@ export const services: Service[] = [
     name: "Website Development",
     slug: "website-development",
     icon: "globe",
+    image: { src: "/images/services/website-development.png", width: 1536, height: 1024 },
     description: "A fast, conversion-ready website built to work with your automation from day one.",
     details:
       "A fast website that tells visitors what you do and makes it easy to get in touch. Enquiry forms connect straight to your CRM, chatbot and WhatsApp, so no lead gets lost between your website and your team.",

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import Button from "./ui/Button";
 import Container from "./ui/Container";
@@ -57,6 +58,25 @@ export default function ServiceHero({
           </div>
 
           <div>
+            {/* Above the fold, so it loads eagerly. Decorative (alt=""): the
+                H1 already names the service. */}
+            {service.image ? (
+              <span
+                className="relative mb-8 block w-full overflow-hidden rounded-lg bg-n-50"
+                style={{ aspectRatio: `${service.image.width} / ${service.image.height}` }}
+              >
+                <Image
+                  src={service.image.src}
+                  alt=""
+                  fill
+                  quality={90}
+                  loading="eager"
+                  fetchPriority="high"
+                  sizes="(min-width: 901px) 40vw, 100vw"
+                  className="object-cover"
+                />
+              </span>
+            ) : null}
             <p className="text-body-lg text-n-600">{service.details}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button href="/contact">Book a Free Consultation</Button>

@@ -1,6 +1,7 @@
 import Container from "./ui/Container";
 import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
+import NetworkBackdrop from "./ui/NetworkBackdrop";
 
 const faqs = [
   {
@@ -37,13 +38,29 @@ const faqs = [
 
 export default function FAQ() {
   return (
-    <section className="py-10 md:py-16">
+    <section className="relative isolate overflow-clip bg-n-50 py-10 md:py-16">
+      {/* Background design: tinted band + a node-and-line network fading out
+          from the left, with one soft glow low in the corner. A different motif
+          from the hero grid on purpose. Uses overflow-clip, not overflow-hidden,
+          so the sticky heading column below keeps working. Below md the
+          heading and questions stack, so the network is dimmed there. */}
+      <NetworkBackdrop className="mask-fade-left absolute inset-0 -z-10 h-full w-full opacity-50 md:opacity-100" />
+      <div
+        aria-hidden="true"
+        className="wash-brand pointer-events-none absolute -bottom-24 -left-24 -z-10 h-[320px] w-[420px] opacity-60"
+      />
       {/* Split layout: heading sticks in the left column (below the 80px
           sticky header) while the questions scroll. No boxes — each item is a
           divider row, and the toggle is a +/− drawn from two bars, the
           vertical one rotating flat when open. */}
       <Container className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)] md:gap-16">
-        <div className="md:sticky md:top-28 md:self-start">
+        <div className="relative md:sticky md:top-28 md:self-start">
+          {/* Soft halo in the band colour so the network never runs through
+              the eyebrow/heading. It travels with the sticky column. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -inset-x-6 -inset-y-5 -z-10 rounded-xl bg-n-50/85 blur-lg"
+          />
           <SectionHeading
             eyebrow="FAQ"
             title="Common questions"

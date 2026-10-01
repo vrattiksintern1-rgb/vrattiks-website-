@@ -33,7 +33,14 @@ export default function UseCases({
   headingId?: string;
 }) {
   return (
-    <section aria-labelledby={headingId} className="bg-brand-graphite py-10 md:py-16">
+    <section aria-labelledby={headingId} className="relative isolate overflow-hidden bg-brand-graphite py-10 md:py-16">
+      {/* Same grid motif as the Hero, at low white alpha, plus a faint glow
+          so the dark band has depth instead of a flat fill. */}
+      <div aria-hidden="true" className="bg-grid-fade-dark pointer-events-none absolute inset-0 -z-10" />
+      <div
+        aria-hidden="true"
+        className="wash-brand pointer-events-none absolute -top-40 left-1/2 -z-10 h-[360px] w-[720px] -translate-x-1/2 opacity-30"
+      />
       <Container>
         <SectionHeading
           id={headingId}

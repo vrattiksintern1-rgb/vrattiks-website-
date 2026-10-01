@@ -4,35 +4,50 @@ import Container from "./ui/Container";
 import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
 import Icon from "./ui/Icon";
+import Button from "./ui/Button";
 import { industries } from "@/app/lib/content";
 
 /* Optional props let /industries retitle the section so it doesn't repeat
    its own H1, and name the landmark by its heading. Home passes
-   showImages={false} to keep the section a text-only directory. */
+   showImages={false} to keep the section a text-only directory, and
+   limit={6} to show a shortlist with a "View all industries" link —
+   /industries omits it and lists every industry. */
 export default function Industries({
   eyebrow = "Industries",
   title = "Built to adapt to how your industry works",
   description = "The same automation foundation, applied to what matters most in your industry.",
   headingId,
   showImages = true,
+  limit,
 }: {
   eyebrow?: string;
   title?: string;
   description?: string;
   headingId?: string;
   showImages?: boolean;
+  limit?: number;
 }) {
+  const shown = limit ? industries.slice(0, limit) : industries;
+
   return (
     <section aria-labelledby={headingId} className="py-10 md:py-16">
       <Container>
-        <SectionHeading
-          id={headingId}
-          eyebrow={eyebrow}
-          title={title}
-          description={description}
-        />
+        <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
+          <SectionHeading
+            id={headingId}
+            eyebrow={eyebrow}
+            title={title}
+            description={description}
+            className={limit ? "max-w-xl" : ""}
+          />
+          {limit ? (
+            <Button href="/industries" variant="outline" className="shrink-0">
+              View all industries
+            </Button>
+          ) : null}
+        </div>
 
-        {/* Ruled directory, not a card wall: eleven entries hang off hairline
+        {/* Ruled directory, not a card wall: entries hang off hairline
             top rules with no box or background, so the section can't be
             mistaken for the Services cards above it. Each entry leads with a
             photo of that industry — a thumbnail beside the text on phones,
@@ -40,7 +55,7 @@ export default function Industries({
             (alt=""): the link text already names the industry. Hover turns
             the rule and name brand-secondary; nothing moves or scales. */}
         <div className="mt-10 grid grid-cols-1 gap-x-8 sm:grid-cols-2 md:mt-12 md:grid-cols-3 md:gap-x-10">
-          {industries.map((industry, i) => (
+          {shown.map((industry, i) => (
             <Reveal key={industry.slug} delay={(i % 3) * 0.06}>
               {/* id = slug: the jump-list target in IndustriesIntro */}
               <Link

@@ -10,15 +10,23 @@ import type { Service } from "@/app/lib/content";
 /* Related services — the service cards without the icon disc, so the page
    doesn't grow a second icon-card grid. Hover matches ServicesOverview:
    border shift plus the glow token, never a lift. */
-export default function RelatedServices({ services }: { services: Service[] }) {
+export default function RelatedServices({
+  services,
+  eyebrow = "Related services",
+  title = "Works well with",
+}: {
+  services: Service[];
+  eyebrow?: string;
+  title?: string;
+}) {
   return (
     <Section tone="paper" labelledBy="related-heading">
       <Container>
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
           <SectionHeading
             id="related-heading"
-            eyebrow="Related services"
-            title="Works well with"
+            eyebrow={eyebrow}
+            title={title}
           />
           <Button href="/services" variant="outline" className="shrink-0">
             All services

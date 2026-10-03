@@ -1,6 +1,15 @@
+"use client";
+
+import { useRef, useState } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+} from "framer-motion";
 import Container from "./ui/Container";
 import SectionHeading from "./ui/SectionHeading";
-import Reveal from "./ui/Reveal";
 import Icon, { type IconName } from "./ui/Icon";
 
 const steps: { icon: IconName; title: string; description: string }[] = [
@@ -31,61 +40,148 @@ const steps: { icon: IconName; title: string; description: string }[] = [
   },
 ];
 
+/* Scroll distance each step gets while the stepper is pinned, in svh. */
+const STEP_SCROLL = 60;
+
 export default function Process({ headingId }: { headingId?: string }) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
+  const reduceMotion = useReducedMotion();
+
+  /* Scroll-driven, one step at a time: the track is taller than the viewport
+     and the stepper inside it is sticky, so scrolling through the track walks
+     Discover → Support in order. Native scroll only — nothing is hijacked;
+     the scroll position just picks which step is shown. */
+  const { scrollYProgress } = useScroll({
+    target: trackRef,
+    offset: ["start start", "end end"],
+  });
+
+  useMotionValueEvent(scrollYProgress, "change", (p) => {
+    setActive(Math.min(steps.length - 1, Math.max(0, Math.floor(p * steps.length))));
+  });
+
+  /* Clicking a node scrolls to the middle of that step's scroll band, so the
+     page position and the shown step never disagree. */
+  const goTo = (i: number) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const top = track.getBoundingClientRect().top + window.scrollY;
+    const distance = track.offsetHeight - window.innerHeight;
+    window.scrollTo({
+      top: top + (distance * (i + 0.5)) / steps.length,
+      behavior: reduceMotion ? "auto" : "smooth",
+    });
+  };
+
+  const step = steps[active];
+
   return (
     <section aria-labelledby={headingId} className="py-10 md:py-16">
-      <Container>
-        <SectionHeading
-          id={headingId}
-          eyebrow="Process"
-          title="How we work"
-          description="A clear path from where you are today to a business that runs on automation."
-        />
+      {/* No overflow on any ancestor — `overflow-hidden` would kill sticky.
+          The heading pins with the stepper so the two read as one unit; the
+          whole panel is sized to fit a 548px-tall phone viewport (iPhone SE
+          svh) under the 64px header. */}
+      <div
+        ref={trackRef}
+        className="relative"
+        style={{ height: `${steps.length * STEP_SCROLL + 50}svh` }}
+      >
+        <div className="sticky top-16 flex h-[calc(100svh-4rem)] items-center md:top-20 md:h-[calc(100svh-5rem)]">
+          <Container className="w-full">
+            <SectionHeading
+              id={headingId}
+              eyebrow="Process"
+              title="How we work"
+              description="A clear path from where you are today to a business that runs on automation."
+            />
 
-        {/* Timeline, not cards. md+: five columns hung off ONE gradient rail
-            (the section's only gradient, confined to a 2px band) that runs
-            from the first node's centre to the last. Below md: a vertical
-            timeline with a hairline segment under each node. Nodes are
-            painted in the page colour so the rail passes behind them. */}
-        <div className="relative mt-12 md:mt-16">
-          <span
-            aria-hidden="true"
-            className="bg-brand-gradient absolute top-[17px] right-[calc(20%-18px)] left-[18px] hidden h-0.5 md:block"
-          />
-          <ol className="relative grid grid-cols-1 md:grid-cols-5">
-            {steps.map((step, i) => (
-              <Reveal
-                as="li"
-                key={step.title}
-                delay={i * 0.08}
-                className="relative grid grid-cols-[36px_minmax(0,1fr)] gap-x-4 pb-9 last:pb-0 md:block md:pr-6 md:pb-0"
-              >
-                {i < steps.length - 1 ? (
-                  <span
-                    aria-hidden="true"
-                    className="absolute top-10 bottom-1 left-[17.5px] w-px bg-n-200 md:hidden"
-                  />
-                ) : null}
-                <span
-                  aria-hidden="true"
-                  className="relative z-10 flex h-9 w-9 items-center justify-center rounded-full border-2 border-brand-secondary bg-n-25 font-body text-[12px] font-semibold text-brand-secondary"
+            {/* Rail: one gradient fill (the section's only gradient, confined
+                to a 2px band) grows node by node over a hairline track. */}
+            <div className="relative mt-8 md:mt-12">
+              <span
+                aria-hidden="true"
+                className="absolute top-[17px] right-[10%] left-[10%] h-0.5 bg-n-200"
+              />
+              <span
+                aria-hidden="true"
+                className="bg-brand-gradient absolute top-[17px] right-[10%] left-[10%] h-0.5 origin-left transition-transform duration-300 ease-out"
+                style={{ transform: `scaleX(${active / (steps.length - 1)})` }}
+              />
+              <ol className="relative grid grid-cols-5">
+                {steps.map((s, i) => {
+                  const state = i < active ? "done" : i === active ? "active" : "next";
+                  return (
+                    <li
+                      key={s.title}
+                      aria-current={state === "active" ? "step" : undefined}
+                      className="flex flex-col items-center text-center"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => goTo(i)}
+                        aria-label={`Show step ${i + 1}: ${s.title}`}
+                        className={`focus-glow relative z-10 flex h-9 w-9 items-center justify-center rounded-full border-2 font-body text-[12px] font-semibold transition-colors duration-150 ${
+                          state === "active"
+                            ? "border-brand-secondary bg-brand-secondary text-n-0"
+                            : state === "done"
+                              ? "border-brand-secondary bg-n-25 text-brand-secondary"
+                              : "border-n-300 bg-n-25 text-n-500 hover:border-brand-secondary"
+                        }`}
+                      >
+                        {String(i + 1).padStart(2, "0")}
+                      </button>
+                      <h3
+                        className={`sr-only mt-3 px-1 text-[15px] leading-[1.3] font-display font-semibold transition-colors duration-150 md:not-sr-only ${
+                          state === "next" ? "text-n-500" : "text-n-900"
+                        }`}
+                      >
+                        {s.title}
+                      </h3>
+                      <p className="sr-only">{s.description}</p>
+                    </li>
+                  );
+                })}
+              </ol>
+            </div>
+
+            {/* Visual detail for the current step only. The same text is in
+                the list above for assistive tech, so this is aria-hidden. */}
+            <div
+              aria-hidden="true"
+              className="mx-auto mt-6 grid min-h-[172px] max-w-3xl overflow-hidden rounded-md border border-n-200 bg-n-0 md:mt-10 md:min-h-[200px]"
+              style={{ boxShadow: "var(--shadow-md)" }}
+            >
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={active}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={reduceMotion ? { duration: 0 } : { duration: 0.18, ease: "easeOut" }}
+                  className="flex items-start gap-10 p-5 md:p-10"
                 >
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <div className="pt-1.5 md:pt-6">
-                  <h3 className="flex items-center gap-2 text-[17px] leading-[1.3] font-display font-semibold text-n-900">
-                    <Icon name={step.icon} className="h-4.5 w-4.5 shrink-0 text-n-500" />
-                    {step.title}
-                  </h3>
-                  <p className="mt-2 max-w-[260px] text-[14px] leading-[1.6] text-n-600">
-                    {step.description}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </ol>
+                  {/* Big numeral md+ only — on phones the filled rail node
+                      and the "Step N of 5" label already carry it. */}
+                  <span className="hidden font-display text-[64px] leading-none font-bold tracking-[-0.03em] text-brand-secondary md:block">
+                    {String(active + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <span className="block font-body text-label font-semibold text-n-500 uppercase">
+                      Step {active + 1} of {steps.length}
+                    </span>
+                    <p className="mt-2 flex items-center gap-2 font-display text-[22px] leading-[1.25] font-semibold text-n-900 md:text-[26px]">
+                      <Icon name={step.icon} className="h-5 w-5 shrink-0 text-n-500" />
+                      {step.title}
+                    </p>
+                    <p className="mt-3 max-w-[460px] text-body text-n-600">{step.description}</p>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </Container>
         </div>
-      </Container>
+      </div>
     </section>
   );
 }

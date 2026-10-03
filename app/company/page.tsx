@@ -45,8 +45,8 @@ const aboutJsonLd = {
     name: "Vrattiks Intelligence",
     legalName: "Vrattiks Intelligence LLP",
     founder: [
-      { "@type": "Person", name: "Hitesh Dave" },
-      { "@type": "Person", name: "Arpit Patel" },
+      { "@type": "Person", name: "Hitesh Dave", jobTitle: "Co-Founder & CTO" },
+      { "@type": "Person", name: "Arpit Patel", jobTitle: "Co-Founder & CEO" },
     ],
   },
 };

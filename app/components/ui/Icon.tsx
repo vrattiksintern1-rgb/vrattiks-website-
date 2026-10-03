@@ -191,6 +191,12 @@ const paths: Record<string, React.ReactNode> = {
       <path d="M9.5 12a2.5 2.5 0 0 0 2.5 2.5" />
     </>
   ),
+  eye: (
+    <>
+      <path d="M2 12c1-3 5-7 10-7s9 4 10 7c-1 3-5 7-10 7S3 15 2 12Z" />
+      <circle cx="12" cy="12" r="2.75" />
+    </>
+  ),
   sparkles: (
     <>
       <path d="M12 3v5M12 16v5M4 12h5M15 12h5" />
@@ -316,6 +322,13 @@ const paths: Record<string, React.ReactNode> = {
   phone: (
     <path d="M5 4h3.5l1.8 4.5-2.3 1.5a11 11 0 0 0 6 6l1.5-2.3L20 15.5V19a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1Z" />
   ),
+  sun: (
+    <>
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4" />
+    </>
+  ),
+  moon: <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" />,
   mapPin: (
     <>
       <path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z" />

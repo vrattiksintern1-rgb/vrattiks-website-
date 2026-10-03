@@ -5,13 +5,15 @@ import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
 import Icon from "./ui/Icon";
 import Button from "./ui/Button";
+import IndustryTimeline from "./IndustryTimeline";
 import { industries } from "@/app/lib/content";
 
 /* Optional props let /industries retitle the section so it doesn't repeat
    its own H1, and name the landmark by its heading. Home passes
    showImages={false} to keep the section a text-only directory, and
    limit={6} to show a shortlist with a "View all industries" link —
-   /industries omits it and lists every industry. */
+   /industries omits it and lists every industry. layout="timeline" swaps
+   the ruled grid for the scroll-linked rail in IndustryTimeline (Home). */
 export default function Industries({
   eyebrow = "Industries",
   title = "Built to adapt to how your industry works",
@@ -19,6 +21,7 @@ export default function Industries({
   headingId,
   showImages = true,
   limit,
+  layout = "grid",
 }: {
   eyebrow?: string;
   title?: string;
@@ -26,6 +29,7 @@ export default function Industries({
   headingId?: string;
   showImages?: boolean;
   limit?: number;
+  layout?: "grid" | "timeline";
 }) {
   const shown = limit ? industries.slice(0, limit) : industries;
 
@@ -47,13 +51,16 @@ export default function Industries({
           ) : null}
         </div>
 
-        {/* Ruled directory, not a card wall: entries hang off hairline
+        {layout === "timeline" ? (
+          <IndustryTimeline industries={shown} />
+        ) : (
+        /* Ruled directory, not a card wall: entries hang off hairline
             top rules with no box or background, so the section can't be
             mistaken for the Services cards above it. Each entry leads with a
             photo of that industry — a thumbnail beside the text on phones,
             a full-width photo above it from sm up. The photo is decorative
             (alt=""): the link text already names the industry. Hover turns
-            the rule and name brand-secondary; nothing moves or scales. */}
+            the rule and name brand-secondary; nothing moves or scales. */
         <div className="mt-10 grid grid-cols-1 gap-x-8 sm:grid-cols-2 md:mt-12 md:grid-cols-3 md:gap-x-10">
           {shown.map((industry, i) => (
             <Reveal key={industry.slug} delay={(i % 3) * 0.06}>
@@ -99,6 +106,7 @@ export default function Industries({
             </Reveal>
           ))}
         </div>
+        )}
       </Container>
     </section>
   );

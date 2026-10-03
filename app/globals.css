@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* `dark:` utilities follow the site theme (data-theme on <html>, set by the
+   inline script in app/layout.tsx), not the OS setting directly. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 @theme {
   /* Brand core */
   --color-brand-primary: #b79af3;
@@ -75,6 +79,75 @@
   --shadow-md: 0 4px 16px rgba(22,22,29,0.08), 0 2px 6px rgba(22,22,29,0.05);
   --shadow-lg: 0 12px 32px rgba(22,22,29,0.12), 0 4px 12px rgba(22,22,29,0.06);
   --shadow-glow: 0 0 0 1px rgba(183,154,243,0.25), 0 8px 32px rgba(105,66,241,0.18);
+  color-scheme: light;
+}
+
+/* Dark theme. Every component colours itself through the n-* ramp, so the
+   whole site flips by redefining that ramp here — no per-component dark:
+   classes. Surfaces stay ordered as in light (n-25 page < n-0 card < n-50
+   tint) and text keeps its rank (n-500 secondary ≥ 5.7:1, n-600 body ≥ 8:1
+   on every dark surface). Graphite is lifted so the dark bands still read as
+   a distinct band against the darker page. Brand-secondary is lightened
+   because #6942f1 is 2.9:1 on a near-black page. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-brand-secondary: #9d85f6;
+  --color-brand-graphite: #211e30;
+
+  --color-n-0: #15141d;
+  --color-n-25: #0e0d14;
+  --color-n-50: #1b1a25;
+  --color-n-100: #252331;
+  --color-n-200: #312e40;
+  --color-n-300: #443f58;
+  --color-n-400: #6c6688;
+  --color-n-500: #9790b3;
+  --color-n-600: #b3adcc;
+  --color-n-700: #cbc6e2;
+  --color-n-800: #e2def1;
+  --color-n-900: #f3f1fb;
+
+  --color-sem-success-bg: #0f2a21;
+  --color-sem-success-text: #6fe0b8;
+  --color-sem-warning-bg: #2e2210;
+  --color-sem-warning-text: #f5c27a;
+  --color-sem-error-bg: #331520;
+  --color-sem-error-text: #f59ab0;
+  --color-sem-info-bg: #1f1a3d;
+  --color-sem-info-text: #b3a8f7;
+
+  --brand-gradient-text: linear-gradient(60deg, #d3c2fa, #9d85f6);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.35), 0 2px 6px rgba(0,0,0,0.25);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,0.45), 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* The graphite bands and the gradient are already dark surfaces designed
+   around the LIGHT ramp (text-n-0 headings, n-200/300 body, n-0/10 hairlines).
+   Restore it inside them so they render exactly as they do in light mode.
+   Values mirror @theme above — keep the two in sync. */
+[data-theme="dark"] :is(.bg-brand-graphite, .bg-brand-gradient) {
+  --color-n-0: #ffffff;
+  --color-n-25: #fbfaff;
+  --color-n-50: #f5f3fc;
+  --color-n-100: #ece8f9;
+  --color-n-200: #ddd7f1;
+  --color-n-300: #c3bce0;
+  --color-n-400: #9c93b8;
+  --color-n-500: #766e93;
+  --color-n-600: #565070;
+  --color-n-700: #3c3752;
+  --color-n-800: #262238;
+  --color-n-900: #16161d;
+}
+
+/* Theme switch crossfade (ThemeToggle wraps the swap in a view transition).
+   Kept short so it reads as a state change, not an effect. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 200ms;
+  animation-timing-function: ease-out;
 }
 
 /* Element defaults live in @layer base so Tailwind utilities (e.g. text-n-0 on a
@@ -111,7 +184,7 @@
 }
 
 .text-brand-gradient {
-  background: var(--brand-gradient);
+  background: var(--brand-gradient-text, var(--brand-gradient));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;

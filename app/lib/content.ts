@@ -22,7 +22,7 @@ export const services: Service[] = [
     name: "AI Voice Agent",
     slug: "ai-voice-agent",
     icon: "mic",
-    image: { src: "/images/services/ai-voice-agent-assistant.png", width: 1536, height: 1024 },
+    image: { src: "/images/services/ai-voice-agent-assistant.png", width: 1553, height: 1013 },
     description: "Answers and makes calls around the clock, so no customer inquiry waits for a free line.",
     details:
       "The voice agent picks up every call at any hour, answers common questions, takes down the caller's details and passes the call to your team when a person is needed. It can also call new leads back while they're still interested.",
@@ -199,12 +199,11 @@ export const industries: Industry[] = [
   },
 ];
 
-/* ⚠ PLACEHOLDER contact details (vrattiks-standards §3): none are confirmed
-   yet, so every value is `null` and the Contact page renders "Pending
-   confirmation" without a link. Fill these in here, the one place they are
-   used, before launch. Write `phone` and `whatsapp` as they should be shown,
-   with the country code (e.g. "+91 98000 00000"); the links are derived from
-   the digits. Values left null are also kept out of the JSON-LD. */
+/* Contact details, used by the Contact page and the footer. Email and phone
+   are confirmed; anything still `null` is unconfirmed (vrattiks-standards §3)
+   and renders as "Pending confirmation" without a link. Write `phone` and
+   `whatsapp` as they should be shown, with the country code; the links are
+   derived from the digits. Values left null are also kept out of the JSON-LD. */
 export const contactDetails: {
   email: string | null;
   phone: string | null;
@@ -212,8 +211,8 @@ export const contactDetails: {
   location: string | null;
   hours: string | null;
 } = {
-  email: null,
-  phone: null,
+  email: "vrattiks@gmail.com",
+  phone: "+91 9106836019",
   whatsapp: null,
   location: null,
   hours: null,

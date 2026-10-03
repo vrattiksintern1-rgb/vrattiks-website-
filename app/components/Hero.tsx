@@ -2,19 +2,21 @@ import Container from "./ui/Container";
 import Button from "./ui/Button";
 import Reveal from "./ui/Reveal";
 import HeroVisual from "./HeroVisual";
+import HeroParticles from "./HeroParticles";
 
 export default function Hero() {
   return (
     <section className="relative isolate overflow-hidden py-10 md:py-16">
-      {/* Background design: fading hairline grid + one soft brand glow behind
-          the headline side. Decorative only — hidden from assistive tech. */}
-      <div aria-hidden="true" className="bg-grid-fade pointer-events-none absolute inset-0 -z-10" />
+      {/* Background design: animated particle field + dot terrain, and one
+          soft brand glow behind the headline side. Decorative only — hidden
+          from assistive tech. */}
+      <HeroParticles />
       <div
         aria-hidden="true"
         className="wash-brand pointer-events-none absolute -top-24 left-1/2 -z-10 h-[300px] w-[420px] -translate-x-1/2 opacity-50 md:-top-32 md:left-[30%] md:h-[420px] md:w-[680px] md:opacity-70"
       />
-      <Container className="flex flex-col items-center gap-12 md:flex-row md:gap-10">
-        <Reveal className="max-w-xl text-center md:text-left">
+      <Container className="flex flex-col items-center gap-12 lg:flex-row lg:gap-12">
+        <Reveal className="max-w-xl text-center lg:flex-1 lg:text-left">
           <span className="mb-5 inline-flex items-center rounded-full bg-n-50 px-4 py-1.5 text-label font-semibold uppercase text-brand-secondary">
             AI Automation for Growing Businesses
           </span>
@@ -26,7 +28,7 @@ export default function Hero() {
             growing businesses — so leads get answered, customers get supported,
             and your operations run without the manual follow-up.
           </p>
-          <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center md:justify-start">
+          <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center lg:justify-start">
             <Button href="/contact" size="lg">
               Book a Free Consultation
             </Button>
@@ -36,7 +38,7 @@ export default function Hero() {
           </div>
         </Reveal>
 
-        <Reveal delay={0.15} className="w-full max-w-[520px] md:flex-1">
+        <Reveal delay={0.15} className="w-full max-w-[560px] lg:flex-1">
           <HeroVisual />
         </Reveal>
       </Container>

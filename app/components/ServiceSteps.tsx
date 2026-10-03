@@ -9,8 +9,14 @@ import SectionHeading from "./ui/SectionHeading";
    `id="how-it-works"` is the hero's "See how it works" target. */
 export default function ServiceSteps({
   steps,
+  eyebrow = "How it works",
+  title = "From first conversation to up and running",
+  itemLabel = "Step",
 }: {
   steps: { title: string; text: string }[];
+  eyebrow?: string;
+  title?: string;
+  itemLabel?: string;
 }) {
   return (
     <Section tone="dark" id="how-it-works" labelledBy="steps-heading">
@@ -18,8 +24,8 @@ export default function ServiceSteps({
         <SectionHeading
           tone="dark"
           id="steps-heading"
-          eyebrow="How it works"
-          title="From first conversation to up and running"
+          eyebrow={eyebrow}
+          title={title}
         />
 
         <ol className="mt-12 grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 md:mt-16 lg:grid-cols-4">
@@ -27,7 +33,7 @@ export default function ServiceSteps({
             <Reveal as="li" key={step.title} delay={i * 0.08} className="relative border-t border-n-0/10 pt-6">
               <span aria-hidden="true" className="absolute -top-px left-0 h-px w-10 bg-brand-primary" />
               <span className="font-body text-label font-semibold tracking-[0.14em] uppercase text-brand-primary">
-                Step {String(i + 1).padStart(2, "0")}
+                {itemLabel} {String(i + 1).padStart(2, "0")}
               </span>
               <h3 className="mt-3 text-[19px] leading-[1.3] font-display font-semibold text-n-0">
                 {step.title}

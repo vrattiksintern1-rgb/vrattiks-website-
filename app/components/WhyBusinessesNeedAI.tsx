@@ -29,12 +29,16 @@ const problems: { title: string; description: string }[] = [
   },
 ];
 
-/* A numbered ledger of full-width rows, not another icon grid: the KPI
-   ledger above and the Services grid below both lead with icons, so this
-   section drops them and lets the numbering carry the structure (CLAUDE.md
-   Design Taste, slop tell 3). The one emphasised moment is the verdict at
-   the end, marked by a single device — a brand-secondary left edge. */
-const row = "md:grid-cols-[56px_minmax(0,1fr)_minmax(0,1.25fr)] md:gap-8";
+/* Stacking cards: long full-width cards that each go sticky a little lower
+   than the one before, so as you scroll each new card slides up over the
+   last and the six pile into a stack. Pure CSS sticky — no JS, no
+   scroll-linked animation, so nothing to switch off for reduced motion.
+   Needs no `overflow-hidden` on any ancestor (it would kill sticky) and
+   opaque card fills (so each card covers the one beneath).
+   Cards stay uniform white (client request, 2026-09-22 note in memory.md);
+   the one emphasised moment is still the verdict at the end, marked by a
+   single device — a brand-secondary left edge. */
+const STACK_STEP = 14; // px each card docks below the previous one
 
 export default function WhyBusinessesNeedAI() {
   return (
@@ -46,24 +50,30 @@ export default function WhyBusinessesNeedAI() {
           description="Most of this isn't a big, dramatic failure — it's small delays and manual steps that quietly add up, cost leads, and wear down a team."
         />
 
-        <ol className="mt-10 border-b border-n-200 md:mt-14">
+        {/* --stack-top = sticky header height (64 / 80px) + breathing room.
+            The gap is the scroll distance between one card docking and the
+            next arriving. */}
+        <ol className="mt-10 flex flex-col gap-[18svh] [--stack-top:5rem] md:mt-14 md:[--stack-top:7rem]">
           {problems.map((problem, i) => (
-            <Reveal
+            <li
               key={problem.title}
-              as="li"
-              delay={i * 0.05}
-              className={`grid grid-cols-[40px_minmax(0,1fr)] gap-x-3 gap-y-2 border-t border-n-200 py-6 md:items-baseline md:py-7 ${row}`}
+              className="sticky grid grid-cols-1 gap-y-3 rounded-md border border-n-200 bg-n-0 p-6 md:min-h-[168px] md:grid-cols-[96px_minmax(0,1fr)_minmax(0,1.25fr)] md:items-center md:gap-x-8 md:px-10 md:py-8"
+              style={{
+                top: `calc(var(--stack-top) + ${i * STACK_STEP}px)`,
+                boxShadow: "var(--shadow-md)",
+              }}
             >
-              <span className="font-body text-[13px] leading-[1.6] text-n-600">
+              <span
+                aria-hidden="true"
+                className="font-display text-[32px] leading-none font-semibold tracking-[-0.03em] text-brand-secondary md:text-[48px]"
+              >
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <h3 className="text-[18px] leading-[1.3] font-display font-semibold text-n-900 md:text-[20px]">
+              <h3 className="text-[19px] leading-[1.3] font-display font-semibold text-n-900 md:text-[22px]">
                 {problem.title}
               </h3>
-              <p className="col-start-2 text-[14.5px] leading-[1.6] text-n-600 md:col-start-auto">
-                {problem.description}
-              </p>
-            </Reveal>
+              <p className="text-[15px] leading-[1.6] text-n-600">{problem.description}</p>
+            </li>
           ))}
         </ol>
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Urbanist, IBM_Plex_Sans } from "next/font/google";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import { themeInitScript } from "./lib/theme";
 import "./globals.css";
 
 const urbanist = Urbanist({
@@ -30,7 +31,12 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${urbanist.variable} ${ibmPlexSans.variable}`}>
+    // suppressHydrationWarning: the inline script sets data-theme before React
+    // hydrates, so <html> legitimately differs from the server render.
+    <html lang="en" className={`${urbanist.variable} ${ibmPlexSans.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body
         className="flex min-h-screen flex-col"
       >

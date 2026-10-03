@@ -8,8 +8,8 @@ import { industries } from "../lib/content";
 /* Section order follows vrattiks-architecture §2 (Industries):
    Industry overview → industry cards → Industry-specific CTA.
    UseCases is added between the cards and the CTA for two reasons: it is the
-   page's one non-white band (CLAUDE.md Design Taste), and it gives the page
-   its links into /use-cases (vrattiks-architecture §5).
+   page's one non-white band (CLAUDE.md Design Taste), and it shows the same
+   problems recur in every industry. (/use-cases was removed 2026-10-03.)
 
    ⚠ The directory lists the eleven industries in content.ts, not the six in
    vrattiks-architecture §1 (E-commerce removed and seven added at the user's

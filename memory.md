@@ -606,8 +606,8 @@ structure and surface value alternating down the page:
 - All brand art is small — the wordmark is 413x126 and the mark 126x126. Anything needing a larger rendition (a big hero lockup, print) needs a new export from the source file, not an upscale. `Vrattiks Logo - Final.pdf` at the repo root is the likely source.
 - `public/` still contains `next.svg`, `vercel.svg`, `file.svg`, `globe.svg`, `window.svg` — unused create-next-app boilerplate, and the first two are Vercel/Next *branding* in a client marketing site. Delete in a cleanup pass.
 - KPI/Results, Case Studies, and Testimonials sections on Home use honest non-numeric/pending placeholders (no verified stats, case studies, or testimonials exist yet per `vrattiks-standards` §3) — replace with real content once available.
-- ~~Only Home exists as a route~~ (outdated: Company, Services + details, Industries and Contact now exist) — all other pages in `vrattiks-architecture` §1 (Company, Services + 6 detail pages, Industries + 6, Use Cases + 3, Case Studies, Products, Blog, Contact) are linked to from Home/nav/footer but not yet built, so those links currently 404.
-- Header nav is a flat link list (no dropdown submenus for Services/Industries/Use Cases yet) and only shows the full desktop nav at Tailwind's default `lg` (1024px) breakpoint — cramming all 9 top-level items + logo + CTA overflowed right at the 1024px test width when tried at the custom 901px `md` breakpoint, so it was deferred to 1024px where there's enough room. Revisit if nav items are ever trimmed.
+- ~~Only Home exists as a route~~ (outdated: Company, Services + details, Industries, Use Cases overview and Contact now exist) — all other pages in `vrattiks-architecture` §1 (Company, Services + 6 detail pages, Industries + 6, Use Cases + 3, Case Studies, Products, Blog, Contact) are linked to from Home/nav/footer but not yet built, so those links currently 404.
+- Header nav is a flat link list (~~no dropdown submenus~~ Services and Industries now have dropdowns, see the 2026-10-03 entries) and only shows the full desktop nav at Tailwind's default `lg` (1024px) breakpoint — cramming all 9 top-level items + logo + CTA overflowed right at the 1024px test width when tried at the custom 901px `md` breakpoint, so it was deferred to 1024px where there's enough room. Revisit if nav items are ever trimmed.
 - Added `--breakpoint-sm: 601px` / `--breakpoint-md: 901px` to `app/globals.css` `@theme` to match the design system's tablet/desktop bands (previously undefined in Tailwind config, only present in `docs/index.html`'s own stylesheet) — applies project-wide now, not just Home.
 
 ## Open questions
@@ -663,8 +663,14 @@ nothing animated) — a blank page plus a hydration mismatch. Props are now the
 same on server and client, and reduced motion uses `duration: 0`.
 `HeroVisual.tsx` still has the same bug (the three hero chips).
 
-Open: `ui/Container.tsx` has no max-width (an uncommitted change removed
-`max-w-[1180px]`), so sections stretch edge-to-edge on wide screens.
+`ui/Container.tsx` (2026-10-03, user asked for small, consistent side gaps,
+never full-width): `mx-auto max-w-[1440px]` centred, padding 16px mobile /
+20px sm / 24px tablet (md) / 40px desktop (lg) / 48px xl — lg/xl bumped from
+32px on 2026-10-03 for "slightly more" side space. Section backgrounds stay
+full-bleed; only content is capped. History of user feedback: `max-w-[1180px]`
+(too narrow) → no max-width, 16/20px (too close to edges) → current. A wider
+pass (20/24/32/48/64px) was tried and the user asked to revert it — keep the
+current values unless asked.
 
 ## Per-section card redesign — done at user request (2026-09-28)
 
@@ -749,9 +755,10 @@ gradient surface).
   Patel) are the user-provided copy from 2026-09-12, used verbatim — still
   pending client sign-off. **Mission & Vision are drafted placeholder copy**
   (commented in `MissionVision.tsx`) — replace with approved wording. Founders
-  show names + "Co-Founder" only, with initials monograms instead of photos; no
-  bios/roles invented. Founder names also appear in the page's AboutPage JSON-LD
-  — keep the two in step.
+  show names + user-provided titles (2026-10-03: Arpit Patel "Co-Founder & CEO",
+  Hitesh Dave "Co-Founder & CTO"), with initials monograms instead of photos; no
+  bios invented. Founder names and titles also appear in the page's AboutPage
+  JSON-LD (`jobTitle`) — keep the two in step.
 - `WhyVrattiks` gained an optional `cta` prop (defaults to the Home link to
   `/company`); the Company page passes `/services` so it doesn't self-link.
 - `ui/SectionHeading` gained an optional `id` (on the h2) for `Section`'s
@@ -981,8 +988,8 @@ tsc are clean.
 
 A `/use-cases` overview (UseCasesIntro + reused UseCases matrix +
 UseCaseSolutions + FinalCTA) was built and then **removed at the user's request
-the same day**. The three files were never committed. `/use-cases` is back to
-a 404. Don't rebuild it unless asked.
+the same day**. The three files were never committed. Rebuilt differently on
+2026-10-02 at the user's request (see "Use Cases overview page — rebuilt" below).
 
 ## Contact page built — `/contact` (2026-10-01)
 
@@ -998,10 +1005,12 @@ details → inquiry form → consultation CTA → email/phone → business info)
 - **No FinalCTA.** It would link the page to itself. The form's submit is the
   page's one gradient/primary CTA. The reason is commented in `app/contact/page.tsx`.
 
-**Contact details are placeholders (user's choice).** `contactDetails` in
-`app/lib/content.ts` is all `null`, so email, phone, WhatsApp, location and
-hours render as "Pending confirmation" with no link and are left out of the
-ContactPage JSON-LD. Fill them in there before launch. No other file needs to change.
+**Contact details are partly confirmed (2026-10-02).** `contactDetails` in
+`app/lib/content.ts` now has email `vrattiks@gmail.com` and phone
+`+91 9106836019`. They show on the Contact page, in its JSON-LD, and in the
+footer's first column. WhatsApp, location and hours are still `null`. They
+render as "Pending confirmation" on the Contact page and are left out of the
+JSON-LD. Fill them in there before launch.
 
 **Form delivery is a Server Action + Resend (user's choice).** The action is
 `app/contact/actions.ts` and posts to Resend's REST API with `fetch`, so no SDK
@@ -1066,3 +1075,314 @@ campaign card. **All six services now have an image.**
   top-align the grid.
 - Verified with `next start` at 1440 and 375: the image loads, there's no
   overflow, and the card crop looks right. Lint and build are clean.
+
+## Process → scroll-driven stepper (2026-10-02)
+
+- User asked for Process to advance one step at a time as you scroll. `Process.tsx` is now a client component: a tall track (`5 × 60 + 50` svh) holds a sticky panel (heading + 5-node rail + one detail card). `useScroll` progress over the track picks the active step (`floor(p × 5)`); the gradient rail fill grows node by node; the card swaps with a short fade (duration 0 under reduced motion). Nodes are buttons that scroll to their step's band. Used on Home and `/services`.
+- A11y: every step's title + description lives in the `<ol>` (`aria-current="step"` on the active one); the visual card is `aria-hidden`.
+- Panel sized to fit a 548px-tall phone viewport under the 64px header. **Never put `overflow-hidden` on an ancestor** — it kills the sticky.
+- Verified 2026-10-02 in headless Chrome (see the Problem entry below). tsc and eslint are clean.
+
+## Home "The Problem" → stacking cards (2026-10-02)
+
+- User asked for scroll-sequenced problem cards. A horizontal pinned row was tried first, and **the user rejected it the same day**: they didn't want squarish cards. It is now **long full-width rectangular cards that stack**. Each `<li>` is `position: sticky` at `--stack-top + i × 14px` (`--stack-top` 5rem mobile / 7rem md, i.e. header + room), with `gap-[18svh]` between cards. Each new card slides up over the last and docks 14px lower, so the six pile into a stack, then release together at the end of the list. Desktop row = number | title | description; phones stack them.
+- Pure CSS, so `WhyBusinessesNeedAI.tsx` is a **server component** again with no scroll JS and nothing to disable for reduced motion. It needs opaque card fills and **no `overflow-hidden` on any ancestor**.
+- Verified in headless Chrome over CDP at 1440×900 and 375×667: the cards dock at 112/126/140/154/168/182 (desktop) and 80→150 (mobile); no horizontal overflow. The Process stepper was verified in the same run: steps advance 1→5 in order, and the pinned panel fits (card bottom 718/900, 569/667). tsc and eslint are clean.
+
+
+## FAQ background — tried twice and REVERTED (2026-10-02)
+
+At the user's request, a background was tried twice: first a violet gradient with outlined diamonds, then a blue one that matched their reference image. **Then the user asked to remove both.** `FAQ.tsx`, `ui/SectionHeading.tsx` and `globals.css` are back to their committed state. The FAQ is the plain `bg-n-50` band, with the sticky heading and the white question panel. **Don't add an FAQ background again unless asked.**
+
+## Privacy Policy page (2026-10-02)
+
+- Added `/privacy-policy` (`app/privacy-policy/page.tsx` → `app/components/PrivacyPolicy.tsx`), linked from its own "Legal" column in the footer, beside Explore. Not in the `vrattiks-architecture` page list.
+- The policy text in `app/lib/privacyPolicy.ts` is **client-supplied and verbatim** (v1.0, effective April 23, 2026, last updated May 7, 2026). Don't reword it. When the client re-issues it, replace the data and bump the dates/version in `privacyPolicyMeta`.
+- Open items in the supplied text, left as given: data-deletion requests go to `hitesh@vrattiks.io` (§9.1) while every other privacy contact is `vrattiks@gmail.com`; §10 promises a cookie consent banner, which the site doesn't have yet.
+
+## Use Cases overview page — rebuilt (2026-10-02)
+
+Built via `vrattiks-page-builder` at the user's request. It does **not** reuse the
+graphite `UseCases` matrix from Home, which the removed 10-01 version did. Order:
+- `UseCasesIntro` (paper). H1 "Start with the problem, not the technology", a
+  "Browse by industry" link, and the 3 use-case cards. Each card leads with
+  the owner's symptom in quotes and jumps to `#{slug}` below.
+- `UseCaseBreakdown` (white). One ruled `<article id={slug}>` per use case:
+  Problem list → "What we automate" 4 steps → "What changes" benefits. Benefit
+  carries the one accent, a brand-primary left edge. Each article has
+  "Services that do this" chips that link to the live `/services/*` pages.
+  The chips are derived from `service-details.ts` `useCases`, not stored twice.
+- `UseCaseJourney` (graphite, the page's only dark band). An illustrative week:
+  one customer across all three use cases, on a timeline. It's not a client story.
+- `FinalCTA` "Not sure which one to start with?".
+
+- **Copy is in `app/lib/use-case-details.ts`**, keyed by slug (symptom, problems,
+  steps, benefits). It's drafted and pending client approval. There are no
+  figures or results in it. Detail pages should reuse it.
+- Cards link to in-page anchors because `/use-cases/{slug}` isn't built yet.
+  Home's `UseCases`, `CatalogueIndex` and `ServiceFit` still link to those
+  detail routes, which 404.
+- JSON-LD is an `ItemList` of names, solutions and `#slug` URLs.
+- Verified with `next start` and headless Chrome over CDP at
+  1440/1280/1024/768/430/390/375. Zero overflow, one h1, 0 empty svgs, all 3
+  anchors resolve, and the card jump lands 96px down (below the 81px header).
+  eslint and tsc are clean.
+- **Build note:** `npm run build` (Turbopack) failed locally on 2026-10-02 inside
+  next/font/google ("queries have exactly one entry"). The error is in the
+  font loader, not in page code. `npx next build --webpack` passes, with all 19
+  routes. Check whether Vercel hits the same error.
+
+## Hero visual → typing code window (2026-10-03)
+
+User asked for the hero visual to look like a dark code-editor window (a
+screenshot of a generic `api-example.js` window) with live typing. `HeroVisual.tsx`
+was rewritten in place; the status-chip panel is gone.
+
+- The snippet is an **illustrative lead-follow-up flow** (reply → qualify → book
+  → sync), not a real SDK, and none of the reference's code/names were copied.
+  Lines are kept <= 40 chars so it never scrolls at 375px.
+- **Types once, then stops** (kylezantos §1b). The caret blinks 4 times when done,
+  then rests. The header status goes "Writing…" → "Live". SSR, no-JS and
+  reduced-motion all get the finished code. Untyped text is rendered `invisible`,
+  so the window never changes size, which means zero layout shift.
+- **Deliberate typeface exception:** the code uses the *system* monospace stack
+  (`ui-monospace, …`), nothing downloaded, and only inside this window. Code in a
+  proportional face doesn't read as code. This is the one place a third face appears.
+- Hero now goes side-by-side at `lg` instead of `md`. At 768px the old split left
+  the visual too narrow for the code.
+- Verified over CDP at 1440/1024/768/375: 0px page overflow, 0px code-pane scroll,
+  typing mid-state and done-state screenshotted.
+
+## Home Industries → scroll-linked timeline (2026-10-03)
+
+User asked for the Industries section on Home to copy a vertical-timeline
+screenshot: alternating entries, a line that fills as you scroll, and the
+current industry glowing.
+
+- New `IndustryTimeline.tsx` (client), rendered by `Industries` when
+  `layout="timeline"`. Home passes it; `/industries` keeps the default
+  `"grid"` photo directory, which is unchanged (verified: 11 images, no timeline).
+- Rail runs from the first dot's centre to the last dot's centre. It's measured with
+  a ResizeObserver, and `useScroll` targets the rail itself, so the fill tip and
+  the dots stay on the same line. The tip sits at **55% of the viewport**
+  (`TIP`). An industry counts as "reached" when its dot passes that line. The
+  last one reached is "current": white card, `brand-primary/60` border,
+  `--shadow-glow`. Upcoming entries have a hollow dot and an `n-500` title.
+- **"Reached" is checked against the viewport line, not `scrollYProgress`.**
+  Progress clamps to 0 before the section, which puts the tip exactly on dot 1
+  and wrongly counts it as reached.
+- The light background was kept on purpose, although the reference is dark.
+  `UseCases` (graphite) sits directly above, and a second dark band would merge
+  with it.
+- **Taste flag, not yet resolved:** `Process` follows right after Industries
+  and also uses a progress rail (horizontal, pinned). That puts two
+  rail-progress devices back to back, against CLAUDE.md's "no two consecutive
+  sections share a layout structure" rule.
+- Verified over CDP at 1440 and 375 at four scroll positions: 0px overflow, and
+  the right entry is current at each position.
+
+## Hero animated particle background (2026-10-03)
+
+User asked for the hero to get an animated background like a reference
+screenshot (dark navy, glowing particle field plus a perspective dot "terrain").
+
+- New `HeroParticles.tsx`: one `<canvas>` behind the hero content. It draws
+  drifting, twinkling particles plus a perspective dot grid across the lower
+  40%, displaced by two crossing sine waves. Colours come from
+  `--color-brand-primary/secondary` at runtime, so there are no hex literals.
+  Density scales down below 768px. DPR is capped at 2.
+- It replaced the hero's static `.bg-grid-fade` hairline grid, because the grid
+  lines and the dot terrain clashed. `.wash-brand` stays. The `.bg-grid-fade` CSS is
+  still in globals.css.
+- **This reverses the "ZERO looping motion on Home" state** recorded on
+  2026-09-22 (kylezantos §1b), at the user's explicit request. Mitigations, as
+  documented in the file header: low alpha and slow speed, a paused rAF loop when the hero is
+  off screen (IntersectionObserver), and one static frame for
+  `prefers-reduced-motion`.
+- Kept on the **light** hero, adapted from the reference's dark navy. A dark
+  hero would merge with the graphite `KpiResults` band directly below it.
+- Verified at 1440/375: 0px overflow, canvas sized to the hero, and consecutive
+  screenshots differ, so it is animating.
+
+## Particle background on every page (2026-10-03)
+
+User asked to "add effect in all pages". Read as: extend the Home hero's
+`HeroParticles` backdrop to the first section of every route, because every
+section already used `Reveal` for its fades.
+
+- Added as the first child of `ServicesIntro`, `IndustriesIntro`, `CompanyIntro`,
+  `ContactHero`, `UseCasesIntro`, `ServiceHero` (all six `/services/[slug]`
+  pages) and `PrivacyPolicy`. `Section` is already `relative isolate`, so the
+  `-z-10` canvas sits above the section tone and below the content.
+- `HeroParticles` now takes an optional `className` (default
+  `absolute inset-0 h-full w-full`). `PrivacyPolicy` is a single long section,
+  so there the canvas is limited to the top 360/440px and fades out with a
+  bottom mask before the policy text begins.
+- The same looping-motion mitigations apply on every page: pause when off
+  screen, one static frame for reduced motion.
+- Verified on a `next build --webpack` + `next start` server over CDP at
+  1440/375 on all 8 route types: 0px overflow, one canvas per page sized to its
+  section, and every page animating.
+- **Partly reverted the same day:** the user asked to remove the animation from
+  the Services, Industries, Company, Use Cases and Contact pages, so
+  `HeroParticles` is gone from those five intros. It is still on Home (`Hero`),
+  the six service detail pages (`ServiceHero`) and `/privacy-policy`, because
+  those weren't named.
+
+## Use Cases: Problem/Solution/Benefit removed (2026-10-03)
+
+User asked to remove the Problem / Solution / Benefits section from `/use-cases`.
+`UseCaseBreakdown` is no longer rendered. The page is now Intro → Journey
+(graphite) → FinalCTA.
+
+- **Deviation from vrattiks-architecture §2**, which requires Problem → Solution
+  → Benefit on this page. It's noted in the page's header comment.
+- The intro cards' `#slug` anchors used to target the breakdown articles. They
+  now target the `h3` of each entry in `UseCaseJourney` (`id={slug}`,
+  `scroll-mt-28`), so the cards and the JSON-LD `/use-cases#slug` URLs still
+  resolve.
+- Lost with it: the breakdown's links from each use case to its related
+  `/services/{slug}` pages. The page no longer links to individual services.
+- `UseCaseBreakdown.tsx` is kept, unused (it was never committed, so deleting it
+  would be permanent).
+- **Later the same day:** the user also asked to remove the "Use Cases" intro
+  (`UseCasesIntro`) and the "How they connect" band (`UseCaseJourney`).
+  `/use-cases` is now **only the FinalCTA**, plus an `sr-only` H1 ("Use Cases")
+  so the page keeps exactly one H1. The ItemList JSON-LD was removed because it
+  described content no longer on the page. The metadata description still
+  describes the three use cases and should be revisited if the page stays this
+  way. All three component files are kept, unused.
+
+## Use Cases and Products pages removed (2026-10-03)
+
+User asked to remove the Use Cases and Products pages.
+
+- `app/use-cases/` deleted (it was never committed, so this is permanent).
+  There was never a `/products` route — only nav links to it.
+- "Use Cases" and "Products" removed from the Header nav and Footer "Explore"
+  list (Header now has 7 top-level items).
+- Links into `/use-cases/{slug}` removed: the `UseCases` matrix (Home,
+  /industries) no longer has a stretched row link or "See how it works", and
+  `ServiceFit`'s use-case list on service pages is plain text now.
+- The `UseCases` **section** stays on Home and /industries (it's a section, not
+  the page). `useCases` data in `content.ts` stays (used by that section and
+  `ServiceFit`).
+- Still on disk, unused and uncommitted: `UseCasesIntro`, `UseCaseBreakdown`,
+  `UseCaseJourney`, `app/lib/use-case-details.ts`, and `CatalogueIndex` (which
+  still links to `/use-cases`). Delete them if the page isn't coming back.
+- **Deviation from vrattiks-architecture §1/§2**, which still lists Use Cases
+  (+3 detail pages) and Products.
+
+## Services mega-menu in the Header (2026-10-03)
+
+Desktop (`lg`+): hovering "Services" opens a dark (`bg-brand-graphite`) rounded
+dropdown, 288px wide (`w-72`) and centred under the Services label. It is a
+single column: a bold "All services →" row (links to `/services`), then the six
+service names from `content.ts` as plain muted text (`n-300`, `n-0` on hover).
+This matches a reference screenshot the user supplied. Earlier versions (an
+820px two-column grid with icons and descriptions) were rejected by the user;
+don't bring icons or descriptions back. Each item
+links to the existing `/services/[slug]` route. No new data or routes were
+added. Implemented as `ServicesMenu` inside `Header.tsx`, using CSS transitions
+only (no Framer).
+
+- "Services" itself still links to `/services`. A chevron button next to it is
+  the keyboard/touch control (`aria-expanded`, Escape closes and refocuses it).
+  On touch at desktop width, tapping outside closes the panel.
+- The nav is `self-stretch` so the Services item fills the full header height,
+  and the panel has a `pt-2` hover bridge plus a 150ms close delay. Without
+  these, the gap between the label and the panel closes the menu.
+- The panel stays mounted and toggles `invisible`, so `aria-controls` always
+  resolves and a click is never cut off by an unmount. It is positioned against
+  the sticky `<header>` (its nearest positioned ancestor) and centred on the page.
+- Mobile/tablet (<`lg`): a chevron toggles an inline service list inside the
+  hamburger menu. The mobile nav got `max-h` + `overflow-y-auto` because the
+  expanded list is taller than a 375px-wide phone screen.
+- Verified with headless Chrome over CDP: 36/36 checks passed (hover open, move
+  into the panel, leave to close, each of the 6 links lands on the right H1,
+  View All, keyboard, no overflow at 1440/1280/1024, tap flow at 375/768/1000).
+- **`npm run build` could not be verified this session: the C: drive had 0 bytes
+  free.** That caused the Turbopack Google Fonts "Can't resolve" error and Node
+  OOM crashes. `next build --webpack` compiled and typechecked, then OOM'd during
+  static generation. Rerun the build once disk space is freed.
+
+## Industries dropdown + industry detail pages (2026-10-03)
+
+The user asked for Industries to "work the same way as Services".
+
+- **Header:** `ServicesMenu` became a generic `NavDropdown`, driven by a `menus`
+  map in `Header.tsx` keyed by nav href. Services and Industries both use it:
+  an "All industries →" row, then the 11 names from `content.ts`. The panel has
+  `max-h` + `overflow-y-auto` so 12 rows stay on screen at short heights. On
+  mobile, either list can be expanded, one at a time.
+- **New route `app/industries/[slug]/page.tsx`** builds all 11 pages from
+  `content.ts` + the new `app/lib/industry-details.ts`, with
+  `dynamicParams = false`. This fixes the `/industries/{slug}` links on
+  /industries, Home and the service pages, which had all been 404s.
+- Section order follows the vrattiks-architecture §2 industry template:
+  `IndustryHero` (new, mirrors ServiceHero, breadcrumb back to /industries) →
+  `ServiceProblems` (challenges) → `ServiceSteps` (graphite band, "How we help",
+  items labelled "Solution 01…") → `RelatedServices` ("Services that fit") →
+  `ServiceFit` (use cases only) → `ServiceBenefits` → `FinalCTA`.
+- **Shared components gained optional props, with defaults equal to the old
+  hardcoded text, so the service pages render unchanged:**
+  - `ServiceProblems`: `description`
+  - `ServiceSteps`: `eyebrow` / `title` / `itemLabel`
+  - `RelatedServices` and `ServiceFit`: `eyebrow` / `title`
+  - `ServiceFit` also skips its Industries column when the list is empty.
+- **Relevant services are derived, not stored:** they are the services whose
+  `service-details.ts` `industries` array includes the slug. Each industry's
+  drafted solutions mention only those services.
+- **The copy in `industry-details.ts` is drafted (vrattiks-standards §3 bucket
+  4) and pending client approval:** no figures, client names or promised
+  results. There is still no Results/case-study section, since no real results
+  exist. `ServiceBenefits` states outcomes in words only.
+- Still a deviation from the architecture SSOT, which lists 6 industries
+  (incl. e-commerce). The site has 11.
+
+## Light/Dark theme toggle (2026-10-03)
+
+- Toggle (`app/components/ThemeToggle.tsx`) sits in the header bar at every
+  width: beside "Book a Consultation" on desktop, beside the hamburger below
+  `lg`. The CTA itself is unchanged. Icon follows the client's reference
+  screenshots: a moon is shown in light mode and a sun in dark mode.
+- **Mechanism: token flip, not per-component `dark:` classes.** `data-theme` on
+  `<html>` redefines the `--color-n-*` ramp (plus brand-secondary, graphite,
+  sem-* and shadows) in `app/globals.css`. Inside `.bg-brand-graphite` and
+  `.bg-brand-gradient`, the LIGHT ramp is restored, so dark bands and the
+  primary button render exactly as in light mode. **New dark surfaces must use
+  one of those two classes**, or their `text-n-0` will turn dark.
+- No-flash: the inline `<head>` script from `app/lib/theme.ts` follows Next 16's
+  `preventing-flash-before-hydration.md`. Saved choice (`localStorage.theme`)
+  wins, otherwise the OS setting; it keeps following the OS until the user picks.
+- A `dark:` custom variant exists (`@custom-variant dark` in globals.css) and
+  is used only for the toggle's icon swap.
+- Not verified at the time: `tsc`/`npm run build` (the C: drive was full, 0 GB
+  free, causing OOM/os error 1450), plus first-visit OS detection and reload
+  persistence in a real browser. Verified: lint, all routes 200 on dev, and
+  visuals at 1440/1024/768/375 in both themes.
+
+## Detail-page hero: content beside the image (2026-10-03)
+
+- **ServiceHero and IndustryHero** (the only heroes for all 6 `/services/[slug]`
+  and 11 `/industries/[slug]` pages) had the description + CTAs in the *right*
+  column under the image, leaving the left column short and bottom-aligned
+  (`md:items-end`). Now: left = icon, H1, headline, description, CTAs; right =
+  image only; columns top-aligned (`items-start`). Copy, buttons, image ratio
+  and radius unchanged; the image lost its `mb-8`.
+- **Two columns start at 768px (`min-[768px]:grid-cols-2`), not `sm` (601px).**
+  At 601px each column is ~264px and the longest unbreakable H1 words
+  ("Manufacturing", "Infrastructure", 40px) would overflow; at 768px a column is
+  ~348px. From `md` (901px) the original 1.3fr/1fr split + 64px gap applies.
+  Below 768px everything stacks, content first, then image.
+- **`npm run build` (Turbopack) currently fails in this environment** on
+  `next/font/google` / reading `node_modules/postcss/...` via a `\?\` path —
+  unrelated to code. `npx next build --webpack` builds all 29 routes cleanly.
+
+## Company page — story image (2026-10-03)
+
+- User-supplied image (AI brain over a city-night desk scene, 1178×1335) saved
+  as `public/images/company/ai-business-intelligence.png` and shown in
+  `OurStory`'s sticky left column under the heading (`rounded-xl`, `n-200`
+  border, `next/image` with `fill` + aspect ratio). Lazy-loaded since it's
+  below the fold. Source PNG is ~2.3 MB; `next/image` serves optimised sizes.

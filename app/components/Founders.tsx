@@ -3,12 +3,12 @@ import Reveal from "./ui/Reveal";
 import Section from "./ui/Section";
 import SectionHeading from "./ui/SectionHeading";
 
-/* USER-PROVIDED (vrattiks-standards §3, 2026-09-12): names only. No titles
-   beyond "Co-Founder", bios, photos or quotes until the client supplies them.
+/* USER-PROVIDED (vrattiks-standards §3, 2026-09-12): names; roles added
+   2026-10-03. No bios, photos or quotes until the client supplies them.
    Monograms stand in for photos rather than a stock face. */
 const founders = [
-  { name: "Arpit Patel", initials: "AP" },
-  { name: "Hitesh Dave", initials: "HD" },
+  { name: "Arpit Patel", initials: "AP", role: "CEO" },
+  { name: "Hitesh Dave", initials: "HD", role: "CTO" },
 ];
 
 export default function Founders() {
@@ -40,7 +40,7 @@ export default function Founders() {
                   {founder.name}
                 </h3>
                 <p className="mt-1 font-body text-label font-semibold uppercase text-n-600">
-                  Co-Founder
+                  Co-Founder &amp; {founder.role}
                 </p>
               </div>
             </Reveal>

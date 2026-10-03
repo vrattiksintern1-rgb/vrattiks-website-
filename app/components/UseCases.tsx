@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Container from "./ui/Container";
 import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
@@ -79,22 +78,8 @@ export default function UseCases({
                   <Icon name={useCase.icon} className="h-5 w-5" />
                 </span>
                 <h3 className="mt-4 text-[20px] leading-[1.25] font-display font-semibold text-n-0">
-                  {/* Stretched link: the ::after covers the whole row, so the
-                      row is one click target with one tab stop. */}
-                  <Link
-                    href={`/use-cases/${useCase.slug}`}
-                    className="focus-glow rounded-sm transition-colors duration-150 group-hover:text-brand-primary after:absolute after:inset-0"
-                  >
-                    {useCase.name}
-                  </Link>
+                  {useCase.name}
                 </h3>
-                <span className="mt-3 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-brand-primary">
-                  See how it works
-                  <Icon
-                    name="arrowUpRight"
-                    className="h-3.5 w-3.5 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  />
-                </span>
               </div>
 
               <dl className="grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-8">

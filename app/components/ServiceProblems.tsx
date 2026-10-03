@@ -8,9 +8,11 @@ import SectionHeading from "./ui/SectionHeading";
 export default function ServiceProblems({
   serviceName,
   problems,
+  description,
 }: {
   serviceName: string;
   problems: { title: string; text: string }[];
+  description?: string;
 }) {
   return (
     <Section tone="white" labelledBy="problems-heading">
@@ -20,7 +22,7 @@ export default function ServiceProblems({
             id="problems-heading"
             eyebrow="The problem"
             title="Where things slip today"
-            description={`The everyday gaps ${serviceName} is built to close.`}
+            description={description ?? `The everyday gaps ${serviceName} is built to close.`}
           />
         </div>
 

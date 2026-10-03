@@ -1,22 +1,12 @@
+import Image from "next/image";
 import Container from "./ui/Container";
 import Eyebrow from "./ui/Eyebrow";
-import Reveal from "./ui/Reveal";
 import Section from "./ui/Section";
-import { services } from "@/app/lib/content";
-
-/* Only repo-confirmed facts here (vrattiks-standards §3): the legal name,
-   the six services from content.ts, and the audience from CLAUDE.md. No
-   founding year, headcount or client count until one is supplied. */
-const facts = [
-  { label: "Company", value: "Vrattiks Intelligence LLP" },
-  { label: "What we build", value: services.map((s) => s.name).join(", ") },
-  { label: "Who we build for", value: "Growing businesses and SMEs across India" },
-];
 
 export default function CompanyIntro() {
   return (
     <Section tone="paper" labelledBy="company-heading">
-      <Container className="grid grid-cols-1 gap-12 md:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] md:items-end md:gap-16">
+      <Container className="grid grid-cols-1 gap-12 md:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] md:items-center md:gap-16">
         <div>
           <Eyebrow className="mb-5">Company</Eyebrow>
           {/* Not wrapped in Reveal: the page's H1 should be readable the
@@ -35,20 +25,17 @@ export default function CompanyIntro() {
           </p>
         </div>
 
-        <Reveal delay={0.1}>
-          <dl className="border-t border-n-200">
-            {facts.map((fact) => (
-              <div key={fact.label} className="border-b border-n-200 py-4">
-                <dt className="font-body text-label font-semibold uppercase text-n-600">
-                  {fact.label}
-                </dt>
-                <dd className="mt-1.5 text-[15px] leading-[1.55] font-medium text-n-800">
-                  {fact.value}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </Reveal>
+        {/* Above the fold, so no Reveal fade and preloaded — it's the likely LCP. */}
+        <div className="relative aspect-[1178/1335] w-full max-w-md overflow-hidden rounded-xl border border-n-200 bg-n-900 md:justify-self-end">
+          <Image
+            src="/images/company/ai-business-intelligence.png"
+            alt="A business owner's hand beneath a glowing AI brain linked to sales charts, with a dashboard tablet on the desk"
+            fill
+            preload
+            sizes="(min-width: 768px) 40vw, 100vw"
+            className="object-cover"
+          />
+        </div>
       </Container>
     </Section>
   );

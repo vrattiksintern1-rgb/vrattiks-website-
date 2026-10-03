@@ -745,7 +745,7 @@ untracked-component errors noted above.
 ## Company page built — `/company` (2026-09-29)
 
 Built via `vrattiks-page-builder`, sections in `vrattiks-architecture` §2 order:
-`CompanyIntro` (H1 + confirmed-facts `<dl>`) → `OurStory` (sticky split) →
+`CompanyIntro` (H1 + story image; facts `<dl>` removed 2026-10-03) → `OurStory` (sticky split) →
 `MissionVision` (graphite band, the page's one dark reset) → `CompanyValues`
 (five-element ruled strip, 5 columns at lg, rows below) → `Founders` (two
 monogram cards) → `WhyVrattiks` (reused) → `FinalCTA` (reused, the page's only
@@ -1386,3 +1386,23 @@ The user asked for Industries to "work the same way as Services".
   `OurStory`'s sticky left column under the heading (`rounded-xl`, `n-200`
   border, `next/image` with `fill` + aspect ratio). Lazy-loaded since it's
   below the fold. Source PNG is ~2.3 MB; `next/image` serves optimised sizes.
+- **Moved later the same day at the user's request**: removed from `OurStory`
+  (back to heading-only sticky column) and placed in `CompanyIntro`'s right
+  column, **replacing the confirmed-facts `<dl>`** (Company / What we build /
+  Who we build for). Above the fold, so it uses `preload` (Next 16 replacement
+  for `priority`) and isn't wrapped in `Reveal`.
+
+## Company page — Employees section (2026-10-03)
+
+- New `app/components/Employees.tsx`, placed right after `Founders` in
+  `app/company/page.tsx`. User-provided names/roles only (vrattiks-standards
+  §3): Bhadiyadra Jay — Full Stack AI Engineer, Kamya Patel — Full Stack
+  Developer. Initials monograms, no photos/bios.
+- Card markup is a deliberate copy of `Founders.tsx` (user asked that Founders
+  not be modified) — keep the two in step if either card changes.
+- Same `tint` tone as Founders with its top padding removed
+  (`pt-0 sm:pt-0 md:pt-0`) so the two read as one team band instead of a
+  doubled 112px gap. Eyebrow "Our Team", H2 "The people who build your systems".
+- Employees are NOT in the AboutPage JSON-LD (`founder` is only for founders).
+- Verified in Chrome at 1440/1024/768/375: zero overflow, 2-up from `sm`,
+  stacked on phones; lint + tsc clean on touched files.

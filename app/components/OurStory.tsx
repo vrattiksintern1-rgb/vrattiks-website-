@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Container from "./ui/Container";
 import Reveal from "./ui/Reveal";
 import Section from "./ui/Section";
@@ -17,17 +16,6 @@ export default function OurStory() {
             eyebrow="Our story"
             title="Named after the natural flow of things"
           />
-          <Reveal delay={0.05} className="mt-8">
-            <div className="relative aspect-[1178/1335] max-w-md overflow-hidden rounded-xl border border-n-200 bg-n-900">
-              <Image
-                src="/images/company/ai-business-intelligence.png"
-                alt="A business owner's hand beneath a glowing AI brain linked to sales charts, with a dashboard tablet on the desk"
-                fill
-                sizes="(min-width: 768px) 40vw, 100vw"
-                className="object-cover"
-              />
-            </div>
-          </Reveal>
         </div>
 
         <div>

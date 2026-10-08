@@ -9,19 +9,18 @@ import { useCases } from "@/app/lib/content";
    separate products, they're three moments with the same customer — so the
    list is a week on a timeline, not three more cards. The scenario is
    illustrative, not a client story. */
+/* The day/time labels ("Wednesday, 11 am" etc.) were removed at the user's
+   request (2026-10-05). */
 const moments = [
   {
-    when: "Tuesday, 9:40 pm",
     slug: "lead-management",
     text: "A customer fills in your enquiry form after closing. They get a WhatsApp reply within a minute, and the lead is waiting for the right person in the morning.",
   },
   {
-    when: "Wednesday, 11 am",
     slug: "customer-support",
     text: "They message to ask about pricing and timings. The answer comes straight away, and the conversation is saved against their record.",
   },
   {
-    when: "Friday evening",
     slug: "business-intelligence",
     text: "You open one dashboard and see how many enquiries came in this week, how many became customers, and where the rest dropped off.",
   },
@@ -54,15 +53,9 @@ export default function UseCaseJourney() {
                 aria-hidden="true"
                 className="absolute top-1.5 -left-[4.5px] h-2 w-2 rounded-full bg-brand-primary lg:-top-[4.5px] lg:left-0"
               />
-              <p className="font-body text-label font-semibold tracking-[0.14em] uppercase text-brand-primary">
-                {moment.when}
-              </p>
-              {/* Anchor target for UseCasesIntro's cards (and the page's
-                  JSON-LD URLs). scroll-mt clears the sticky header. */}
-              <h3
-                id={moment.slug}
-                className="mt-3 scroll-mt-28 text-[20px] leading-[1.3] font-display font-semibold text-n-0"
-              >
+              {/* No id here: the #slug anchors live on UseCaseBreakdown's
+                  articles, which this page renders above. */}
+              <h3 className="text-[20px] leading-[1.3] font-display font-semibold text-n-0">
                 {nameFor(moment.slug)}
               </h3>
               <p className="mt-2 max-w-md text-[15px] leading-[1.6] text-n-300">{moment.text}</p>

@@ -1100,6 +1100,14 @@ At the user's request, a background was tried twice: first a violet gradient wit
 - The policy text in `app/lib/privacyPolicy.ts` is **client-supplied and verbatim** (v1.0, effective April 23, 2026, last updated May 7, 2026). Don't reword it. When the client re-issues it, replace the data and bump the dates/version in `privacyPolicyMeta`.
 - Open items in the supplied text, left as given: data-deletion requests go to `hitesh@vrattiks.io` (§9.1) while every other privacy contact is `vrattiks@gmail.com`; §10 promises a cookie consent banner, which the site doesn't have yet.
 
+### Privacy Policy v2.0 (2026-10-07)
+
+- At the user's request, the policy was rewritten to cover the whole business, not only WhatsApp/Meta. It is now v2.0, effective and last updated October 7, 2026, with 19 sections.
+- New: §3 Our Role (Vrattiks is the Data Fiduciary for its own site and clients, and the Data Processor for clients' customers), §4.1 website enquiry form fields, §4.3 per-service data (voice calls and recordings, chatbot, WhatsApp, CRM, workflows, client websites), §7 AI processing, call recording and disclosure, and sensitive sectors. Opt-out now covers calls and email as well as WhatsApp.
+- Both v1.0 open items are fixed: deletion requests now list vrattiks@gmail.com *and* hitesh@vrattiks.io, and §12 Cookies describes what the site actually does (only a theme preference in localStorage, no analytics or ad cookies, consent before any are added). The cookie-banner promise is gone.
+- Unchanged: contact details, grievance officer, address, Meta §8 (permissions, deletion callback URL) and the v1.0 retention periods.
+- **Needs client/legal sign-off.** These commitments are new and were not in v1.0: chatbot and call recordings and transcripts kept up to 1 year, website enquiries kept up to 2 years, client data never used to train models or to serve another client, clients must disclose AI and recording on calls, and the right to speak to a person.
+
 ## Use Cases overview page — rebuilt (2026-10-02)
 
 Built via `vrattiks-page-builder` at the user's request. It does **not** reuse the
@@ -1406,3 +1414,215 @@ The user asked for Industries to "work the same way as Services".
 - Employees are NOT in the AboutPage JSON-LD (`founder` is only for founders).
 - Verified in Chrome at 1440/1024/768/375: zero overflow, 2-up from `sm`,
   stacked on phones; lint + tsc clean on touched files.
+
+## Use Cases overview page — rebuilt again (2026-10-05)
+
+User asked to "create use case page". `/use-cases` is back, built via
+`vrattiks-page-builder`. It reuses the committed components. Order:
+`UseCasesIntro` (H1 + 3 symptom cards) → `UseCaseBreakdown` (Problem →
+Solution → Benefit + "Services that do this" chips) → `UseCaseJourney`
+(graphite band) → `FinalCTA` "Not sure which one to start with?". This
+matches vrattiks-architecture §2 again, so the 10-03 deviation is gone.
+
+- **Anchors moved back** onto the breakdown `<article id={slug}>`. The
+  `id={slug}` that 10-03 put on `UseCaseJourney`'s h3s was removed to avoid
+  duplicate ids.
+- ItemList JSON-LD restored (names, solutions, `/use-cases#slug` URLs).
+- Links in: "Use Cases" in the Header (after Industries, plain link with no
+  dropdown, since detail pages don't exist) and in the Footer "Explore" list.
+  Home/`/industries` `UseCases` matrix now ends with a "See how each one works →"
+  link. `ServiceFit` use-case rows link to `/use-cases#slug` on service and
+  industry detail pages.
+- Still not built: `/use-cases/{slug}` detail pages and `/products`.
+  `CatalogueIndex` (unused) still links to the detail routes.
+- Verified: tsc and `npm run lint` are clean. `next build --webpack` passes
+  (30 routes). Turbopack `npm run build` failed again with os error 1450 because
+  the C: drive had 159 MB free. Headless Chrome on `next start` at
+  1440/1280/1024/901/768/601/430/390/375/320 found zero overflow, 1 H1, no
+  duplicate ids and all anchors resolving. The card jump lands 96px down at
+  1440 (81px header) and 80px down at 375 (65px header). The 8-item nav fits
+  at 1024.
+- **Later the same day:** the user asked to remove the "Tuesday, 9:40 pm" label
+  from the first `UseCaseJourney` moment. `when` is optional now and renders only
+  if present. "Wednesday, 11 am" and "Friday evening" are still shown.
+- Then the user asked to remove "Wednesday, 11 am" and "Friday evening" too.
+  All the time labels are gone and the `when` field was deleted. Each moment
+  is now the timeline dot, the use-case name and its text.
+
+## Services overview — hero image (2026-10-07)
+
+- User-supplied image (isometric laptop dashboard with connected app windows,
+  1176×1338) saved as `public/images/services/connected-services-dashboard.png`
+  and shown in `ServicesIntro`'s right column beside the H1 — same treatment as
+  `CompanyIntro` (`rounded-xl`, `n-200` border, `next/image` `fill` + `preload`,
+  no `Reveal`, since it's above the fold and the likely LCP).
+- To make room, the graphite "How they fit together" panel moved from the right
+  column to a **full-width strip below** the H1/image row. Its three stages sit
+  side by side from `md` and stack below that. No copy was removed.
+- Verified over CDP at 1440/1024/768/375: zero horizontal overflow, one H1,
+  image loads. eslint and tsc are clean on the touched file.
+
+## Use Cases overview page — removed again (2026-10-07)
+
+User asked to "remove use case page". Reverted the 2026-10-05 link additions:
+
+- "Use Cases" removed from the Header nav and Footer "Explore" list.
+- `UseCases` matrix (Home, /industries) no longer ends with "See how each one
+  works →"; `ServiceFit` use-case rows are plain text again. All four files
+  are now identical to HEAD.
+- **`app/use-cases/page.tsx` is still on disk**: deleting it (it's untracked,
+  so deletion is permanent) was blocked by the permission classifier and left
+  for the user. Until it's deleted the route still builds and is reachable by
+  URL, just not linked from anywhere.
+- `UseCasesIntro`, `UseCaseBreakdown`, `UseCaseJourney`, `use-case-details.ts`
+  and `CatalogueIndex` stay on disk unused, as after 10-03.
+- Deviation from vrattiks-architecture §1/§2 is back.
+- tsc clean.
+
+## Hero video replaces the code-window visual (2026-10-08)
+
+- `Hero.tsx` now renders **`HeroVideo.tsx`** on the right instead of
+  `HeroVisual.tsx` (the typing code window). `HeroVisual.tsx` is left in the
+  repo, unused — delete it or restore it deliberately; don't let it rot.
+- Asset lives at **`public/video/`** (singular), not `public/videos/`:
+  `hero-animation.mp4` + `hero-animation-poster.jpg` (first frame, 61 KB,
+  grabbed with headless Chrome — there is no ffmpeg on this machine).
+- Second **looping-motion exception to kylezantos-design §1b** after
+  HeroParticles, at the user's request. Same mitigations: reduced motion = the
+  `<video>` is never mounted (poster only, subscribed live via
+  `useSyncExternalStore`) and pauses off-screen. Video mounts only near the
+  viewport and not under Save-Data.
+- **Restyled same day: no box, no controls.** The user removed the pause
+  button after being told about WCAG 2.2.2 — recorded as an **accepted
+  exception** in HeroVideo's header; don't re-add without asking. Frame styling
+  is `.media-blend` in globals.css and is **theme-dependent on purpose**:
+  dark = radial mask feathering the footage into the page; light =
+  `--radius-xl` + `--shadow-glow`, because a feathered dark frame on the light
+  hero rendered as a hard dark oval. A static `.wash-brand` glow sits behind
+  both. Side effect of the dark-mode mask: the generator watermark in the
+  bottom-right corner is masked out in dark mode only (it still shows in light).
+- **Open: the MP4 is 4.1 MB** (1280×720 H.264 at ~3.2 Mbps, with an unused
+  128 kbps AAC track). Re-encode before launch: strip audio, ~1–1.5 Mbps.
+- **Open: content in the video** — a generator sparkle watermark sits in the
+  bottom-right corner, labels are AI-garbled ("Databapp", "Lead Generation"
+  twice, WhatsApp on an envelope icon), and there's a bright full-frame flash
+  around 7s. Needs a clean render before launch.
+- **Found, not fixed (pre-existing):** `ServicesSlider` hydration mismatch under
+  reduced motion — server renders "Pause automatic sliding", client renders
+  "Start…". Also a "script tag while rendering" console error from `Home`.
+- **Home hero: the video is now the only motion** (2026-10-08, user request).
+  `HeroParticles` (dot terrain/particle canvas) and the `Reveal` fade-ins were
+  removed from `Hero.tsx` only — headline now paints instantly like the other
+  page heroes. `HeroParticles` is still used by ServiceHero, IndustryHero and
+  PrivacyPolicy; the static `.wash-brand` glow behind the headline stays.
+- **Home hero background: white in light theme, page tone (n-25) in dark**
+  (2026-10-08, user request). A same-day all-dark `.bg-ink` version (to hide
+  the video's dark box) was **reverted** — token, class and the `outlineDark`
+  Button variant all removed. Consequence: in light theme the video is back in
+  the rounded `--radius-xl` + `--shadow-glow` frame, because its near-black
+  backdrop is baked into the footage. An invert + `mix-blend-mode: multiply`
+  trick was previewed and rejected: it recolours the content (dark-blue orb on
+  white) and leaves hard edges. The real fix for "no box on white" is a
+  re-render of the video on a white/transparent background (WebM with alpha).
+
+## Case Studies page built — `/case-studies` (2026-10-08)
+
+Built via `vrattiks-page-builder` with every listed skill loaded; reviewed
+with `vrattiks-page-review` afterwards. Header/Footer/Home already linked to
+`/case-studies`, so no nav changes were needed and the page is not an orphan.
+
+**Composition** (`app/case-studies/page.tsx`): `CaseStudiesIntro` (paper) →
+`CaseStudiesNav` (sticky chapter bar) → `CustomProjects` (white) →
+`IotProjects` (graphite) → `WebsiteProjects` (tint + one static glow) →
+`FinalCTA` (custom title/description, the page's one gradient). The bar and
+the three sections share ONE wrapper `<div>` — sticky is bounded by its
+parent; don't split them up or add overflow clipping to an ancestor.
+
+**Layouts chosen after auditing every existing section** (none repeats one):
+- Intro: no image — display-scale H1 (72px) plus one line and an honest
+  "results only once measured" qualifier, said once for the whole page.
+- Chapter bar: horizontal second tier under the header (top-16/md:top-20,
+  z-40), 3 segments with live counts from the data; IntersectionObserver
+  marks the current one (`aria-current="location"`, brand-primary bottom
+  edge). Short labels below 601px. Only client component on the page besides
+  `Reveal`.
+- Custom: editorial rows, oversized `01/02` numerals (aria-hidden, n-200),
+  text/visual alternate sides each row.
+- IoT: graphite "spec sheet" — sheet code, crop marks, tracked labels,
+  hairlines; static isometric stack SVG + `.bg-grid-fade-dark`. Nothing loops.
+- Website: browser-frame mockups in a two-column gallery, second column
+  dropped 96px. Deliberately NOT scroll-snap (ServicesSlider owns that).
+
+**Motion**: `ui/Reveal.tsx` gained an optional `from` prop
+(`below` default = unchanged behaviour, `start`/`end` slide, `fade`, `rule`
+scaleX draw, `settle`). Custom = slide from the visual's side; IoT = rule
+draws + fade; Website = settle, 60ms stagger. `rule` uses a vertical-only
+viewport inset — a zero-width element at the left edge never intersects a
+`-80px` all-sides inset on phones (found in testing; it stayed invisible).
+
+**Content** — all in `app/lib/case-studies.ts` (typed; components never hold
+project data). USER-PROVIDED 2026-10-08, used verbatim-only:
+- Custom: AI Sales Assistant on WhatsApp (n8n, Groq, LiveKit); AI
+  Lead-to-Landing-Page Generator (n8n pipeline).
+- Website: Auroma Holiday Villas (real estate website → links
+  /industries/real-estate); Jewellery Virtual Try-On (client project, web
+  app — placed under Website, not Custom; move via `category`).
+- IoT: NONE. Section renders an "In development" sheet listing the six
+  fields each write-up will cover. Do not invent entries.
+- Empty fields (challenge, solution, client for try-on, results, url, image)
+  don't render. **Service mappings are OURS, unconfirmed**: WhatsApp
+  Automation, Workflow Automation, Website Development ×2 — flagged in code.
+- Images: none supplied. Custom rows show a dot-field placeholder, website
+  frames show an abstract page wireframe; both swap to `next/image` when
+  `image` is set (files to go in `public/images/case-studies/`).
+- ItemList JSON-LD = project names + `/case-studies#slug` anchors only.
+
+**Deviation**: architecture §1 lists `/case-studies/[slug]` detail pages —
+not built; each project is an anchor on the listing for now.
+
+**SEO finding (site-wide, pre-existing, NOT fixed elsewhere)**: Next merges
+metadata shallowly, so any page that sets `openGraph` loses the root
+`app/opengraph-image.png`. `/services`, `/company` etc. render NO og:image.
+Fixed on `/case-studies` only by passing `images` explicitly (+
+`summary_large_image`). Apply the same to the other pages when next touched.
+
+**Build blocker (pre-existing)**: untracked `app/components/Pipeline.tsx` has
+reappeared (deleted in 9056cd4) and imports `pipelineStages`, which no
+longer exists → `npm run build` / `tsc` fail on it. Nothing imports it. Left
+in place (untracked = permanent if deleted); delete it or restore the
+export. Verification here moved it aside temporarily and restored it.
+
+**Verified**: lint clean; tsc clean outside Pipeline.tsx; `npm run build`
+(Turbopack) passes with Pipeline set aside, 31 routes, `/case-studies`
+static. Headless Chrome on `next start` at 1440/1280/1024/901/768/601/430/
+375/320: 0px overflow, 1 H1, h1→h2→h3 order, no duplicate ids, all anchors
+resolve, no tap target <40px, nothing left at opacity 0 (also under
+emulated reduced motion), bar pins at 64/80px and marks the right section.
+Light + dark both viewed. All new text pairs ≥4.75:1.
+
+### Sample projects added — user request (2026-10-08, same day)
+
+User asked to "add random projects and websites". Invented case studies
+conflict with vrattiks-standards §3, so they were added as **labelled
+samples**, not as real work:
+
+- `sample?: boolean` on `CaseStudy`. Six entries in a marked SAMPLE block at
+  the end of `caseStudies`: 2 Custom (Clinic Appointment Reminders, Invoice
+  Follow-Up Workflow), 2 IoT (Cold Storage Temperature Monitor, Machine
+  Run-Time Tracker), 2 Website (Coaching Institute Website, Restaurant
+  Ordering Site). Generic names, NO client names, NO results/figures, NO URLs.
+  Industries link to existing /industries pages.
+- Guardrails — keep them while any sample is fictional: visible dashed
+  "Sample" badge (`SampleBadge.tsx`; IoT sheets say "Sample project" in the
+  status chip), an intro sentence explaining the badge (renders only while
+  samples exist), and samples are filtered OUT of the ItemList JSON-LD.
+- Because IoT now has entries, the "in development" sheet no longer shows; it
+  comes back automatically if the IoT samples are deleted and no real ones
+  exist. Nav counts now read 4 / 2 / 4 projects (samples included).
+- Fixed in passing: Custom rows listed a linked industry twice (details list
+  + link); the details list now shows industry only when it has no page.
+- To go live with real work: delete the SAMPLE block entries one by one as
+  real projects replace them. Do not drop `sample: true` from a fictional
+  entry to make it look real.
+- Verified: lint, tsc (outside Pipeline.tsx), build (Pipeline set aside and
+  restored), 0 issues at all nine widths, JSON-LD = the 4 real projects only.

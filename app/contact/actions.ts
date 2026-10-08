@@ -1,8 +1,6 @@
 "use server";
 
-import { inquiryTopics } from "@/app/lib/content";
-
-export type InquiryField = "name" | "email" | "phone" | "company" | "service" | "message";
+export type InquiryField = "name" | "email" | "phone" | "company" | "message";
 
 export type InquiryState = {
   status: "idle" | "success" | "error";
@@ -12,8 +10,6 @@ export type InquiryState = {
      uncontrolled form after every action. */
   values?: Partial<Record<InquiryField, string>>;
 };
-
-const topics = new Set(inquiryTopics);
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_PATTERN = /^[0-9+()\-\s]{7,20}$/;
@@ -33,13 +29,11 @@ function validate(values: Record<InquiryField, string>) {
   else if (values.email.length > 254 || !EMAIL_PATTERN.test(values.email))
     errors.email = "Please enter a valid email address, like name@company.com.";
 
-  if (values.phone && !PHONE_PATTERN.test(values.phone))
-    errors.phone = "Please enter a valid phone number, or leave this blank.";
+  if (!values.phone) errors.phone = "Please enter your phone or WhatsApp number.";
+  else if (!PHONE_PATTERN.test(values.phone))
+    errors.phone = "Please enter a valid phone number, like +91 98765 43210.";
 
   if (values.company.length > 120) errors.company = "Please keep this under 120 characters.";
-
-  if (values.service && !topics.has(values.service))
-    errors.service = "Please choose an option from the list.";
 
   if (values.message.length < 10)
     errors.message = "Please tell us a little about what you need (at least 10 characters).";
@@ -67,9 +61,8 @@ async function deliver(values: Record<InquiryField, string>) {
   const text = [
     `Name: ${values.name}`,
     `Email: ${values.email}`,
-    `Phone: ${values.phone || "—"}`,
+    `Phone: ${values.phone}`,
     `Company: ${values.company || "—"}`,
-    `Interested in: ${values.service || "—"}`,
     "",
     values.message,
   ].join("\n");
@@ -111,7 +104,6 @@ export async function submitInquiry(_prev: InquiryState, formData: FormData): Pr
     email: read(formData, "email"),
     phone: read(formData, "phone"),
     company: read(formData, "company"),
-    service: read(formData, "service"),
     message: read(formData, "message"),
   };
 

@@ -48,6 +48,7 @@ const aboutJsonLd = {
     founder: [
       { "@type": "Person", name: "Hitesh Dave", jobTitle: "Co-Founder & CTO" },
       { "@type": "Person", name: "Arpit Patel", jobTitle: "Co-Founder & CEO" },
+      { "@type": "Person", name: "Ankur Rayka", jobTitle: "Co-Founder & CRO" },
     ],
   },
 };

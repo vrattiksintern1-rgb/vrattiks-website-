@@ -225,6 +225,27 @@
   filter: blur(40px);
 }
 
+/* .media-blend: presents dark footage (HeroVideo) as part of the section, not
+   a boxed player. Theme-dependent, because feathering only blends into a dark
+   page — on the light hero a feathered dark frame reads as a hard oval:
+   - light: no border, large radius, brand glow ring + bloom (--shadow-glow).
+   - dark: edges masked to transparent so the footage dissolves into the page.
+     Centre stays fully opaque out to ~75% of each half-axis (every node in the
+     animation stays as rendered); the corners vanish completely. */
+.media-blend {
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-glow);
+}
+
+[data-theme="dark"] .media-blend {
+  overflow: visible;
+  border-radius: 0;
+  box-shadow: none;
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 74%, rgba(0, 0, 0, 0.55) 88%, transparent 100%);
+  mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 74%, rgba(0, 0, 0, 0.55) 88%, transparent 100%);
+}
+
 /* Shared focus ring — replaces default outline with the brand glow token, never outline:none alone */
 .focus-glow:focus-visible {
   outline: none;

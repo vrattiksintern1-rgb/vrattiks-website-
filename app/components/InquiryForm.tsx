@@ -3,7 +3,6 @@
 import { startTransition, useActionState, useEffect, useRef } from "react";
 import Button from "./ui/Button";
 import Icon from "./ui/Icon";
-import { inquiryTopics } from "@/app/lib/content";
 import { submitInquiry, type InquiryField, type InquiryState } from "@/app/contact/actions";
 
 const initialState: InquiryState = { status: "idle" };
@@ -148,13 +147,14 @@ export default function InquiryForm() {
           />
         </Field>
 
-        <Field id="phone" label="Phone or WhatsApp" optional error={errors.phone}>
+        <Field id="phone" label="Phone or WhatsApp" error={errors.phone}>
           <input
             id="phone"
             name="phone"
             type="tel"
             autoComplete="tel"
             inputMode="tel"
+            required
             maxLength={20}
             defaultValue={values.phone}
             aria-invalid={errors.phone ? true : undefined}
@@ -177,30 +177,6 @@ export default function InquiryForm() {
           />
         </Field>
       </div>
-
-      <Field id="service" label="What can we help with?" optional error={errors.service}>
-        <div className="relative">
-          <select
-            id="service"
-            name="service"
-            defaultValue={values.service ?? ""}
-            aria-invalid={errors.service ? true : undefined}
-            aria-describedby={describedBy("service")}
-            className={`${fieldClass(!!errors.service)} appearance-none pr-11`}
-          >
-            <option value="">Choose one</option>
-            {inquiryTopics.map((topic) => (
-              <option key={topic} value={topic}>
-                {topic}
-              </option>
-            ))}
-          </select>
-          <Icon
-            name="chevronDown"
-            className="pointer-events-none absolute top-1/2 right-4 h-4 w-4 -translate-y-1/2 text-n-600"
-          />
-        </div>
-      </Field>
 
       <Field id="message" label="Tell us about your business" error={errors.message}>
         <p id="message-hint" className="-mt-1 text-[13.5px] leading-[1.5] text-n-600">

@@ -136,7 +136,7 @@ function Contents({ className = "" }: { className?: string }) {
 
 /* Privacy Policy. The one idea: it reads as a document, not a marketing page —
    a numbered contents rail stays pinned beside the text on desktop so any of
-   the 17 sections is one click away, and nothing else competes with the copy.
+   the 19 sections is one click away, and nothing else competes with the copy.
    No gradient surface. The shared particle backdrop sits behind the header
    only, fading out before the policy text so it never moves under the copy. */
 export default function PrivacyPolicy() {

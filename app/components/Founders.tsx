@@ -4,11 +4,12 @@ import Section from "./ui/Section";
 import SectionHeading from "./ui/SectionHeading";
 
 /* USER-PROVIDED (vrattiks-standards §3, 2026-09-12): names; roles added
-   2026-10-03. No bios, photos or quotes until the client supplies them.
+   2026-10-03; Ankur Rayka (CRO) added 2026-10-08. No bios, photos or quotes until the client supplies them.
    Monograms stand in for photos rather than a stock face. */
 const founders = [
   { name: "Arpit Patel", initials: "AP", role: "CEO" },
   { name: "Hitesh Dave", initials: "HD", role: "CTO" },
+  { name: "Ankur Rayka", initials: "AR", role: "CRO" },
 ];
 
 export default function Founders() {
@@ -21,7 +22,7 @@ export default function Founders() {
           title="The people behind Vrattiks"
         />
 
-        <ul className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-12 md:gap-6">
+        <ul className="mt-10 grid grid-cols-1 gap-4 md:mt-12 md:gap-6 lg:grid-cols-3">
           {founders.map((founder, i) => (
             <Reveal
               key={founder.name}

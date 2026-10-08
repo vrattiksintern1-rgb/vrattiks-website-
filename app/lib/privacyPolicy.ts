@@ -1,7 +1,11 @@
-/* Privacy Policy text, supplied verbatim by the client. Do not reword,
-   summarise or "fix" anything here — it is a legal document, and any change
-   needs the client's sign-off first (vrattiks-standards §3). Emails and URLs
-   inside strings are turned into links when rendered. */
+/* Privacy Policy text. Version 2.0 extends the client's v1.0 (which covered
+   WhatsApp and Meta Lead Ads only) to the full service range sold on this
+   site: AI Voice Agent, AI Chatbot, Workflow Automation, Website Development,
+   WhatsApp Automation and CRM, plus the website's own contact form. Contact
+   details, the Grievance Officer, the Meta sections and the v1.0 retention
+   periods are carried over unchanged. It is a legal document — have the
+   client sign off any change before it ships (vrattiks-standards §3). Emails
+   and URLs inside strings are turned into links when rendered. */
 
 export type PolicyBlock =
   | { type: "p"; text: string }
@@ -20,9 +24,9 @@ export type PolicySection = {
 };
 
 export const privacyPolicyMeta = {
-  effectiveDate: "April 23, 2026",
-  lastUpdated: "May 7, 2026",
-  version: "1.0",
+  effectiveDate: "October 7, 2026",
+  lastUpdated: "October 7, 2026",
+  version: "2.0",
   entity: "Vrattiks Intelligence LLP",
   copyright: "© 2026 Vrattiks Intelligence LLP. All rights reserved.",
   tagline: "Adaptive Intelligence. Built with Purpose.",
@@ -35,7 +39,7 @@ export const privacyPolicy: PolicySection[] = [
     blocks: [
       {
         type: "p",
-        text: 'Vrattiks Intelligence LLP ("Vrattiks", "we", "our", or "us") is an Adaptive Intelligence and AI Automation company registered in India. We build AI-powered systems, SaaS products, and automation solutions for businesses, with a primary focus on consent-based WhatsApp customer communication, support workflows, and business automation.',
+        text: 'Vrattiks Intelligence LLP ("Vrattiks", "we", "our", or "us") is an Adaptive Intelligence and AI Automation company registered in India. We build and run AI-powered systems for businesses, including AI voice agents, AI chatbots, WhatsApp automation, workflow automation, CRM systems, and business websites, along with our SaaS products such as Vrattiks S1. Our clients are businesses across sectors such as real estate, healthcare, finance, education, hospitality, retail, manufacturing, and automobile.',
       },
       {
         type: "p",
@@ -44,10 +48,11 @@ export const privacyPolicy: PolicySection[] = [
       {
         type: "list",
         items: [
-          "Visit our website and digital properties",
-          "Use any of our products or services (including Vrattiks S1)",
-          "Communicate with us via WhatsApp, email, or other channels",
-          "Are a client, partner, or end-customer interacting through platforms we power",
+          "Visit our website, www.vrattiks.io, or fill in an enquiry form on it",
+          "Use any of our products or services as a client or partner",
+          "Communicate with us by phone, WhatsApp, email, or any other channel",
+          "Speak to an AI voice agent, chat with an AI chatbot, or exchange WhatsApp messages with a business that uses Vrattiks",
+          "Are a lead or customer whose details are held in a CRM or automated workflow that we run for one of our clients",
         ],
       },
       {
@@ -65,7 +70,10 @@ export const privacyPolicy: PolicySection[] = [
         items: [
           { label: "Legal Entity Name", value: "Vrattiks Intelligence LLP" },
           { label: "Type of Entity", value: "Limited Liability Partnership (LLP), registered in India" },
-          { label: "Primary Business", value: "AI Automation, SaaS Products, and Customer Intelligence Systems" },
+          {
+            label: "Primary Business",
+            value: "AI Voice Agents, AI Chatbots, WhatsApp Automation, Workflow Automation, CRM, Website Development, and SaaS Products",
+          },
           {
             label: "Contact for Privacy Matters",
             value: ["Email: vrattiks@gmail.com", "Website: www.vrattiks.io"],
@@ -79,6 +87,34 @@ export const privacyPolicy: PolicySection[] = [
     ],
   },
   {
+    id: "our-role",
+    title: "Our Role: Who Is Responsible for Your Data",
+    blocks: [
+      {
+        type: "p",
+        text: "Our responsibility for your data depends on how you come into contact with us:",
+      },
+      {
+        type: "terms",
+        sep: "—",
+        items: [
+          {
+            term: "When Vrattiks decides how data is used",
+            text: "For visitors to our website, people who send us an enquiry, and our own clients and partners, Vrattiks is the Data Fiduciary under India's Digital Personal Data Protection Act, 2023 (DPDPA). We decide why and how this data is processed, and this Policy applies in full.",
+          },
+          {
+            term: "When we act for a business client",
+            text: "When we run a voice agent, chatbot, WhatsApp channel, CRM, or automated workflow for a business, that business is the Data Fiduciary for its customers' data and Vrattiks is its Data Processor. We process that data only on the client's instructions and only to deliver the service they have contracted.",
+          },
+        ],
+      },
+      {
+        type: "p",
+        text: "If you are a customer of a business that uses Vrattiks, that business's own privacy policy also applies to you, and it is usually the best first contact for requests about your data. We will help the business respond, and you can also contact us directly at vrattiks@gmail.com.",
+      },
+    ],
+  },
+  {
     id: "information-we-collect",
     title: "Information We Collect",
     blocks: [
@@ -86,47 +122,91 @@ export const privacyPolicy: PolicySection[] = [
         type: "p",
         text: "We collect information necessary to provide our services, ensure legal compliance, and improve your experience. The types of data we collect include:",
       },
-      { type: "h3", text: "3.1 Information You Provide Directly" },
+      { type: "h3", text: "4.1 Website Enquiries" },
+      {
+        type: "p",
+        text: "When you send us an enquiry through the contact form on our website, we collect:",
+      },
       {
         type: "list",
         items: [
-          "Name, business name, email address, and phone number",
+          "Your name and work email address",
+          "Your phone number and company name, if you choose to give them",
+          "The service you are interested in, and the message you write to us",
+        ],
+      },
+      {
+        type: "p",
+        text: "Your enquiry is delivered to our team by email so that we can reply to you. We use it only to respond to your enquiry and to discuss the services you asked about.",
+      },
+      { type: "h3", text: "4.2 Client and Onboarding Information" },
+      {
+        type: "list",
+        items: [
+          "Name, business name, email address, and phone number of the client's contact persons",
           "Business category, industry type, and location",
-          "WhatsApp phone numbers (yours and your customers') provided for campaign setup",
+          "Information about your business that you share for setting up our services, such as FAQs, product and price lists, call scripts, and support processes",
+          "Login access or connection details for the tools you ask us to connect, such as your CRM, calendar, forms, or accounting software",
           "Billing and payment information (processed securely via third-party payment gateways)",
           "Any content, data, or files you share with us during onboarding or support",
         ],
       },
-      { type: "h3", text: "3.2 WhatsApp Conversation Data" },
+      { type: "h3", text: "4.3 Data We Process on Behalf of Our Clients" },
       {
-        type: "list",
+        type: "p",
+        text: "When we run a service for a business, we process the following data about that business's customers and leads, depending on the services the business has chosen:",
+      },
+      {
+        type: "terms",
+        sep: "—",
         items: [
-          "Phone numbers of end-users interacting via WhatsApp Business channels we manage on behalf of clients",
-          "Message metadata (timestamps, delivery status, read receipts)",
-          "Customer interaction data used for AI tagging, segmentation, and campaign analytics",
-          "Opt-in and opt-out consent records for WhatsApp messaging",
+          {
+            term: "AI Voice Agent",
+            text: "Caller phone numbers, call date, time and duration, call recordings, call transcripts, and the details a caller gives during the call, such as their name, requirement, or preferred appointment time.",
+          },
+          {
+            term: "AI Chatbot",
+            text: "Chat conversations on the client's website or app, and the contact details a visitor chooses to share in the chat.",
+          },
+          {
+            term: "WhatsApp Automation",
+            text: "WhatsApp phone numbers, message content and metadata (timestamps, delivery status, read receipts), and opt-in and opt-out consent records. See Section 8 for details.",
+          },
+          {
+            term: "CRM",
+            text: "Lead and customer records, including name, contact details, enquiry source, interaction history, notes, follow-up tasks, and deal or booking status.",
+          },
+          {
+            term: "Workflow Automation",
+            text: "The data that passes between the client's connected tools to complete a task, such as form submissions, orders, invoices, payment reminders, and appointment details.",
+          },
+          {
+            term: "Website Development",
+            text: "Enquiries and form submissions made on websites we build or manage for clients, which are passed to the client's CRM, email, or WhatsApp.",
+          },
         ],
       },
       {
         type: "note",
         label: "Note",
-        text: "Vrattiks operates as a technology service provider. Message content is processed solely to deliver the service contracted by our business clients. We do not read, monetise, or use individual message content for any purpose beyond service delivery.",
+        text: "Vrattiks operates as a technology service provider. Conversation content, call recordings, and customer records are processed solely to deliver the service contracted by our business clients. We do not monetise them or use them for any purpose beyond service delivery. Our team accesses them only where needed to set up, support, or fix the service.",
       },
-      { type: "h3", text: "3.3 Automatically Collected Data (Website)" },
+      { type: "h3", text: "4.4 Automatically Collected Data (Website)" },
       {
         type: "list",
         items: [
-          "IP address, browser type, device information, and operating system",
-          "Pages visited, time on site, referral sources, and clickstream data",
-          "Cookies and similar tracking technologies (see Section 10)",
+          "IP address, browser type, device information, and operating system, as recorded in standard server logs",
+          "Pages visited, time of visit, and referring website",
+          "Your light or dark display preference, stored in your own browser (see Section 12)",
         ],
       },
-      { type: "h3", text: "3.4 Third-Party Sources" },
+      { type: "h3", text: "4.5 Third-Party Sources" },
       {
         type: "list",
         items: [
-          "Business contact information from public directories or LinkedIn for limited business-to-business partnership research, never for WhatsApp promotional messaging unless explicit WhatsApp opt-in consent has been collected",
-          "Data received from Meta/WhatsApp as part of the WhatsApp Business API integration",
+          "Business contact information from public directories or LinkedIn for limited business-to-business partnership research, never for WhatsApp promotional messaging or automated calls unless explicit consent has been collected",
+          "Data received from Meta/WhatsApp as part of the WhatsApp Business API and Lead Ads integrations",
+          "Data received from the tools a client connects to our services, such as their CRM, forms, ad platforms, or calendar",
         ],
       },
     ],
@@ -145,19 +225,19 @@ export const privacyPolicy: PolicySection[] = [
         items: [
           {
             term: "Consent",
-            text: "Where you or your customers have provided explicit opt-in consent to receive WhatsApp messages or communications.",
+            text: "Where you or your customers have provided explicit consent, such as opting in to receive WhatsApp messages, agreeing to be called back, or submitting an enquiry form.",
           },
           {
             term: "Contractual Necessity",
             text: "Where data processing is required to fulfil our agreement with you as a client or partner.",
           },
           {
-            term: "Legitimate Interests",
-            text: "Where processing is in our legitimate interest to operate, improve, and secure our services, provided it does not override your rights.",
+            term: "Legitimate Uses",
+            text: "Where processing is needed to operate, secure, and support our services, or to respond to an enquiry you have sent us, provided it does not override your rights.",
           },
           {
             term: "Legal Obligation",
-            text: "Where processing is necessary to comply with applicable Indian law, Meta's WhatsApp Business policies, or regulatory requirements.",
+            text: "Where processing is necessary to comply with applicable Indian law, Meta's WhatsApp Business policies, telecom regulations, or other regulatory requirements.",
           },
         ],
       },
@@ -168,42 +248,77 @@ export const privacyPolicy: PolicySection[] = [
     title: "How We Use Your Information",
     blocks: [
       { type: "p", text: "We use the information we collect for the following purposes:" },
-      { type: "h3", text: "5.1 Service Delivery" },
+      { type: "h3", text: "6.1 Service Delivery" },
       {
         type: "list",
         items: [
+          "Answering and making calls through AI voice agents, and passing calls to the client's team when a person is needed",
+          "Replying to website and app visitors through AI chatbots, and handing conversations to the client's team where needed",
           "Setting up and managing WhatsApp Business Platform workflows for consented customer communication",
-          "AI-based customer tagging, routing, support automation, and analytics for contracted business use cases",
-          "Sending approved WhatsApp message templates only to recipients for whom valid opt-in consent exists",
-          "Providing analytics, reporting, and campaign performance data",
+          "Logging leads, customers, and their conversations in the client's CRM, and reminding the client's team of follow-ups",
+          "Moving information between the client's connected tools so that routine tasks run without manual work",
+          "Building and maintaining client websites and connecting their enquiry forms to the client's systems",
+          "Providing call, chat, and campaign reports and analytics to the client",
         ],
       },
-      { type: "h3", text: "5.2 Platform Operations" },
+      { type: "h3", text: "6.2 Platform Operations" },
       {
         type: "list",
         items: [
-          "Maintaining and improving our products (including Vrattiks S1)",
+          "Maintaining and improving our products and services (including Vrattiks S1)",
+          "Reviewing call and chat quality, on behalf of the client, to fix errors and improve answers for that client's own service",
           "Ensuring system security, preventing fraud, and monitoring for abuse",
           "Processing payments and managing billing",
         ],
       },
-      { type: "h3", text: "5.3 Communication" },
+      { type: "h3", text: "6.3 Communication" },
       {
         type: "list",
         items: [
+          "Replying to enquiries sent through our website, by email, or by phone",
           "Responding to your support queries and service requests",
           "Sending product updates, service announcements, or critical notices",
           "Sending marketing communications, only where you have explicitly opted in",
         ],
       },
-      { type: "h3", text: "5.4 Compliance & Legal" },
+      { type: "h3", text: "6.4 Compliance & Legal" },
       {
         type: "list",
         items: [
-          "Maintaining consent records as required by Meta's WhatsApp Business Policy",
+          "Maintaining consent records as required by Meta's WhatsApp Business Policy and applicable telecom rules",
           "Complying with applicable Indian laws, including the DPDPA, 2023",
           "Responding to lawful requests from regulatory authorities",
         ],
+      },
+    ],
+  },
+  {
+    id: "ai-and-automation",
+    title: "AI Processing & Automated Conversations",
+    blocks: [
+      {
+        type: "p",
+        text: "Our voice agents, chatbots, and WhatsApp automation use artificial intelligence to understand what a person says or writes and to reply. To do this, conversation audio and text are processed by speech-to-text, text-to-speech, and AI language model services, some of which are provided by trusted third-party providers acting on our instructions.",
+      },
+      { type: "h3", text: "7.1 How We Use AI Responsibly" },
+      {
+        type: "list",
+        items: [
+          "AI replies are based on the information each client provides about its own business, such as its services, prices, timings, and policies",
+          "We do not use one client's customer data to train AI models or to serve another client",
+          "We do not use conversation data to make decisions that have legal or similarly significant effects on a person, such as approving or rejecting a loan or a medical treatment; such decisions remain with the client's team",
+          "Every automated conversation must offer a way to reach a person at the business, such as a call transfer, a callback, email, or a support form",
+        ],
+      },
+      { type: "h3", text: "7.2 Call Recording and Disclosure" },
+      {
+        type: "p",
+        text: "Calls handled by an AI voice agent may be recorded and transcribed so that the business can review the conversation, follow up on your request, and improve its service. Clients must inform callers that they are speaking with an automated assistant and that the call may be recorded, and must make outbound calls only to people who have asked to be contacted or have otherwise consented to such calls, in line with applicable telecom regulations.",
+      },
+      { type: "h3", text: "7.3 Sensitive Information" },
+      {
+        type: "p",
+        text: "Some of our clients work in healthcare, finance, and education. Our services are designed to collect only the information a business needs to respond to an enquiry, book an appointment, or follow up. Clients must not configure our services to ask for passwords, full card numbers, bank PINs, OTPs, or detailed medical records. Where a client's sector has additional data rules, the client remains responsible for following them, and we process such data only on the client's instructions with restricted access.",
       },
     ],
   },
@@ -215,7 +330,7 @@ export const privacyPolicy: PolicySection[] = [
         type: "p",
         text: "Vrattiks uses the Meta WhatsApp Cloud API to power WhatsApp-based communication for our clients and their customers. Our practices with respect to WhatsApp data are governed by both this Privacy Policy and the Meta WhatsApp Business Terms of Service.",
       },
-      { type: "h3", text: "6.1 Data We Process on Meta's Platform" },
+      { type: "h3", text: "8.1 Data We Process on Meta's Platform" },
       {
         type: "list",
         items: [
@@ -224,7 +339,7 @@ export const privacyPolicy: PolicySection[] = [
           "Delivery, read, and engagement metadata returned by the WhatsApp Cloud API",
         ],
       },
-      { type: "h3", text: "6.2 Consent for WhatsApp Communication" },
+      { type: "h3", text: "8.2 Consent for WhatsApp Communication" },
       {
         type: "p",
         text: "Vrattiks and its clients must collect user consent before initiating WhatsApp communications. Our systems and onboarding process require the following:",
@@ -241,12 +356,12 @@ export const privacyPolicy: PolicySection[] = [
           "We maintain verifiable records of all opt-in consents collected",
         ],
       },
-      { type: "h3", text: "6.3 What Meta Receives" },
+      { type: "h3", text: "8.3 What Meta Receives" },
       {
         type: "p",
         text: "When using the WhatsApp Cloud API, certain metadata (such as phone numbers and message delivery status) may be processed by Meta's systems according to WhatsApp's own business terms and privacy practices. For more information, please review Meta's Privacy Policy at www.whatsapp.com/legal/privacy-policy.",
       },
-      { type: "h3", text: "6.4 Prohibited Uses" },
+      { type: "h3", text: "8.4 Prohibited Uses" },
       {
         type: "list",
         items: [
@@ -258,7 +373,7 @@ export const privacyPolicy: PolicySection[] = [
           "We do not knowingly support WhatsApp messaging for prohibited, illegal, misleading, or restricted goods and services",
         ],
       },
-      { type: "h3", text: "6.5 Business Profile, Support & Escalation" },
+      { type: "h3", text: "8.5 Business Profile, Support & Escalation" },
       {
         type: "p",
         text: "Businesses using WhatsApp through Vrattiks must keep their WhatsApp Business profile accurate and provide customer support contact information. Automated replies must include a clear path for users to reach a human or official support channel where needed.",
@@ -271,7 +386,7 @@ export const privacyPolicy: PolicySection[] = [
           "Clients are responsible for proving that their WhatsApp use complies with applicable law and Meta/WhatsApp policies",
         ],
       },
-      { type: "h3", text: "6.6 Facebook & Instagram Lead Ads Data" },
+      { type: "h3", text: "8.6 Facebook & Instagram Lead Ads Data" },
       {
         type: "p",
         text: "When a business client connects Vrattiks to Meta's Lead Ads API (Facebook or Instagram lead forms), we access and store lead information submitted by users through those forms. This may include:",
@@ -287,9 +402,9 @@ export const privacyPolicy: PolicySection[] = [
       {
         type: "note",
         label: "How we use Lead Ads data",
-        text: "Lead data accessed via the Meta Lead Ads API is used solely to fulfil the contracted CRM or automation service for the business client who owns the lead form. This data is never sold, shared with advertisers, or used for any purpose outside the contracted service. Lead data is retained in accordance with Section 9 of this Policy and deleted upon client request or contract termination.",
+        text: "Lead data accessed via the Meta Lead Ads API is used solely to fulfil the contracted CRM or automation service for the business client who owns the lead form. This data is never sold, shared with advertisers, or used for any purpose outside the contracted service. Lead data is retained in accordance with Section 11 of this Policy and deleted upon client request or contract termination.",
       },
-      { type: "h3", text: "6.7 Meta API Permissions We Use" },
+      { type: "h3", text: "8.7 Meta API Permissions We Use" },
       {
         type: "p",
         text: "When a client connects their Facebook or Instagram account to Vrattiks, we request the following Meta platform permissions. Each is used only for the specific purpose described:",
@@ -337,15 +452,19 @@ export const privacyPolicy: PolicySection[] = [
         items: [
           {
             term: "Meta Platforms Inc.",
-            text: "As required to operate the WhatsApp Business API and comply with Meta's terms of service.",
+            text: "As required to operate the WhatsApp Business API and Lead Ads integrations and comply with Meta's terms of service.",
           },
           {
             term: "Service Providers",
-            text: "Trusted third-party vendors who assist us in delivering our services (e.g., cloud hosting, payment processing, analytics), all bound by data processing agreements.",
+            text: "Trusted third-party vendors who help us deliver our services, such as cloud hosting, telephony and calling providers, speech and AI model providers, email delivery, and payment processing. They may use the data only to provide their service to us and are bound by confidentiality and data processing terms.",
           },
           {
             term: "Our Clients",
-            text: "Your data may be shared with the business client on whose behalf we operate a WhatsApp channel, where relevant to the contracted service.",
+            text: "Data collected through a voice agent, chatbot, WhatsApp channel, website, or CRM that we run for a business is shared with that business, as it is their customer data.",
+          },
+          {
+            term: "Tools Connected by Our Clients",
+            text: "Where a client asks us to connect their own software, such as a CRM, calendar, spreadsheet, or accounting tool, data moves into that software as the client has instructed.",
           },
           {
             term: "Legal Authorities",
@@ -380,15 +499,17 @@ export const privacyPolicy: PolicySection[] = [
         type: "list",
         items: [
           "Data is stored on secure cloud infrastructure with access controls and encryption at rest",
-          "All data transmitted between our systems and third-party APIs (including Meta) is encrypted using HTTPS/TLS",
-          "Access to personal data is restricted to authorised personnel on a need-to-know basis",
+          "All data transmitted between our systems and third-party services (including Meta and our calling and AI providers) is encrypted using HTTPS/TLS",
+          "Each client's data is kept separate from other clients' data",
+          "Access to personal data, including call recordings and conversation history, is restricted to authorised personnel on a need-to-know basis",
+          "Login details for tools that clients connect to our services are stored securely and used only for the connection the client approved",
           "We conduct periodic security reviews and monitor our systems for vulnerabilities",
-          "In the event of a data breach that poses a risk to your rights, we will notify affected users within the timeframes required by applicable law",
+          "In the event of a data breach that poses a risk to your rights, we will notify affected users and the relevant authorities within the timeframes required by applicable law",
         ],
       },
       {
         type: "p",
-        text: "Primary data storage is in India. Where data is processed outside India (e.g., via Meta's WhatsApp Cloud API infrastructure), we ensure appropriate safeguards are in place consistent with applicable data protection laws.",
+        text: "Primary data storage is in India. Where data is processed outside India (e.g., via Meta's WhatsApp Cloud API infrastructure or our AI and speech providers), we ensure appropriate safeguards are in place consistent with applicable data protection laws.",
       },
     ],
   },
@@ -405,12 +526,20 @@ export const privacyPolicy: PolicySection[] = [
         sep: ":",
         items: [
           {
+            term: "Website enquiries",
+            text: "Retained for as long as needed to respond and follow up, and for up to 2 years if no business relationship follows.",
+          },
+          {
             term: "Lead data from Facebook / Instagram Lead Ads",
             text: "Retained for up to 2 years from the date of collection, or until deletion is requested by the client or end-user.",
           },
           {
-            term: "WhatsApp messages and conversation data",
-            text: "Retained for up to 1 year from the date of collection, unless a shorter period is requested or required by law.",
+            term: "WhatsApp messages, chatbot conversations, call recordings, and transcripts",
+            text: "Retained for up to 1 year from the date of collection, unless a shorter period is requested by the client or required by law.",
+          },
+          {
+            term: "CRM and workflow data held for a client",
+            text: "Retained while the client's service is active. On contract termination, it is returned to the client on request and then deleted.",
           },
           {
             term: "Client account data",
@@ -421,8 +550,8 @@ export const privacyPolicy: PolicySection[] = [
             text: "Retained for a minimum of 5 years to comply with regulatory requirements.",
           },
           {
-            term: "Website analytics data",
-            text: "Retained for up to 1 year in aggregated, anonymised form.",
+            term: "Website server logs",
+            text: "Retained for up to 1 year, and used in aggregated form only.",
           },
         ],
       },
@@ -430,10 +559,10 @@ export const privacyPolicy: PolicySection[] = [
         type: "p",
         text: "Upon the expiry of retention periods, data is securely deleted or anonymised so that it can no longer be attributed to an individual.",
       },
-      { type: "h3", text: "9.1 Data Deletion Requests" },
+      { type: "h3", text: "11.1 Data Deletion Requests" },
       {
         type: "p",
-        text: "You may request deletion of your personal data at any time by contacting us at hitesh@vrattiks.io. We will process deletion requests within 30 days of receipt.",
+        text: "You may request deletion of your personal data at any time by contacting us at vrattiks@gmail.com or our Grievance Officer at hitesh@vrattiks.io. We will process deletion requests within 30 days of receipt. Where the data belongs to one of our business clients, we will pass your request to that business and act on its instructions.",
       },
       {
         type: "note",
@@ -448,33 +577,29 @@ export const privacyPolicy: PolicySection[] = [
     blocks: [
       {
         type: "p",
-        text: "Our website uses cookies and similar tracking technologies to improve functionality and understand user behaviour. The types of cookies we use include:",
+        text: "Our website, www.vrattiks.io, does not use advertising or marketing cookies. It stores the following in your browser:",
       },
       {
         type: "terms",
         sep: "—",
         items: [
           {
-            term: "Essential Cookies",
-            text: "Required for the website to function correctly. These cannot be disabled.",
+            term: "Display Preference",
+            text: "If you switch between light and dark mode, your choice is saved in your browser's local storage so the site remembers it on your next visit. It stays on your device and is not sent to us.",
           },
           {
-            term: "Analytics Cookies",
-            text: "Help us understand how visitors interact with our website (e.g., Google Analytics). Data is aggregated and anonymised.",
-          },
-          {
-            term: "Preference Cookies",
-            text: "Remember your settings and preferences across sessions.",
-          },
-          {
-            term: "Marketing Cookies",
-            text: "Used only if you have consented, to show relevant content or ads.",
+            term: "Essential Technical Data",
+            text: "Our hosting provider may use strictly necessary technical data to deliver pages securely and protect the site against abuse.",
           },
         ],
       },
       {
         type: "p",
-        text: "You can control or disable cookies through your browser settings at any time. Disabling cookies may affect the functionality of certain parts of our website. We will request your consent for non-essential cookies via a cookie consent banner on your first visit.",
+        text: "If we add analytics or marketing cookies in the future, we will update this Policy and ask for your consent before setting any non-essential cookies. You can clear stored data or block cookies through your browser settings at any time.",
+      },
+      {
+        type: "p",
+        text: "Websites and chatbots that we build for our clients may use their own cookies. These are governed by the client's own cookie and privacy policy.",
       },
     ],
   },
@@ -492,7 +617,7 @@ export const privacyPolicy: PolicySection[] = [
         items: [
           {
             term: "Right to Access",
-            text: "You may request a copy of the personal data we hold about you.",
+            text: "You may request a summary of the personal data we hold about you, including call recordings or conversation records, and how it is used.",
           },
           {
             term: "Right to Correction",
@@ -507,6 +632,10 @@ export const privacyPolicy: PolicySection[] = [
             text: "Where processing is based on consent, you may withdraw it at any time without affecting the lawfulness of prior processing.",
           },
           {
+            term: "Right to Speak to a Person",
+            text: "You may ask, at any point in an automated call or chat, to be connected with a member of the business's team.",
+          },
+          {
             term: "Right to Grievance Redressal",
             text: "You may raise a complaint with us and expect a response within 30 business days.",
           },
@@ -518,29 +647,31 @@ export const privacyPolicy: PolicySection[] = [
       },
       {
         type: "p",
-        text: "To exercise any of these rights, please contact us at vrattiks@gmail.com. We may request identity verification before processing your request.",
+        text: "To exercise any of these rights, please contact us at vrattiks@gmail.com. We may request identity verification before processing your request. If your data is held for one of our business clients, we will work with that business to respond.",
       },
     ],
   },
   {
-    id: "whatsapp-opt-out",
-    title: "Opting Out of WhatsApp Communications",
+    id: "opting-out",
+    title: "Opting Out of Automated Calls & Messages",
     blocks: [
       {
         type: "p",
-        text: "If you are an end-customer receiving WhatsApp messages from a business powered by Vrattiks, you have the right to opt out at any time:",
+        text: "If you receive calls or messages from a business powered by Vrattiks, you can stop them at any time:",
       },
       {
         type: "list",
         items: [
-          'Reply "STOP" or "Unsubscribe" to any WhatsApp message you receive',
-          "Contact the business directly and request removal from their messaging list",
+          'WhatsApp: reply "STOP" or "Unsubscribe" to any message you receive',
+          "Calls: tell the voice agent during the call that you do not want to be called again",
+          "Email: use the unsubscribe link in any marketing email",
+          "Contact the business directly and request removal from their contact list",
           "Contact us at vrattiks@gmail.com if you believe your opt-out has not been honoured",
         ],
       },
       {
         type: "p",
-        text: "All opt-out requests are honoured within 24 hours. You will not receive further promotional or campaign messages after opting out. Transactional messages directly related to your active relationship with the business may still be sent where legally permitted.",
+        text: "All opt-out requests are honoured within 24 hours. You will not receive further promotional or campaign calls or messages after opting out. Transactional messages directly related to your active relationship with the business, such as appointment confirmations or order updates, may still be sent where legally permitted.",
       },
     ],
   },
@@ -550,7 +681,7 @@ export const privacyPolicy: PolicySection[] = [
     blocks: [
       {
         type: "p",
-        text: "Our services are not directed at individuals under the age of 18. We do not knowingly collect personal data from minors. If you are a parent or guardian and believe your child has provided us with personal information, please contact us immediately at vrattiks@gmail.com and we will take steps to delete the information.",
+        text: "Our services are not directed at individuals under the age of 18. We do not knowingly collect personal data from minors. Where a client, such as a school, coaching institute, or college, uses our services to communicate about students under 18, the client must obtain verifiable consent from a parent or guardian as required by the DPDPA, and communication should be directed to the parent or guardian. If you are a parent or guardian and believe your child has provided us with personal information, please contact us immediately at vrattiks@gmail.com and we will take steps to delete the information.",
       },
     ],
   },
@@ -606,6 +737,10 @@ export const privacyPolicy: PolicySection[] = [
           { label: "Website", value: "www.vrattiks.io" },
           { label: "Response Time", value: "Within 30 business days of receipt of complaint" },
         ],
+      },
+      {
+        type: "p",
+        text: "If you are not satisfied with our response, you may file a complaint with the Data Protection Board of India under the DPDPA.",
       },
     ],
   },

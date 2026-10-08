@@ -9,8 +9,8 @@ import { useCaseDetails } from "@/app/lib/use-case-details";
 /* The section's one idea: owners recognise their problem before they
    recognise our category name, so each of the three use-case cards leads
    with the symptom in the owner's own words and only then names the use
-   case. The cards jump to that use case's entry in UseCaseJourney below
-   (each entry's heading carries the slug as its id). */
+   case. The cards jump to that use case's article in UseCaseBreakdown below
+   (each article carries the slug as its id). */
 export default function UseCasesIntro() {
   return (
     <Section tone="paper" labelledBy="use-cases-heading">

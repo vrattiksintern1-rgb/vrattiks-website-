@@ -3,10 +3,10 @@ import PrivacyPolicy from "../components/PrivacyPolicy";
 
 /* Legal page, linked from the footer's Legal column. Not part of the
    vrattiks-architecture page list, so no FinalCTA — the page is the policy
-   text only, as supplied by the client. */
+   text only (app/lib/privacyPolicy.ts). */
 
 const description =
-  "How Vrattiks Intelligence LLP collects, uses, stores, shares and protects personal information, including WhatsApp and Meta Lead Ads data.";
+  "How Vrattiks Intelligence LLP collects, uses, stores, shares and protects personal information across our AI voice agents, chatbots, WhatsApp automation, CRM and website.";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",

@@ -217,7 +217,3 @@ export const contactDetails: {
   location: null,
   hours: null,
 };
-
-/* Options for the Contact form's "What can we help with?" select. The server
-   action accepts only these values. */
-export const inquiryTopics: string[] = [...services.map((s) => s.name), "Not sure yet"];

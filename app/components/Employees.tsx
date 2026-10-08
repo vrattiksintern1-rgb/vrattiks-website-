@@ -3,7 +3,8 @@ import Reveal from "./ui/Reveal";
 import Section from "./ui/Section";
 import SectionHeading from "./ui/SectionHeading";
 
-/* USER-PROVIDED (vrattiks-standards §3, 2026-10-03): names and roles only.
+/* USER-PROVIDED (vrattiks-standards §3, 2026-10-03; Dhyani Rayka added
+   2026-10-08): names and roles only.
    No bios, photos or quotes until the client supplies them. Card markup
    mirrors Founders.tsx so the two read as one team; keep them in step.
    Shares Founders' tint band with its top padding removed, so the page
@@ -11,6 +12,7 @@ import SectionHeading from "./ui/SectionHeading";
 const employees = [
   { name: "Bhadiyadra Jay", initials: "BJ", role: "Full Stack AI Engineer" },
   { name: "Kamya Patel", initials: "KP", role: "Full Stack Developer" },
+  { name: "Dhyani Rayka", initials: "DR", role: "Developer" },
 ];
 
 export default function Employees() {
@@ -27,7 +29,7 @@ export default function Employees() {
           title="The people who build your systems"
         />
 
-        <ul className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-12 md:gap-6">
+        <ul className="mt-10 grid grid-cols-1 gap-4 md:mt-12 md:gap-6 lg:grid-cols-3">
           {employees.map((employee, i) => (
             <Reveal
               key={employee.name}

@@ -1,22 +1,27 @@
 import Container from "./ui/Container";
 import Button from "./ui/Button";
-import Reveal from "./ui/Reveal";
-import HeroVisual from "./HeroVisual";
-import HeroParticles from "./HeroParticles";
+import HeroVideo from "./HeroVideo";
 
+/* The video is the hero's only motion. The particle background and the Reveal
+   fade-ins were removed at the user's request (2026-10-08) so nothing competes
+   with it, and so the headline is readable the instant it paints
+   (kylezantos-design §1b). HeroParticles stays on the other page heroes.
+
+   White in light theme, the page tone in dark (user request 2026-10-08; a
+   brief all-dark .bg-ink version was reverted the same day). On white the
+   video's baked-in dark backdrop can't dissolve, so it shows as a rounded,
+   glowing frame there — see .media-blend in globals.css. */
 export default function Hero() {
   return (
-    <section className="relative isolate overflow-hidden py-10 md:py-16">
-      {/* Background design: animated particle field + dot terrain, and one
-          soft brand glow behind the headline side. Decorative only — hidden
-          from assistive tech. */}
-      <HeroParticles />
+    <section className="relative isolate overflow-hidden bg-n-0 py-10 md:py-16 dark:bg-n-25">
+      {/* One soft brand glow behind the headline side. Static and decorative
+          only — hidden from assistive tech. */}
       <div
         aria-hidden="true"
         className="wash-brand pointer-events-none absolute -top-24 left-1/2 -z-10 h-[300px] w-[420px] -translate-x-1/2 opacity-50 md:-top-32 md:left-[30%] md:h-[420px] md:w-[680px] md:opacity-70"
       />
       <Container className="flex flex-col items-center gap-12 lg:flex-row lg:gap-12">
-        <Reveal className="max-w-xl text-center lg:flex-1 lg:text-left">
+        <div className="max-w-xl text-center lg:flex-1 lg:text-left">
           <span className="mb-5 inline-flex items-center rounded-full bg-n-50 px-4 py-1.5 text-label font-semibold uppercase text-brand-secondary">
             AI Automation for Growing Businesses
           </span>
@@ -36,11 +41,11 @@ export default function Hero() {
               Explore Services
             </Button>
           </div>
-        </Reveal>
+        </div>
 
-        <Reveal delay={0.15} className="w-full max-w-[560px] lg:flex-1">
-          <HeroVisual />
-        </Reveal>
+        <div className="w-full max-w-[560px] lg:flex-1">
+          <HeroVideo />
+        </div>
       </Container>
     </section>
   );

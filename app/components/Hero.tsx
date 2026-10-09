@@ -1,21 +1,23 @@
 import Container from "./ui/Container";
 import Button from "./ui/Button";
-import HeroVideo from "./HeroVideo";
+import Reveal from "./ui/Reveal";
+import HeroVisual from "./HeroVisual";
+import HeroParticles from "./HeroParticles";
 
-/* The video is the hero's only motion. The particle background and the Reveal
-   fade-ins were removed at the user's request (2026-10-08) so nothing competes
-   with it, and so the headline is readable the instant it paints
-   (kylezantos-design §1b). HeroParticles stays on the other page heroes.
-
-   White in light theme, the page tone in dark (user request 2026-10-08; a
-   brief all-dark .bg-ink version was reverted the same day). On white the
-   video's baked-in dark backdrop can't dissolve, so it shows as a rounded,
-   glowing frame there — see .media-blend in globals.css. */
+/* The text column is deliberately NOT wrapped in Reveal: the headline must be
+   readable the instant it paints (kylezantos-design §1b, "don't fade in the
+   value proposition"). Only the visual on the right fades in, once.
+   HeroParticles is the same backdrop as ServiceHero/IndustryHero, restored
+   here at the user's request (2026-10-09) — a deliberate looping-motion
+   exception to kylezantos-design §1b. It pauses off screen and draws one
+   static frame under prefers-reduced-motion. */
 export default function Hero() {
   return (
-    <section className="relative isolate overflow-hidden bg-n-0 py-10 md:py-16 dark:bg-n-25">
-      {/* One soft brand glow behind the headline side. Static and decorative
-          only — hidden from assistive tech. */}
+    <section className="relative isolate overflow-hidden py-10 md:py-16">
+      {/* Background: animated particle field + dot terrain, and one soft
+          brand glow behind the headline side. Decorative only — hidden from
+          assistive tech. */}
+      <HeroParticles />
       <div
         aria-hidden="true"
         className="wash-brand pointer-events-none absolute -top-24 left-1/2 -z-10 h-[300px] w-[420px] -translate-x-1/2 opacity-50 md:-top-32 md:left-[30%] md:h-[420px] md:w-[680px] md:opacity-70"
@@ -43,9 +45,9 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="w-full max-w-[560px] lg:flex-1">
-          <HeroVideo />
-        </div>
+        <Reveal delay={0.15} className="w-full max-w-[560px] lg:flex-1">
+          <HeroVisual />
+        </Reveal>
       </Container>
     </section>
   );

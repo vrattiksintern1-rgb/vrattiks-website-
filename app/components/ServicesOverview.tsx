@@ -20,7 +20,7 @@ export default function ServicesOverview({
   layout?: "grid" | "slider";
 }) {
   return (
-    <section aria-labelledby={headingId} className="py-10 md:py-16">
+    <section aria-labelledby={headingId} className="py-8 md:py-12">
       <Container>
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
           <SectionHeading

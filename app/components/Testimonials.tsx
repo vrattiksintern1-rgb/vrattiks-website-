@@ -7,7 +7,7 @@ import Icon from "./ui/Icon";
    state instead of a fabricated quote (vrattiks-standards §3). */
 export default function Testimonials() {
   return (
-    <section className="py-10 md:py-16">
+    <section className="py-8 md:py-12">
       <Container>
         <SectionHeading
           eyebrow="Testimonials"

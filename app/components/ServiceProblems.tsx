@@ -32,7 +32,7 @@ export default function ServiceProblems({
               as="li"
               key={problem.title}
               delay={i * 0.06}
-              className="grid grid-cols-[44px_minmax(0,1fr)] gap-x-4 border-b border-n-200 py-7 md:grid-cols-[56px_minmax(0,1fr)] md:py-8"
+              className="grid grid-cols-[44px_minmax(0,1fr)] gap-x-4 border-b border-n-200 py-4 md:grid-cols-[56px_minmax(0,1fr)] md:py-5"
             >
               <span
                 aria-hidden="true"

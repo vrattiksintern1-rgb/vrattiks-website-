@@ -187,7 +187,7 @@ export default function PrivacyPolicy() {
                 key={section.id}
                 id={section.id}
                 aria-labelledby={`${section.id}-heading`}
-                className="scroll-mt-28 border-b border-n-200 py-10 first:pt-0 last:border-b-0"
+                className="scroll-mt-28 border-b border-n-200 py-6 first:pt-0 last:border-b-0"
               >
                 <h2
                   id={`${section.id}-heading`}

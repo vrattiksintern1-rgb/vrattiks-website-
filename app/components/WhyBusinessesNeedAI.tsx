@@ -42,7 +42,7 @@ const STACK_STEP = 14; // px each card docks below the previous one
 
 export default function WhyBusinessesNeedAI() {
   return (
-    <section className="py-10 md:py-16">
+    <section className="py-8 md:py-12">
       <Container>
         <SectionHeading
           eyebrow="The Problem"
@@ -53,7 +53,7 @@ export default function WhyBusinessesNeedAI() {
         {/* --stack-top = sticky header height (64 / 80px) + breathing room.
             The gap is the scroll distance between one card docking and the
             next arriving. */}
-        <ol className="mt-10 flex flex-col gap-[18svh] [--stack-top:5rem] md:mt-14 md:[--stack-top:7rem]">
+        <ol className="mt-10 flex flex-col gap-10 [--stack-top:5rem] md:mt-12 md:gap-14 md:[--stack-top:7rem]">
           {problems.map((problem, i) => (
             <li
               key={problem.title}
@@ -77,7 +77,7 @@ export default function WhyBusinessesNeedAI() {
           ))}
         </ol>
 
-        <Reveal className="mt-12 max-w-3xl border-l-2 border-brand-secondary pl-5 md:mt-16 md:pl-7">
+        <Reveal className="mt-10 max-w-3xl border-l-2 border-brand-secondary pl-5 md:mt-12 md:pl-7">
           <p className="text-[24px] leading-[1.25] tracking-[-0.02em] font-display font-semibold text-n-900 md:text-[30px]">
             None of this is a people problem — it&apos;s a systems problem.
           </p>

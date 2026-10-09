@@ -61,7 +61,7 @@ const outcomes: {
    No hover: none of these are links. */
 export default function KpiResults() {
   return (
-    <section className="bg-brand-graphite py-14 text-n-200 md:py-24">
+    <section className="bg-brand-graphite py-10 text-n-200 md:py-16">
       <Container>
         <SectionHeading
           tone="dark"
@@ -70,7 +70,7 @@ export default function KpiResults() {
           description="Same team, same customers. The first reply, the follow-ups and the tracking just stop depending on someone remembering."
         />
 
-        <ul className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-14 lg:grid-cols-4 lg:gap-5">
+        <ul className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-12 lg:grid-cols-4 lg:gap-5">
           {outcomes.map((item, i) => (
             <Reveal
               key={item.label}

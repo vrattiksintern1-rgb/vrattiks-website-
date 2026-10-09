@@ -1,7 +1,6 @@
 import Container from "./ui/Container";
 import Eyebrow from "./ui/Eyebrow";
 import Section from "./ui/Section";
-import { caseStudies } from "@/app/lib/case-studies";
 
 /* Case Studies intro. Deliberately not the split H1 + image every other
    overview page opens with: there is no image, so the one idea is the
@@ -10,10 +9,8 @@ import { caseStudies } from "@/app/lib/case-studies";
    bar (CaseStudiesNav) sits directly beneath, so the intro's bottom padding is
    trimmed to let the two read as one block. */
 export default function CaseStudiesIntro() {
-  const hasSamples = caseStudies.some((study) => study.sample);
-
   return (
-    <Section tone="paper" labelledBy="case-studies-heading" className="pb-12 sm:pb-12 md:pb-16">
+    <Section tone="paper" labelledBy="case-studies-heading" className="pb-10 sm:pb-10 md:pb-12">
       <Container>
         <Eyebrow className="mb-6">Case Studies</Eyebrow>
         {/* Not wrapped in Reveal: the page's H1 should be readable the instant
@@ -34,10 +31,6 @@ export default function CaseStudiesIntro() {
           <p className="max-w-md text-[14px] leading-[1.6] text-n-600">
             Results are added to a project only once they have been measured
             with the client.
-            {/* Explains the badge for as long as sample entries are shown. */}
-            {hasSamples
-              ? " Projects marked “Sample” are illustrative examples of the kind of work we build, not client projects."
-              : null}
           </p>
         </div>
       </Container>

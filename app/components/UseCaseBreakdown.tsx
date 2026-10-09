@@ -31,7 +31,7 @@ export default function UseCaseBreakdown() {
           title="What changes, one use case at a time"
         />
 
-        <div className="mt-10 md:mt-14">
+        <div className="mt-10 md:mt-12">
           {useCases.map((useCase, i) => {
             const detail = useCaseDetails[useCase.slug];
             if (!detail) return null;
@@ -42,7 +42,7 @@ export default function UseCaseBreakdown() {
                 key={useCase.slug}
                 id={useCase.slug}
                 aria-labelledby={`${useCase.slug}-title`}
-                className="scroll-mt-20 border-t md:scroll-mt-24 border-n-200 py-12 first:pt-10 md:py-16"
+                className="scroll-mt-20 border-t md:scroll-mt-24 border-n-200 py-7 first:pt-6 md:py-9"
               >
                 <Reveal className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-16">
                   <header>
@@ -76,7 +76,7 @@ export default function UseCaseBreakdown() {
                     ) : null}
                   </header>
 
-                  <div className="grid grid-cols-1 gap-10">
+                  <div className="grid grid-cols-1 gap-6">
                     <div>
                       <h4 className={`${subheading} text-n-600`}>The problem</h4>
                       <ul className="mt-4 space-y-3">

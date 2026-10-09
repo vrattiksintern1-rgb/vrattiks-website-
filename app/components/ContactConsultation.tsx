@@ -50,13 +50,13 @@ export default function ContactConsultation() {
           </Reveal>
         </div>
 
-        <ol className="mt-14 grid grid-cols-1 border-t border-n-0/10 md:mt-16 md:grid-cols-3">
+        <ol className="mt-10 grid grid-cols-1 border-t border-n-0/10 md:mt-12 md:grid-cols-3">
           {steps.map((step, i) => (
             <Reveal
               key={step.title}
               as="li"
               delay={i * 0.06}
-              className="border-b border-n-0/10 py-8 md:border-b-0 md:py-10 md:pr-10 md:not-first:border-l md:not-first:pl-10"
+              className="border-b border-n-0/10 py-5 md:border-b-0 md:py-8 md:pr-10 md:not-first:border-l md:not-first:pl-10"
             >
               <span aria-hidden="true" className="block text-[44px] leading-none font-display font-bold text-brand-primary">
                 {String(i + 1).padStart(2, "0")}

@@ -126,8 +126,10 @@
 /* The graphite bands and the gradient are already dark surfaces designed
    around the LIGHT ramp (text-n-0 headings, n-200/300 body, n-0/10 hairlines).
    Restore it inside them so they render exactly as they do in light mode.
+   .nav-dropdown (Header) is white in light mode and graphite in dark mode via
+   dark: classes written against this restored ramp.
    Values mirror @theme above — keep the two in sync. */
-[data-theme="dark"] :is(.bg-brand-graphite, .bg-brand-gradient) {
+[data-theme="dark"] :is(.bg-brand-graphite, .bg-brand-gradient, .nav-dropdown) {
   --color-n-0: #ffffff;
   --color-n-25: #fbfaff;
   --color-n-50: #f5f3fc;
@@ -223,27 +225,6 @@
     transparent
   );
   filter: blur(40px);
-}
-
-/* .media-blend: presents dark footage (HeroVideo) as part of the section, not
-   a boxed player. Theme-dependent, because feathering only blends into a dark
-   page — on the light hero a feathered dark frame reads as a hard oval:
-   - light: no border, large radius, brand glow ring + bloom (--shadow-glow).
-   - dark: edges masked to transparent so the footage dissolves into the page.
-     Centre stays fully opaque out to ~75% of each half-axis (every node in the
-     animation stays as rendered); the corners vanish completely. */
-.media-blend {
-  overflow: hidden;
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-glow);
-}
-
-[data-theme="dark"] .media-blend {
-  overflow: visible;
-  border-radius: 0;
-  box-shadow: none;
-  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 74%, rgba(0, 0, 0, 0.55) 88%, transparent 100%);
-  mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 74%, rgba(0, 0, 0, 0.55) 88%, transparent 100%);
 }
 
 /* Shared focus ring — replaces default outline with the brand glow token, never outline:none alone */

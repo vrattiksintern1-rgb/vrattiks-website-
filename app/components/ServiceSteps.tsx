@@ -19,7 +19,7 @@ export default function ServiceSteps({
   itemLabel?: string;
 }) {
   return (
-    <Section tone="dark" id="how-it-works" labelledBy="steps-heading">
+    <Section tone="dark" id="how-it-works" labelledBy="steps-heading" className="scroll-mt-16 md:scroll-mt-20">
       <Container>
         <SectionHeading
           tone="dark"
@@ -28,7 +28,7 @@ export default function ServiceSteps({
           title={title}
         />
 
-        <ol className="mt-12 grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 md:mt-16 lg:grid-cols-4">
+        <ol className="mt-10 grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2 md:mt-12 lg:grid-cols-4">
           {steps.map((step, i) => (
             <Reveal as="li" key={step.title} delay={i * 0.08} className="relative border-t border-n-0/10 pt-6">
               <span aria-hidden="true" className="absolute -top-px left-0 h-px w-10 bg-brand-primary" />

@@ -15,7 +15,6 @@ const navLinks = [
   { label: "Services", href: "/services" },
   { label: "Industries", href: "/industries" },
   { label: "Case Studies", href: "/case-studies" },
-  { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -111,12 +110,12 @@ function NavDropdown({ label, href, menu }: { label: string; href: string; menu:
           open ? "visible translate-y-0 opacity-100" : "invisible -translate-y-1 opacity-0"
         }`}
       >
-        <ul className="max-h-[calc(100svh-7rem)] overflow-y-auto rounded-lg border border-n-0/10 bg-brand-graphite p-3 shadow-[var(--shadow-lg)]">
+        <ul className="nav-dropdown max-h-[calc(100svh-7rem)] overflow-y-auto rounded-lg border border-n-100 bg-n-0 p-3 shadow-[var(--shadow-lg)] dark:border-n-0/10 dark:bg-brand-graphite">
           <li>
             <Link
               href={href}
               onClick={() => setOpen(false)}
-              className="group flex items-center justify-between rounded-sm px-4 py-3 font-display text-[16px] font-semibold text-n-0 transition-colors duration-150 hover:bg-n-0/[0.06] focus-visible:bg-n-0/[0.06] focus-visible:outline-2 focus-visible:outline-brand-primary"
+              className="group flex items-center justify-between rounded-sm px-4 py-3 font-display text-[16px] font-semibold text-n-900 transition-colors duration-150 hover:bg-n-50 focus-visible:bg-n-50 focus-visible:outline-2 focus-visible:outline-brand-secondary dark:text-n-0 dark:hover:bg-n-0/[0.06] dark:focus-visible:bg-n-0/[0.06] dark:focus-visible:outline-brand-primary"
             >
               {menu.allLabel}
               <Icon
@@ -130,7 +129,7 @@ function NavDropdown({ label, href, menu }: { label: string; href: string; menu:
               <Link
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="block rounded-sm px-4 py-2.5 text-[15px] text-n-300 transition-colors duration-150 hover:bg-n-0/[0.06] hover:text-n-0 focus-visible:bg-n-0/[0.06] focus-visible:text-n-0 focus-visible:outline-2 focus-visible:outline-brand-primary"
+                className="block rounded-sm px-4 py-2.5 text-[15px] text-n-600 transition-colors duration-150 hover:bg-n-50 hover:text-n-900 focus-visible:bg-n-50 focus-visible:text-n-900 focus-visible:outline-2 focus-visible:outline-brand-secondary dark:text-n-300 dark:hover:bg-n-0/[0.06] dark:hover:text-n-0 dark:focus-visible:bg-n-0/[0.06] dark:focus-visible:text-n-0 dark:focus-visible:outline-brand-primary"
               >
                 {item.name}
               </Link>

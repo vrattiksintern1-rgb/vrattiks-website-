@@ -47,14 +47,13 @@ export const metadata: Metadata = {
 };
 
 /* Names and anchors only — no clients, ratings or results, since none are
-   confirmed (vrattiks-seo "Structured data", vrattiks-standards §3). Sample
-   entries are illustrative, so they are never listed here. */
+   confirmed (vrattiks-seo "Structured data", vrattiks-standards §3). */
 const caseStudiesJsonLd = {
   "@context": "https://schema.org",
   "@type": "ItemList",
   name: "Vrattiks Intelligence case studies",
   url: "/case-studies",
-  itemListElement: caseStudies.filter((study) => !study.sample).map((study, i) => ({
+  itemListElement: caseStudies.map((study, i) => ({
     "@type": "ListItem",
     position: i + 1,
     name: study.title,

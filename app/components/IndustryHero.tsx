@@ -23,7 +23,7 @@ export default function IndustryHero({
     <Section tone="paper" labelledBy="industry-heading">
       <HeroParticles />
       <Container>
-        <nav aria-label="Breadcrumb" className="mb-10 md:mb-14">
+        <nav aria-label="Breadcrumb" className="mb-8 md:mb-10">
           <ol className="flex flex-wrap items-center gap-2 text-[13.5px] text-n-600">
             <li>
               <Link

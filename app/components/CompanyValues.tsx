@@ -47,18 +47,15 @@ export default function CompanyValues() {
           description="The five elements behind the Vrattiks name are also how we judge every system we build."
         />
 
-        <ol className="mt-10 border-b border-n-200 md:mt-14 lg:grid lg:grid-cols-5 lg:border-t lg:border-b-0 lg:pt-10">
+        <ol className="mt-10 border-b border-n-200 md:mt-12 lg:grid lg:grid-cols-5 lg:border-t lg:border-b-0 lg:pt-10">
           {elements.map((item, i) => (
             <Reveal
               key={item.element}
               as="li"
               delay={i * 0.05}
-              className="border-t border-n-200 py-6 sm:grid sm:grid-cols-[40px_180px_minmax(0,1fr)] sm:items-baseline sm:gap-6 lg:block lg:border-t-0 lg:border-l lg:px-6 lg:py-1 lg:first:border-l-0 lg:first:pl-0"
+              className="border-t border-n-200 py-6 sm:grid sm:grid-cols-[180px_minmax(0,1fr)] sm:items-baseline sm:gap-6 lg:block lg:border-t-0 lg:border-l lg:px-6 lg:py-1 lg:first:border-l-0 lg:first:pl-0"
             >
-              <span className="font-body text-[13px] text-n-600">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <div className="mt-2 sm:mt-0 lg:mt-6">
+              <div>
                 <span className="block font-body text-label font-semibold uppercase text-brand-secondary">
                   {item.element}
                 </span>

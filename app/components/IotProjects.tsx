@@ -111,7 +111,7 @@ function SheetFrame({
         </span>
       </div>
       <Reveal from="rule" className="h-px origin-left bg-n-0/15" />
-      <Reveal from="fade" delay={0.1} className="px-5 pt-6 pb-8 sm:px-8 sm:pt-8 sm:pb-10">
+      <Reveal from="fade" delay={0.1} className="px-5 pt-6 pb-6 sm:px-8 sm:pt-8 sm:pb-8">
         {children}
       </Reveal>
     </div>
@@ -132,11 +132,7 @@ function ProjectSheet({ study, n }: { study: CaseStudy; n: number }) {
 
   return (
     <article id={study.slug} aria-labelledby={titleId} className="scroll-mt-36 md:scroll-mt-40">
-      {/* A sample entry says so in the status chip (vrattiks-standards §3). */}
-      <SheetFrame
-        code={`Sheet IOT-${String(n).padStart(2, "0")}`}
-        status={study.sample ? "Sample project" : study.kind}
-      >
+      <SheetFrame code={`Sheet IOT-${String(n).padStart(2, "0")}`} status={study.kind}>
         <h3
           id={titleId}
           className="text-[24px] leading-[1.2] tracking-[-0.02em] font-display font-bold text-n-0 md:text-[28px]"
@@ -247,7 +243,7 @@ export default function IotProjects({
           <StackMotif className="mt-12 hidden w-full max-w-[280px] sm:block md:mt-16" />
         </div>
 
-        <div className="flex flex-col gap-8 md:col-span-7">
+        <div className="flex flex-col gap-4 md:col-span-7">
           {projects.length ? (
             projects.map((study, i) => <ProjectSheet key={study.slug} study={study} n={i + 1} />)
           ) : (

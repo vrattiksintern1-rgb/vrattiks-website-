@@ -34,12 +34,12 @@ export default function MissionVision() {
           title="What we do, and where it leads"
         />
 
-        <div className="mt-10 grid grid-cols-1 border-t border-n-0/10 md:mt-14 md:grid-cols-2">
+        <div className="mt-10 grid grid-cols-1 border-t border-n-0/10 md:mt-12 md:grid-cols-2">
           {statements.map((s, i) => (
             <Reveal
               key={s.label}
               delay={i * 0.08}
-              className={`py-8 md:py-10 ${
+              className={`py-5 md:py-8 ${
                 i === 0
                   ? "md:pr-12"
                   : "border-t border-n-0/10 md:border-t-0 md:border-l md:pl-12"

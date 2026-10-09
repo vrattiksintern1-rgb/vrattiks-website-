@@ -32,7 +32,7 @@ export default function UseCases({
   headingId?: string;
 }) {
   return (
-    <section aria-labelledby={headingId} className="relative isolate overflow-hidden bg-brand-graphite py-10 md:py-16">
+    <section aria-labelledby={headingId} className="relative isolate overflow-hidden bg-brand-graphite py-8 md:py-12">
       {/* Same grid motif as the Hero, at low white alpha, plus a faint glow
           so the dark band has depth instead of a flat fill. */}
       <div aria-hidden="true" className="bg-grid-fade-dark pointer-events-none absolute inset-0 -z-10" />
@@ -49,7 +49,7 @@ export default function UseCases({
           tone="dark"
         />
 
-        <div className="mt-10 border-t border-n-0/10 md:mt-14">
+        <div className="mt-10 border-t border-n-0/10 md:mt-12">
           <div
             aria-hidden="true"
             className={`hidden border-b border-n-0/10 py-4 font-body text-[12px] tracking-[0.08em] uppercase md:grid ${columns}`}
@@ -71,7 +71,7 @@ export default function UseCases({
             <Reveal
               key={useCase.slug}
               delay={i * 0.1}
-              className={`group relative grid grid-cols-1 gap-6 border-b border-n-0/10 py-8 md:py-10 ${columns}`}
+              className={`group relative grid grid-cols-1 gap-6 border-b border-n-0/10 py-5 md:py-6 ${columns}`}
             >
               <div>
                 <span className="flex h-10 w-10 items-center justify-center rounded-sm border border-n-0/15 text-brand-primary">

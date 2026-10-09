@@ -77,7 +77,7 @@ export default function IndustryTimeline({ industries }: { industries: Industry[
   }, []);
 
   return (
-    <ol ref={listRef} className="relative mt-12 md:mt-16">
+    <ol ref={listRef} className="relative mt-10 md:mt-12">
       {/* Rail: hairline track + gradient fill confined to a 2px band (the
           section's only gradient), with a soft glowing tip. */}
       <div

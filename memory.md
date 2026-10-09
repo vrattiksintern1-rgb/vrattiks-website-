@@ -1481,6 +1481,9 @@ User asked to "remove use case page". Reverted the 2026-10-05 link additions:
 
 ## Hero video replaces the code-window visual (2026-10-08)
 
+> **Superseded 2026-10-09** — the video was removed and the hero reverted;
+> see "Hero video removed — code-window visual restored (2026-10-09)".
+
 - `Hero.tsx` now renders **`HeroVideo.tsx`** on the right instead of
   `HeroVisual.tsx` (the typing code window). `HeroVisual.tsx` is left in the
   repo, unused — delete it or restore it deliberately; don't let it rot.
@@ -1600,29 +1603,273 @@ resolve, no tap target <40px, nothing left at opacity 0 (also under
 emulated reduced motion), bar pins at 64/80px and marks the right section.
 Light + dark both viewed. All new text pairs ≥4.75:1.
 
-### Sample projects added — user request (2026-10-08, same day)
+### Sample projects — added, then removed (2026-10-08, same day)
 
-User asked to "add random projects and websites". Invented case studies
-conflict with vrattiks-standards §3, so they were added as **labelled
-samples**, not as real work:
+User asked to "add random projects and websites"; six labelled SAMPLE entries
+(2 per section, with a visible "Sample" badge, kept out of JSON-LD) were
+added, then the user asked to remove that change. Fully reverted: no
+`sample` field, no `SampleBadge.tsx`, no intro sentence. The page is back to
+the 4 user-provided projects, and IoT shows its "in development" sheet again.
+If samples are ever requested again, the badge + JSON-LD exclusion approach
+is the one that satisfies vrattiks-standards §3.
 
-- `sample?: boolean` on `CaseStudy`. Six entries in a marked SAMPLE block at
-  the end of `caseStudies`: 2 Custom (Clinic Appointment Reminders, Invoice
-  Follow-Up Workflow), 2 IoT (Cold Storage Temperature Monitor, Machine
-  Run-Time Tracker), 2 Website (Coaching Institute Website, Restaurant
-  Ordering Site). Generic names, NO client names, NO results/figures, NO URLs.
-  Industries link to existing /industries pages.
-- Guardrails — keep them while any sample is fictional: visible dashed
-  "Sample" badge (`SampleBadge.tsx`; IoT sheets say "Sample project" in the
-  status chip), an intro sentence explaining the badge (renders only while
-  samples exist), and samples are filtered OUT of the ItemList JSON-LD.
-- Because IoT now has entries, the "in development" sheet no longer shows; it
-  comes back automatically if the IoT samples are deleted and no real ones
-  exist. Nav counts now read 4 / 2 / 4 projects (samples included).
-- Fixed in passing: Custom rows listed a linked industry twice (details list
-  + link); the details list now shows industry only when it has no page.
-- To go live with real work: delete the SAMPLE block entries one by one as
-  real projects replace them. Do not drop `sample: true` from a fictional
-  entry to make it look real.
-- Verified: lint, tsc (outside Pipeline.tsx), build (Pipeline set aside and
-  restored), 0 issues at all nine widths, JSON-LD = the 4 real projects only.
+Kept from that change: a fix in `CustomProjects` so a linked industry isn't
+listed twice (details list shows industry only when it has no page). It's
+invisible with today's data — no Custom project has an industry yet.
+
+## Hero video removed — code-window visual restored (2026-10-09)
+
+User asked to remove the hero video entirely and put the right-side visual
+back exactly as it was before the video, without touching anything else.
+Why: the video was the only looping motion on Home (a §1b exception), its
+content still had open problems (generator watermark, AI-garbled labels, a
+7s flash, 4.1 MB file), and on the light theme it needed a boxed frame.
+
+- **Restored from `5e3a84f`** (last commit before the video; the video came
+  in `3f99b77`, a mixed commit with the Case Studies page, so only hero hunks
+  were reverted, not the commit). `Hero.tsx` again renders `HeroVisual` (the
+  typing code window) in `<Reveal delay={0.15}>` with the same container,
+  gaps, `max-w-[560px]` and `py-10 md:py-16`. The `bg-n-0 dark:bg-n-25`
+  added with the video is gone; the section shows the page tone again, as
+  before. `HeroVisual.tsx` was never changed, so it is byte-identical to
+  pre-video.
+- **Two deliberate deviations from `5e3a84f`**, both required by standing
+  rules: (1) the text column stays a plain `div`, NOT `<Reveal>`, so the h1
+  paints instantly (the 2026-09-22 h1 reveal fix; kylezantos-design §1b,
+  cited in a comment in Hero.tsx); (2) `HeroParticles` is NOT restored on
+  the Home hero, because it loops and Home must have zero looping motion. It
+  stays on ServiceHero, IndustryHero and PrivacyPolicy.
+- **Removed:** `app/components/HeroVideo.tsx` (video, poster `next/image`,
+  reduced-motion/IntersectionObserver/Save-Data logic) and the `.media-blend`
+  block in globals.css. globals.css is byte-identical to `5e3a84f` again.
+  `ui/Reveal.tsx` keeps its `from` prop (the Case Studies page uses it; default
+  behaviour unchanged).
+- **Assets left in place, unused:** `public/video/hero-animation.mp4` (as
+  asked) and `public/video/hero-animation-poster.jpg`. Nothing in the source
+  references either, so both are safe to delete (both are in git history
+  from `3f99b77`).
+- **Verified:** `npm run lint` clean; `tsc --noEmit` has only the 3 known
+  `Pipeline.tsx` errors; `npm run build` passes (31 routes) with Pipeline set
+  aside and restored, as before. Headless Chrome on `next start` at
+  1440/1280/1024/901/768/601/430/375/320: 0px overflow, 1 H1 (opacity 1 at
+  1.5s), 0 `<video>`, 0 canvas, 0 infinite animations; typing ends on "Live"
+  and stops. Under emulated reduced motion all 9 widths show the finished
+  code with no motion.
+
+## Site-wide vertical spacing tightened (2026-10-09)
+
+User brief: vertical spacing felt too loose on every page (example: Home "Why
+Businesses Need AI" 01/02/03 cards). Spacing only — no copy, colour, type,
+layout structure, Reveal or animation was touched. Audit was reported and
+approved before editing. Values are mobile / sm / md+ in px.
+
+**Why there are two rhythms:** Home's sections hand-roll their padding
+(`<section className="py-…">`, not `ui/Section`), while every other page goes
+through `ui/Section` `md`. Before this pass inner pages were ~1.75x Home.
+Both were cut by the requested 25–35%, so they stay deliberately unequal —
+the user chose that over converging (which would have been a 57% cut to
+`Section`). This supersedes the 2026-09-21 "don't re-tighten" note.
+
+Section-to-section padding:
+- `ui/Section` `md` (all non-Home pages): 64/80/112 → **56/64/80**
+  (`py-14 sm:py-16 md:py-20`). Mobile/tablet now equal docs/index.html §6.4.
+  `lg` left at 96/112/144 — nothing renders it.
+- Home's own sections (WhyBusinessesNeedAI, WhyVrattiks, ServicesOverview,
+  UseCases, Industries, CaseStudies, Process, Testimonials — the last four
+  also on /services and /industries): 40/64 → **32/48** (`py-8 md:py-12`).
+- KpiResults, FAQ (anchor bands): 56/96 → **40/64** (`py-10 md:py-16`).
+- CaseStudiesIntro bottom override: 48/48/64 → **40/40/48**.
+- **Kept:** Hero 40/64, FinalCTA 40/64 (+ card 56/64), Footer 56/64.
+
+Stacked cards / rows:
+- WhyBusinessesNeedAI cards: `gap-[18svh]` (~120 phone / ~162 desktop) →
+  64/96 (`gap-16 md:gap-24`) → **40/56** (`gap-10 md:gap-14`, follow-up
+  below). Sticky docking (`--stack-top`, 14px step) unchanged.
+- CustomProjects 80/128 → 48/64 · WebsiteProjects rows 56/64 → 32/32 ·
+  IotProjects sheets 32 → 16.
+- UseCaseBreakdown rows py 48/64 (first pt 40) → 28/36 (first pt 24); its
+  problem→steps blocks 40 → 24.
+- UseCases matrix rows py 32/40 → 20/24 · ServiceProblems py 28/32 → 16/20 ·
+  ServiceBenefits py 28/36 → 16/20 · ServiceFeatures py 24 → 16.
+- ServiceSteps / UseCaseJourney `gap-y` 40 → 24 (only below lg).
+- MissionVision / ContactConsultation item py 32/40 → 20/32.
+- PrivacyPolicy clause py 40 → 24.
+
+Heading → content (outliers brought to the standard `mt-10 md:mt-12`):
+`md:mt-14` in WhyBusinessesNeedAI, KpiResults, CompanyValues, MissionVision,
+UseCaseBreakdown, UseCases; `mt-12 md:mt-16` in ServiceSteps, UseCaseJourney,
+IndustryTimeline, WebsiteProjects, ServicesIntro card, WhyBusinessesNeedAI
+closing line; `mt-14 md:mt-20/16` in CustomProjects, ContactConsultation.
+Breadcrumb in ServiceHero/IndustryHero `mb-10 md:mb-14` → `mb-8 md:mb-10`.
+
+Card padding: only IotProjects sheet body bottom `pb-8 sm:pb-10` → `pb-6
+sm:pb-8` (it was 8px heavier than its top).
+
+Anchor fix: ServiceSteps (`#how-it-works`, linked from Service/Industry
+heroes) had no `scroll-mt` and relied on its own top padding to clear the
+64/80px sticky header — at 56px the title would sit under the header on
+mobile. Added `scroll-mt-16 md:scroll-mt-20`.
+
+Deliberately NOT tightened: Process scroll runway + sticky panel (sets the
+stepper's pacing), WebsiteProjects `md:mt-24` stagger and IndustryTimeline
+`md:-mt-10` overlap (layout ideas), FAQ rows / Header / nav / buttons (tap
+targets), the standard `mt-10 md:mt-12` heading margin, card grids already at
+16–20px gaps, Industries tiles, unused CatalogueIndex / Pipeline.
+
+Values between the doc's named steps (20, 28, 36, 40, 56, 80) are used — the
+named steps alone allow only −14% or −43% on the desktop section padding.
+
+Verified: `npm run lint` clean; `tsc --noEmit` only the 3 known `Pipeline.tsx`
+errors; `npm run build` passes (31 routes) with Pipeline set aside and
+restored. Headless Chrome over CDP on `next start`, all 24 routes × 9 widths
+(1440/1280/1024/901/768/601/430/375/320) × light and dark, reduced motion:
+0px horizontal overflow everywhere, no section or card overlaps, no touching
+bordered cards, heading→content ≥ 24px (the only flags were Privacy Policy
+clause rows, a checker false positive — adjacent divider rows). Measured
+padding matches the values above. 135 anchor checks (`#how-it-works`,
+`#inquiry`, Case Studies chapters + projects, Use Cases rows, Privacy
+clauses) — every title lands below the sticky header (and the Case Studies
+chapter bar). No Blog route or Use Case detail routes exist, so none were
+checked.
+
+Re-checked 2026-10-09 (after a VS Code restart): the sweep above had run to
+completion. `app/lib/case-studies.ts` and `app/case-studies/page.tsx` were
+saved again after it (sample-project removal only, no spacing change), so
+`/case-studies` — the only route that reads them — was swept again: lint
+clean, tsc only the 3 `Pipeline.tsx` errors, build 31/31 with Pipeline set
+aside and restored byte-identical, then on `next start` 9 widths × light
+and dark with reduced motion. Result: 0px overflow, 1 H1, no duplicate ids,
+no section or card overlaps, no `sample-*` ids or "Sample" badges,
+JSON-LD lists 4 items, and padding matches (Section 56/64/80, intro bottom
+40/40/48, FinalCTA 40/64). All 126 anchor checks pass: 3 chapters + 4
+projects × 18, each title 76px or more below the header and chapter bar.
+
+**Follow-up, WhyBusinessesNeedAI card gap (2026-10-09).** User saw ~145px
+between cards 01 and 02 at 1440 and thought the fix hadn't applied.
+Measured: the code already rendered 96px (md) / 64px. 145px is exactly the
+OLD `gap-[18svh]` in a 1440 window with ~806px of page area (18% × 806 =
+145.08, reproduced) — stale CSS in their browser (tab open across the
+restart, cache, or a deploy of the last commit, which still has `18svh`).
+The only source of the gap is the `<ol>` `gap`: cards have no margins, no
+min-height/svh/vh, no scroll spacer; sticky `top` only sets where a card
+docks, and the gap can only shrink after docking. User's target was 48–64
+desktop / 32–40 mobile, so `gap-16 md:gap-24` → **`gap-10 md:gap-14`
+(40 / 56px)**. Stacking kept; cards just dock sooner. Text, colours, card
+design and motion untouched; nothing loops.
+
+Before → after gap 01→02 (max while both visible): 1440/1280/1024/901
+96 → 56; 768/601/430/390/375/320 64 → 40. Verified on `next dev` over CDP,
+light and dark, reduced motion: 0px overflow; in-flow cards never overlap
+(min gap = the gap); docking still 112/126/…/182 (md) and 80/94/…/150.
+Not a regression: as the stack scrolls away, every card's bottom is held
+at the `<ol>` bottom, so the stack folds into one card (card 06 is 24px
+taller on phones, so it reads −24px). Identical with the old 96/64 gaps —
+it's how sticky-in-one-container works. Lint clean; tsc only the 3
+`Pipeline.tsx` errors; build 31/31 with Pipeline set aside and restored.
+
+Note: `.gap-\[18svh\]` still appears in built CSS because Tailwind v4 scans
+memory.md (it names the class). Unused, harmless; it does not mean a
+component still uses it.
+
+Verification gotcha: globals.css's reduced-motion rule puts
+`transition-duration: 0.01ms` on every element and `transition-property`
+defaults to `all`, so a style changed from a script reads back as the OLD
+value until the next tick. Await a tick before measuring under reduced
+motion.
+
+Open, pre-existing, NOT fixed (out of scope, reduced-motion visitors only,
+seen via `/_next/mcp` `get_errors`): (1) hydration mismatch in
+`ServicesSlider` — `useReducedMotion()` decides the play/pause button on
+first render, so server HTML says "Pause" and client says "Start"; (2) React
+dev warning "Encountered a script tag" for the theme init `<script>` at
+app/layout.tsx:38.
+
+## Blog removed from the site (2026-10-09)
+
+User asked to remove the blog page. No `/blog` route was ever built — Blog
+existed only as links to `/blog` (a 404) in `Header.tsx` `navLinks` (desktop
+nav + mobile menu) and `Footer.tsx` `exploreLinks`. Both links removed;
+nothing else referenced it (no sitemap entry, no page links). Top nav is now
+Home · Company · Services · Industries · Case Studies · Contact.
+
+**Still lists Blog, deliberately unchanged:** the `vrattiks-architecture`
+skill (§1 page table, §3 top-level nav), `vrattiks-page-builder`, and the
+client's `docs/VRATTIKS_Task_3_Pages_List (5).md`. Don't re-add a Blog link
+or build `/blog` from those lists unless the user asks — this removal
+overrides them until the skill/doc is updated.
+
+Verified: lint clean; on `next dev`, no `/blog` link on any top-level route;
+header at 1440/1024 lays out correctly with 0px overflow; mobile menu uses
+the same `navLinks`.
+
+## Footer: contact moved to Legal column, new description (2026-10-09)
+
+Layout + copy only, in `app/components/Footer.tsx` (used on every page via
+`app/layout.tsx`). Logo, Services/Explore columns, copyright, colours and
+type untouched.
+
+- **Email, Phone and the three social icons moved** from under the brand
+  paragraph into the Legal column, below Privacy Policy, under a new
+  "Contact" `<h3>` with the same classes as the SERVICES/EXPLORE/LEGAL
+  headings (`mt-8` above it). Values come from `contactDetails` as before;
+  mailto:/tel: links, social icons, URLs, aria-labels and hover unchanged.
+- **Description (final, revised twice the same day at user's request):** the
+  original line is kept verbatim, followed by generated copy drawn from the
+  existing Hero/MissionVision wording: "AI automation and workflow tools built
+  for growing businesses. We set up systems that fit how your team already
+  works, so enquiries get answered, customers get supported and follow-up
+  doesn't depend on someone remembering." **The user does not want services or
+  industries named in the footer description.** Two earlier versions were
+  rejected: one dropped the original line, and one listed services and
+  industries. Still `max-w-xs`, `text-[14.5px]`, `text-n-500`; 5 lines at
+  1440/1280, 7 at 1024 (within the shared row height).
+- **Grid:** 1 col < 901px (remember `md` = 901 here) → **2×2 at 901–1023**
+  (the 4-up at that width would have squeezed Legal to ~140px and wrapped
+  the email) → 4-up from `lg` as `[1.4fr_1fr_0.8fr_1.1fr]` with
+  `lg:gap-x-8`. The brand column was widened so the paragraph fits inside
+  the row height at 1024 and every column shares the same row height.
+- Verified via CDP at 1440/1280/1024/901/768/601/430/375/320, light + dark:
+  0px overflow, no column overlap, email on one line everywhere (40px spare
+  at 1024), paragraph 6 lines at 1440/1280.
+
+**Open, pre-existing, not touched:** `npm run build` / `tsc` fail on
+`app/components/Pipeline.tsx` — it imports `pipelineStages`, which
+`app/lib/content.ts` doesn't export. Commit 9056cd4 had deleted this unused
+file; 3f99b77 brought it back. Nothing imports it. Waiting on the user to
+confirm deleting it again.
+
+## Nav dropdowns follow the theme (2026-10-09)
+
+The desktop `NavDropdown` panel (Services + Industries) was hardcoded
+`bg-brand-graphite`, so it stayed dark in light mode. It is now white in light
+mode (`bg-n-0`, `border-n-100`, heading `text-n-900`, items `text-n-600`, hover
+`bg-n-50` / `text-n-900`, focus outline `brand-secondary`) and graphite in dark
+mode through `dark:` classes. Those `dark:` classes are written against the
+LIGHT ramp: the panel carries a `.nav-dropdown` class, which is added to the
+light-ramp restore rule in `globals.css` next to `.bg-brand-graphite`. Net
+effect: dark mode renders exactly as before (`#211e30`, white heading,
+`#c3bce0` items, white/10 border). Verified with Playwright computed styles and
+screenshots in both themes, including a live theme flip with a menu open.
+
+⚠ `next build` currently fails at type-check on `app/components/Pipeline.tsx`
+(imports a `pipelineStages` export that no longer exists in `app/lib/content`).
+The file is unused and predates this change; delete it or restore the export.
+
+## Home hero: HeroParticles restored (2026-10-09)
+
+User asked for the Home hero to get the same animation as the Services and
+Industries pages. That animation is `HeroParticles` (the canvas particle field
++ dot terrain used by `ServiceHero` / `IndustryHero`). It is now back in
+`Hero.tsx` as the section's first child, the same placement as in `5e3a84f`.
+The `HeroParticles` component itself was not changed. Nothing else in the hero
+changed: copy, layout, `.wash-brand`, `HeroVisual` in its `Reveal`, and the
+plain (non-Reveal) text column are all as they were.
+
+- **This reverses "Home must have zero looping motion"** from the 2026-10-09
+  video-removal entry, at the user's explicit request. The same mitigations
+  apply as before: pauses off screen, one static frame under reduced motion,
+  and it re-reads the brand tokens when `data-theme` changes.
+- Verified against the running dev server at 1440 and 375 in light and dark:
+  the canvas fills the hero, 0px overflow, h1 opacity is 1, and the canvas is
+  animating. Under reduced motion the canvas pixels stay static. ESLint and
+  `tsc` are clean apart from the known `Pipeline.tsx` errors.

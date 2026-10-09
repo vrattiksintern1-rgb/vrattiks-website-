@@ -5,7 +5,6 @@ import Icon from "./ui/Icon";
 import Reveal from "./ui/Reveal";
 import Section from "./ui/Section";
 import SectionHeading from "./ui/SectionHeading";
-import SampleBadge from "./SampleBadge";
 import {
   caseStudiesIn,
   relatedLinks,
@@ -125,7 +124,7 @@ export default function WebsiteProjects({
           description={description}
         />
 
-        <ul className="mt-12 grid grid-cols-1 gap-14 md:mt-16 md:grid-cols-2 md:gap-x-10 md:gap-y-16 lg:gap-x-14">
+        <ul className="mt-10 grid grid-cols-1 gap-8 md:mt-12 md:grid-cols-2 md:gap-x-10 md:gap-y-8 lg:gap-x-14">
           {projects.map((study, i) => {
             const links = relatedLinks(study);
             const titleId = `${study.slug}-title`;
@@ -140,12 +139,9 @@ export default function WebsiteProjects({
                   <article aria-labelledby={titleId}>
                     <BrowserFrame study={study} />
                     <div className="mt-6 px-1">
-                      <div className="flex flex-wrap items-center gap-3">
-                        <p className="font-body text-label font-semibold uppercase tracking-[0.14em] text-brand-secondary">
-                          {study.kind}
-                        </p>
-                        {study.sample ? <SampleBadge /> : null}
-                      </div>
+                      <p className="font-body text-label font-semibold uppercase tracking-[0.14em] text-brand-secondary">
+                        {study.kind}
+                      </p>
                       <h3
                         id={titleId}
                         className="mt-2 text-[22px] leading-[1.2] tracking-[-0.02em] font-display font-bold text-n-900 md:text-[24px]"

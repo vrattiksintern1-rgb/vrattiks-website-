@@ -37,7 +37,7 @@ const faqs = [
 
 export default function FAQ() {
   return (
-    <section className="bg-n-50 py-14 md:py-24">
+    <section className="bg-n-50 py-10 md:py-16">
       {/* Split layout: heading sticks in the left column (below the 80px
           sticky header) while the questions scroll. The questions sit on one
           white panel for contrast against the tinted band; inside it each item

@@ -8,7 +8,6 @@ const exploreLinks = [
   { label: "Company", href: "/company" },
   { label: "Industries", href: "/industries" },
   { label: "Case Studies", href: "/case-studies" },
-  { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -38,7 +37,7 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-n-100 bg-n-0">
-      <Container className="grid grid-cols-1 gap-10 py-14 md:grid-cols-[1.2fr_1fr_1fr_1fr] md:py-16">
+      <Container className="grid grid-cols-1 gap-10 py-14 md:grid-cols-2 md:py-16 lg:grid-cols-[1.4fr_1fr_0.8fr_1.1fr] lg:gap-x-8">
         <div>
           <Link href="/" className="focus-glow rounded-sm" aria-label="Vrattiks home">
             <Image
@@ -50,62 +49,11 @@ export default function Footer() {
             />
           </Link>
           <p className="mt-4 max-w-xs text-[14.5px] leading-[1.65] text-n-500">
-            AI automation and workflow tools built for growing businesses.
+            AI automation and workflow tools built for growing businesses. We set up
+            systems that fit how your team already works, so enquiries get answered,
+            customers get supported and follow-up doesn&apos;t depend on someone
+            remembering.
           </p>
-          {(contactDetails.email || contactDetails.phone) && (
-            <ul className="mt-6 flex flex-col gap-2 text-[14.5px]">
-              {contactDetails.email && (
-                <li>
-                  <span className="text-n-500">Email: </span>
-                  <a
-                    href={`mailto:${contactDetails.email}`}
-                    className="focus-glow rounded-sm text-n-700 hover:text-brand-secondary"
-                  >
-                    {contactDetails.email}
-                  </a>
-                </li>
-              )}
-              {contactDetails.phone && (
-                <li>
-                  <span className="text-n-500">Phone: </span>
-                  <a
-                    href={`tel:${contactDetails.phone.replace(/[^\d+]/g, "")}`}
-                    className="focus-glow rounded-sm text-n-700 hover:text-brand-secondary"
-                  >
-                    {contactDetails.phone}
-                  </a>
-                </li>
-              )}
-            </ul>
-          )}
-          <ul className="-ml-2.5 mt-5 flex items-center gap-1">
-            {socialLinks.map((social) => (
-              <li key={social.label}>
-                <a
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Vrattiks on ${social.label} (opens in a new tab)`}
-                  className="focus-glow flex h-10 w-10 items-center justify-center rounded-md transition-opacity duration-150 hover:opacity-80"
-                >
-                  <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5">
-                    {social.label === "Instagram" && (
-                      <defs>
-                        <radialGradient id="footer-instagram-gradient" cx="0.3" cy="1.07" r="1.5">
-                          <stop offset="0" stopColor="#FDF497" />
-                          <stop offset="0.05" stopColor="#FDF497" />
-                          <stop offset="0.45" stopColor="#FD5949" />
-                          <stop offset="0.6" stopColor="#D6249F" />
-                          <stop offset="0.9" stopColor="#285AEB" />
-                        </radialGradient>
-                      </defs>
-                    )}
-                    <path d={social.path} fill={social.color} />
-                  </svg>
-                </a>
-              </li>
-            ))}
-          </ul>
         </div>
 
         <div>
@@ -151,6 +99,61 @@ export default function Footer() {
                 Privacy Policy
               </Link>
             </li>
+          </ul>
+          <h3 className="mt-8 text-[12.5px] font-semibold uppercase tracking-[0.06em] text-n-500">Contact</h3>
+          {(contactDetails.email || contactDetails.phone) && (
+            <ul className="mt-4 flex flex-col gap-3 text-[14.5px]">
+              {contactDetails.email && (
+                <li>
+                  <span className="text-n-500">Email: </span>
+                  <a
+                    href={`mailto:${contactDetails.email}`}
+                    className="focus-glow rounded-sm break-words text-n-700 hover:text-brand-secondary"
+                  >
+                    {contactDetails.email}
+                  </a>
+                </li>
+              )}
+              {contactDetails.phone && (
+                <li>
+                  <span className="text-n-500">Phone: </span>
+                  <a
+                    href={`tel:${contactDetails.phone.replace(/[^\d+]/g, "")}`}
+                    className="focus-glow rounded-sm break-words text-n-700 hover:text-brand-secondary"
+                  >
+                    {contactDetails.phone}
+                  </a>
+                </li>
+              )}
+            </ul>
+          )}
+          <ul className="-ml-2.5 mt-3 flex items-center gap-1">
+            {socialLinks.map((social) => (
+              <li key={social.label}>
+                <a
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Vrattiks on ${social.label} (opens in a new tab)`}
+                  className="focus-glow flex h-10 w-10 items-center justify-center rounded-md transition-opacity duration-150 hover:opacity-80"
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5">
+                    {social.label === "Instagram" && (
+                      <defs>
+                        <radialGradient id="footer-instagram-gradient" cx="0.3" cy="1.07" r="1.5">
+                          <stop offset="0" stopColor="#FDF497" />
+                          <stop offset="0.05" stopColor="#FDF497" />
+                          <stop offset="0.45" stopColor="#FD5949" />
+                          <stop offset="0.6" stopColor="#D6249F" />
+                          <stop offset="0.9" stopColor="#285AEB" />
+                        </radialGradient>
+                      </defs>
+                    )}
+                    <path d={social.path} fill={social.color} />
+                  </svg>
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
       </Container>

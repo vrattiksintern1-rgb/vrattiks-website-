@@ -5,7 +5,6 @@ import Icon from "./ui/Icon";
 import Reveal from "./ui/Reveal";
 import Section from "./ui/Section";
 import SectionHeading from "./ui/SectionHeading";
-import SampleBadge from "./SampleBadge";
 import {
   caseStudiesIn,
   relatedLinks,
@@ -93,7 +92,7 @@ export default function CustomProjects({
           description={description}
         />
 
-        <ol className="mt-14 flex flex-col gap-20 md:mt-20 md:gap-32">
+        <ol className="mt-10 flex flex-col gap-12 md:mt-12 md:gap-16">
           {projects.map((study, i) => {
             const flipped = i % 2 === 1;
             const links = relatedLinks(study);
@@ -116,12 +115,9 @@ export default function CustomProjects({
                     >
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <div className="mt-6 flex flex-wrap items-center gap-3 md:mt-8">
-                      <p className="font-body text-label font-semibold uppercase tracking-[0.14em] text-brand-secondary">
-                        {study.kind}
-                      </p>
-                      {study.sample ? <SampleBadge /> : null}
-                    </div>
+                    <p className="mt-6 font-body text-label font-semibold uppercase tracking-[0.14em] text-brand-secondary md:mt-8">
+                      {study.kind}
+                    </p>
                     <h3
                       id={titleId}
                       className="mt-3 text-[26px] leading-[1.15] tracking-[-0.02em] font-display font-bold text-n-900 md:text-[32px]"

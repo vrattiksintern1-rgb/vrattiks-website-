@@ -25,7 +25,7 @@ export default function ServiceBenefits({
             <Reveal
               key={benefit.title}
               delay={i * 0.06}
-              className="grid grid-cols-1 gap-2 border-b border-n-200 py-7 md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] md:items-baseline md:gap-12 md:py-9"
+              className="grid grid-cols-1 gap-2 border-b border-n-200 py-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] md:items-baseline md:gap-12 md:py-5"
             >
               <dt className="text-[24px] leading-[1.2] tracking-[-0.02em] font-display font-semibold text-n-900 md:text-[32px]">
                 {benefit.title}

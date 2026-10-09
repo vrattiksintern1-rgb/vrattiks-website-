@@ -77,7 +77,7 @@ export default function Process({ headingId }: { headingId?: string }) {
   const step = steps[active];
 
   return (
-    <section aria-labelledby={headingId} className="py-10 md:py-16">
+    <section aria-labelledby={headingId} className="py-8 md:py-12">
       {/* No overflow on any ancestor — `overflow-hidden` would kill sticky.
           The heading pins with the stepper so the two read as one unit; the
           whole panel is sized to fit a 548px-tall phone viewport (iPhone SE

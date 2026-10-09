@@ -40,7 +40,7 @@ export default function UseCaseJourney() {
           description="Most businesses start with one. They work best together, because they follow the same customer from first enquiry to the numbers you review."
         />
 
-        <ol className="relative mt-12 grid grid-cols-1 gap-y-10 md:mt-16 lg:grid-cols-3 lg:gap-x-10">
+        <ol className="relative mt-10 grid grid-cols-1 gap-y-6 md:mt-12 lg:grid-cols-3 lg:gap-x-10">
           {moments.map((moment, i) => (
             <Reveal
               as="li"

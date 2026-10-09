@@ -26,7 +26,7 @@ export default function ServiceFeatures({
               as="li"
               key={feature.title}
               delay={(i % 2) * 0.06}
-              className="flex gap-4 border-t border-n-200 py-6"
+              className="flex gap-4 border-t border-n-200 py-4"
             >
               <Icon name="check" className="mt-0.5 h-5 w-5 shrink-0 text-brand-secondary" />
               <div>

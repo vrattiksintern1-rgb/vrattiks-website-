@@ -72,7 +72,7 @@ export default function ServicesIntro() {
         {/* The page's one non-white surface (CLAUDE.md Design Taste, ref 2):
             muted n-200/n-300 text, n-0/10 hairlines, no pure-white body copy. */}
         <Reveal delay={0.1}>
-          <div className="mt-12 rounded-lg bg-brand-graphite p-6 shadow-[var(--shadow-soft)] md:mt-16 md:p-8">
+          <div className="mt-10 rounded-lg bg-brand-graphite p-6 shadow-[var(--shadow-soft)] md:mt-12 md:p-8">
             <p className="font-body text-label font-semibold tracking-[0.14em] uppercase text-brand-primary">
               How they fit together
             </p>

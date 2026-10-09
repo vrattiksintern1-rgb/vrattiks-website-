@@ -30,17 +30,18 @@ const tones = {
   dark: "bg-brand-graphite text-n-200",
 } as const;
 
-/* Two rhythms only. `lg` is for the page's anchor moments (the dark results
-   band, the closing CTA); `md` is the default cadence for everything else.
+/* Two rhythms only. `lg` is for the page's anchor moments (currently unused);
+   `md` is the default cadence for everything else.
 
-   ⚠ DEVIATION from docs/index.html §6.4, made deliberately in the 2026-09-21
-   elevated-visual pass: the doc's band is 56/64/96px, which measured tight
-   against the reference site's rhythm (its container sections run 80px of
-   padding around content blocks that are themselves much taller). These are
-   now 64/80/112 and 96/112/144. If the design doc is ever re-issued, reconcile
-   there rather than re-tightening here — the whole page is tuned to this. */
+   History: the 2026-09-21 elevated-visual pass loosened `md` to 64/80/112
+   (above docs/index.html §6.4's 56/64/96). The 2026-10-09 site-wide spacing
+   pass tightened it, at the user's request, to 56/64/80: mobile and tablet
+   now match §6.4 exactly; desktop sits one step under the doc's 96 (−29% vs
+   112). Home's own sections hand-roll a tighter `py-8 md:py-12` (32/48); the
+   two rhythms are deliberately unequal. Old/new values are logged in
+   memory.md. `lg` was left at 96/112/144 because nothing renders it. */
 const sizes = {
-  md: "py-16 sm:py-20 md:py-28",
+  md: "py-14 sm:py-16 md:py-20",
   lg: "py-24 sm:py-28 md:py-36",
 } as const;
 

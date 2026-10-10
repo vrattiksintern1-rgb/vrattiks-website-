@@ -31,7 +31,7 @@ export default function CaseStudies() {
         >
           <div
             aria-hidden="true"
-            className="relative flex min-h-[180px] items-center justify-center border-b border-n-200 bg-n-50 md:min-h-[280px] md:border-r md:border-b-0"
+            className="relative flex min-h-[140px] items-center justify-center border-b border-n-200 bg-n-50 md:min-h-[220px] md:border-r md:border-b-0"
             style={{
               backgroundImage:
                 "repeating-linear-gradient(135deg, var(--color-n-200) 0 1px, transparent 1px 14px)",
@@ -41,7 +41,7 @@ export default function CaseStudies() {
               <Icon name="clock" className="h-6 w-6" />
             </span>
           </div>
-          <div className="flex flex-col justify-center p-6 sm:p-8 md:p-12">
+          <div className="flex flex-col justify-center p-6 sm:p-8 md:p-10">
             <h3 className="text-[22px] leading-[1.2] tracking-[-0.01em] font-display font-bold text-n-900 md:text-[26px]">
               Case studies coming soon
             </h3>

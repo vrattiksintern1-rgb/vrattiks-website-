@@ -7,6 +7,8 @@ import Section from "./ui/Section";
 import SectionHeading from "./ui/SectionHeading";
 import {
   caseStudiesIn,
+  hasConfirmedClient,
+  isPublishable,
   relatedLinks,
   type CaseStudy,
 } from "@/app/lib/case-studies";
@@ -130,10 +132,12 @@ export default function CustomProjects({
 
                     {/* Only fields that hold confirmed content render. */}
                     <dl className="mt-8 flex flex-col gap-5">
-                      {study.client ? (
+                      {/* The "[Client Name]" placeholder never shows on the
+                          listing (vrattiks-standards §3). */}
+                      {hasConfirmedClient(study) ? (
                         <div>
                           <dt className="text-[13px] text-n-600">Client</dt>
-                          <dd className="mt-1 text-[15px] font-medium text-n-800">{study.client}</dd>
+                          <dd className="mt-1 text-[15px] font-medium text-n-800">{study.clientName}</dd>
                         </div>
                       ) : null}
                       {/* An industry with its own page shows as a link below
@@ -193,8 +197,23 @@ export default function CustomProjects({
                     </dl>
 
                     {/* vrattiks-architecture §5: link to the service/industry involved */}
-                    {links.length ? (
+                    {links.length || isPublishable(study) ? (
                       <ul className="mt-8 flex flex-col gap-1">
+                        {/* Detail page link — only for a real, publishable
+                            entry (isPublishable: not a draft, has a detail
+                            page, client name confirmed). */}
+                        {isPublishable(study) ? (
+                          <li>
+                            <Link
+                              href={`/case-studies/${study.slug}`}
+                              className="focus-glow group inline-flex min-h-11 items-center gap-2 rounded-sm text-[15px] font-semibold text-brand-secondary"
+                            >
+                              <span className="underline-offset-4 group-hover:underline">Read the case study</span>
+                              <span className="sr-only">: {study.title}</span>
+                              <Icon name="arrowRight" className="h-4 w-4" />
+                            </Link>
+                          </li>
+                        ) : null}
                         {links.map((link) => (
                           <li key={link.href}>
                             <Link

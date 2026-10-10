@@ -162,7 +162,7 @@ export default function PrivacyPolicy() {
           <p className="mt-1 text-[15px] font-semibold text-n-800">{meta.entity}</p>
         </header>
 
-        <div className="mt-12 grid grid-cols-1 gap-10 border-t border-n-200 pt-10 lg:mt-16 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-16">
+        <div className="mt-10 grid grid-cols-1 gap-10 border-t border-n-200 pt-10 lg:mt-12 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-16">
           <nav aria-label="Privacy Policy contents" className="hidden lg:block">
             <div className="sticky top-28">
               <h2 className="mb-4 font-body text-label font-semibold uppercase tracking-[0.06em] text-n-600">

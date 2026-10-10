@@ -313,6 +313,30 @@ const paths: Record<string, React.ReactNode> = {
       <path d="M9 12l2.2 2.2L15.5 10" />
     </>
   ),
+  /* Added for the Home automation pipeline (Pipeline.tsx): its five stages are
+     "lead in / copy written / image sourced / logged / email sent", and three of
+     those had no glyph in this set. Drawn stroke-only at 24x24 like the rest so
+     they inherit strokeWidth/currentColor from the <Icon> wrapper. */
+  sparkle: (
+    <>
+      <path d="M12 3.5 13.7 8.3 18.5 10l-4.8 1.7L12 16.5l-1.7-4.8L5.5 10l4.8-1.7L12 3.5Z" />
+      <path d="M18.4 16.2l.6 1.8 1.8.6-1.8.6-.6 1.8-.6-1.8-1.8-.6 1.8-.6.6-1.8Z" />
+    </>
+  ),
+  image: (
+    <>
+      <rect x="3" y="4.5" width="18" height="15" rx="2.5" />
+      <circle cx="8.5" cy="9.5" r="1.5" />
+      <path d="m3.5 16.5 4.5-3.5 3.5 2.8L15.5 12l5 4.2" />
+    </>
+  ),
+  database: (
+    <>
+      <ellipse cx="12" cy="6" rx="8" ry="3" />
+      <path d="M4 6v12c0 1.66 3.58 3 8 3s8-1.34 8-3V6" />
+      <path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3" />
+    </>
+  ),
   mail: (
     <>
       <rect x="3" y="5" width="18" height="14" rx="2" />

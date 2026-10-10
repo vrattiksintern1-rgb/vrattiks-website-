@@ -1,23 +1,31 @@
 import type { Metadata } from "next";
-import CaseStudiesIntro from "../components/CaseStudiesIntro";
-import CaseStudiesNav from "../components/CaseStudiesNav";
-import CustomProjects from "../components/CustomProjects";
-import IotProjects from "../components/IotProjects";
-import WebsiteProjects from "../components/WebsiteProjects";
+import CaseStudiesIndex from "../components/CaseStudiesIndex";
+import FeaturedCaseStudy from "../components/FeaturedCaseStudy";
+import WebsiteBento from "../components/WebsiteBento";
+import CustomBento from "../components/CustomBento";
+import IotBento from "../components/IotBento";
+import VisualsNote from "../components/VisualsNote";
 import FinalCTA from "../components/FinalCTA";
-import { caseStudies, caseStudySections, countLabel } from "../lib/case-studies";
+import { isPublishable, listedCaseStudies, overviewOrder, sectionFor } from "../lib/case-studies";
 
-/* Case Studies listing (vrattiks-architecture §1 #06, /case-studies).
-   §2 asks for: listing → client/industry → challenge → solution →
-   implementation → results → CTA. Those are the FIELDS of every entry in
-   app/lib/case-studies.ts, rendered per project wherever confirmed content
-   exists; the listing itself is split into the three sections the user asked
-   for (2026-10-08). /case-studies/[slug] detail pages are not built yet —
-   each project is an anchor on this page (/case-studies#{slug}).
+/* Case Studies overview (vrattiks-architecture §1 #06, /case-studies),
+   redesigned 2026-10-10 in rounded-bento cards after a reference the user
+   supplied (layout language only — no colours, text, icons, photos or
+   numbers taken from it).
 
-   Surfaces alternate for rhythm (CLAUDE.md Design Taste): paper intro →
-   white editorial rows → graphite spec sheets → tint gallery with one glow →
-   the gradient FinalCTA, the page's one primary. */
+   Order: index opener → featured project (the first publishable one) →
+   Website / Custom / IoT, each a DIFFERENT bento (tower + ledge, mirrored
+   slabs, tall columns) → the illustrative-visuals note → FinalCTA, the
+   page's one gradient moment (vrattiks-design-system §3).
+
+   §2 asks for listing → client/industry → challenge → solution →
+   implementation → results → CTA. Each card carries client, summary,
+   features and stack; challenge/solution/results live on detail pages and
+   appear only once confirmed (vrattiks-standards §3). A card links to
+   /case-studies/{slug} only when that page is publishable.
+
+   All data, copy and counts come from app/lib/case-studies.ts. Sample
+   entries (isSample) render only outside production — see IotBento. */
 
 const description =
   "Custom AI automation, IoT and website projects by Vrattiks Intelligence — what each one does and how it was built.";
@@ -46,25 +54,27 @@ export const metadata: Metadata = {
   },
 };
 
-/* Names and anchors only — no clients, ratings or results, since none are
-   confirmed (vrattiks-seo "Structured data", vrattiks-standards §3). */
+/* Names and anchors only — no clients, ratings or results (vrattiks-seo
+   "Structured data", vrattiks-standards §3). REAL projects only:
+   listedCaseStudies excludes drafts and samples, so the IoT sample never
+   reaches structured data in any build. */
 const caseStudiesJsonLd = {
   "@context": "https://schema.org",
   "@type": "ItemList",
   name: "Vrattiks Intelligence case studies",
   url: "/case-studies",
-  itemListElement: caseStudies.map((study, i) => ({
+  itemListElement: listedCaseStudies.map((study, i) => ({
     "@type": "ListItem",
     position: i + 1,
     name: study.title,
-    url: `/case-studies#${study.slug}`,
+    url: isPublishable(study) ? `/case-studies/${study.slug}` : `/case-studies#${study.slug}`,
   })),
 };
 
-const sectionComponents = {
-  custom: CustomProjects,
-  iot: IotProjects,
-  website: WebsiteProjects,
+const bentos = {
+  website: WebsiteBento,
+  custom: CustomBento,
+  iot: IotBento,
 } as const;
 
 export default function CaseStudiesPage() {
@@ -74,34 +84,22 @@ export default function CaseStudiesPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(caseStudiesJsonLd) }}
       />
-      <CaseStudiesIntro />
-      {/* One wrapper around the chapter bar and the three sections: sticky
-          is bounded by its parent, so the bar stays pinned exactly while
-          the reader is inside a section and releases before the CTA. */}
-      <div>
-        <CaseStudiesNav
-          items={caseStudySections.map((s) => ({
-            id: s.id,
-            index: s.index,
-            label: s.label,
-            shortLabel: s.shortLabel,
-            meta: countLabel(s.category),
-          }))}
-        />
-        {caseStudySections.map((s) => {
-          const Component = sectionComponents[s.category];
-          return (
-            <Component
-              key={s.id}
-              id={s.id}
-              index={s.index}
-              label={s.label}
-              title={s.title}
-              description={s.description}
-            />
-          );
-        })}
-      </div>
+      <CaseStudiesIndex />
+      <FeaturedCaseStudy />
+      {overviewOrder.map((cat, i) => {
+        const s = sectionFor(cat);
+        const Bento = bentos[cat];
+        return (
+          <Bento
+            key={s.id}
+            id={s.id}
+            eyebrow={`${String(i + 1).padStart(2, "0")} · ${s.label}`}
+            title={s.title}
+            description={s.description}
+          />
+        );
+      })}
+      <VisualsNote />
       <FinalCTA
         title="Have a project like these in mind?"
         description="Tell us what you want built, and we'll walk you through how we'd approach it."

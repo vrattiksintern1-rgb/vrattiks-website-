@@ -3,7 +3,7 @@ import Button from "./ui/Button";
 import Reveal from "./ui/Reveal";
 import Section from "./ui/Section";
 import SectionHeading from "./ui/SectionHeading";
-import { caseStudiesIn, type CaseStudy } from "@/app/lib/case-studies";
+import { caseStudiesIn, hasConfirmedClient, type CaseStudy } from "@/app/lib/case-studies";
 
 /* IoT Projects — the page's graphite band (CLAUDE.md Design Taste, ref 2),
    placed between the two light sections. Its one idea: each project is a
@@ -121,8 +121,8 @@ function SheetFrame({
 function ProjectSheet({ study, n }: { study: CaseStudy; n: number }) {
   const titleId = `${study.slug}-title`;
   const rows = [
-    ...(study.client || study.industry
-      ? [{ label: "Client / industry", value: [study.client, study.industry?.name].filter(Boolean).join(" · ") }]
+    ...(hasConfirmedClient(study) || study.industry
+      ? [{ label: "Client / industry", value: [hasConfirmedClient(study) ? study.clientName : null, study.industry?.name].filter(Boolean).join(" · ") }]
       : []),
     ...(study.challenge ? [{ label: "The problem", value: study.challenge }] : []),
     ...(study.specs ?? []),

@@ -1873,3 +1873,314 @@ plain (non-Reveal) text column are all as they were.
   the canvas fills the hero, 0px overflow, h1 opacity is 1, and the canvas is
   animating. Under reduced motion the canvas pixels stay static. ESLint and
   `tsc` are clean apart from the known `Pipeline.tsx` errors.
+
+## Build blocker fixed — `pipelineStages` restored (2026-10-09)
+
+The `Pipeline.tsx` type errors (missing `pipelineStages` export, plus the two
+knock-on implicit-`any` errors on `stage`/`i`) are resolved. The original data
+was never committed, but it survived in `stash@{0}` ("backup before restoring
+to home page 08e3242"). Restored verbatim from there: `PipelineStage` type +
+`pipelineStages` (5 stages) at the end of `app/lib/content.ts`, and the three
+glyphs it needs (`sparkle`, `image`, `database`) in `ui/Icon.tsx` (these had
+never been committed either). `Pipeline.tsx` itself is unchanged: `stage`
+and `i` now infer from `PipelineStage[]`. The earlier "Open / ⚠ build fails on
+Pipeline.tsx" notes above are superseded. Note: `Pipeline` is still not
+imported by any route. Verified: `tsc --noEmit` clean, lint clean,
+`npm run build` passes (31 routes).
+
+## Case study detail guides — Phase 1 (2026-10-10)
+
+Docs only, no code. Three guides written in `docs/case-study-guides/`:
+`website-development-case-study.md`, `iot-projects-case-study.md`,
+`custom-development-case-study.md`. Each has purpose/audience, numbered page
+structure (required/optional, length), category must-haves, two showcase
+modes (real media vs. labelled illustrative recreation) and how the layout
+shifts per mode, proof/metric rules + a collection checklist, a typed field
+list (shared *base* fields + category fields), SEO/structured-data notes,
+a11y/performance notes for visuals, an audit of layout patterns already on
+the site (so detail pages differ), a competitor table and sources.
+
+Research: ~30 competitor pages/listings (Zartek, Techpedia, Ramotion,
+Netguru, Clay, Codewave, ColorWhistle, Very, Embitel, Datoms, Softeq,
+Intellias, Simform, thoughtbot, …) plus NDA/case-study best-practice
+articles, Google structured-data policies and the W3C complex-images
+tutorial. Summarised in our own words; source URLs listed per guide. Some
+sources were read via search summaries only (marked in each guide).
+
+Key decisions recorded in the guides:
+- `clientName` is the single source for the name everywhere (H1,
+  breadcrumb, metadata, alt). Unknown → literal `"[Client Name]"` + TODO.
+- Every recreated visual carries its own "Illustrative" chip plus one
+  honest sentence per page.
+- IoT: no confirmed project → only a `status: "draft"` template preview
+  (noindex, unlinked, "Template preview" banner, bracketed field labels).
+- Status (live / in progress / pilot) shown in the hero; in-progress work
+  shows no results.
+- No Review/AggregateRating markup ever; drafts get no JSON-LD.
+
+USER-PROVIDED facts for Phase 2 (2026-10-10, not independently verified):
+- Auroma Holiday Villas — real estate villa project near Auroville,
+  Pondicherry; Next.js; two landing-page variants (second-home buyers,
+  rental investors); brochure lead form with validation + downloadable
+  brochure; lead notification emails to the client. Real name may be shown.
+- AI Sales Assistant on WhatsApp — n8n workflow for a real estate client;
+  Google Sheets, a Groq LLM, LiveKit. Final setup still in progress: never
+  say live, no results. Client name not given → `"[Client Name]"`.
+
+Open questions raised at the checkpoint (awaiting user/sir):
+1. vrattiks-standards §3 forbids bracketed placeholder text on the live
+   page; the user asked for a visible `"[Client Name]"`. Proposed: an entry
+   with the placeholder is built and viewable but stays noindex + unlinked
+   until the name arrives — which means the AI Sales Assistant card would
+   NOT be linked from /case-studies yet. Needs confirmation.
+2. Content file: extend the existing `app/lib/case-studies.ts` (proposed —
+   the listing already reads it) vs. a new `app/content/caseStudies.ts`.
+3. May the hero say "Final setup in progress" for the AI Sales Assistant?
+4. Service mappings on the existing entries are still ours, unconfirmed.
+
+Phase 2 done the same day — see the next entry. Answers: 1 accepted, 2 yes
+(extend app/lib/case-studies.ts), 3 yes (user to confirm with their sir),
+4 names not available, 5 no URL/screenshots/numbers yet, 6 no IoT project,
+7 keep the service links for now.
+
+## Case study detail pages — Phase 2 (2026-10-10)
+
+Built `/case-studies/[slug]` per the three guides, via vrattiks-page-builder,
+then audited with vrattiks-page-review.
+
+**Route** `app/case-studies/[slug]/page.tsx`: `generateStaticParams` over
+entries that have a `detail` object, `dynamicParams = false` (unknown slug →
+404, verified), per-page title/description/canonical/OG/Twitter, OG image
+re-attached explicitly. Same pattern as `services/[slug]`, checked against
+the Next 16 docs.
+
+**Publishing rule (user decision):** `isPublishable()` = not draft AND
+`clientName` is not `"[Client Name]"`. Only publishable pages are indexed,
+carry JSON-LD (BreadcrumbList + Article, visible facts only, no dates) and
+get a "Read the case study" link on the listing. Everything else is
+reachable by URL, `noindex, nofollow`, no JSON-LD, and shows a
+`CaseStudyNotice` ("Template preview" for drafts, "Draft preview" while the
+client name is the placeholder). The notice disappears by itself once the
+data is fixed.
+
+| Entry | State today |
+|---|---|
+| `auroma-holiday-villas` | Published, indexed, linked from the listing |
+| `ai-sales-assistant-whatsapp` | `[Client Name]` → noindex, unlinked, Draft preview |
+| `iot-case-study-template` | `status: "draft"` → noindex, unlinked, Template preview, NOT on the listing |
+
+**User's Phase 2 answers used client names that don't match** ("arjun
+patel", "priya shah", "rahul mehta") where the question said "[Client
+Name]", while also saying no names are available. None of them was used;
+the literal `"[Client Name]"` stays. Ask before using any of those names.
+
+**Data** (`app/lib/case-studies.ts`): `client` renamed to `clientName` (the
+one source for H1 area, breadcrumb, metadata, alt text; `{client}` tokens in
+`lede`/`seo.description` are filled from it by `withClient()`).
+`CaseStudy` is now a union by category with an optional typed `detail`
+(`WebsiteDetail` / `CustomDetail` / `IotDetail`, fields from guide §6).
+`Metric` now requires `period` + `source`. Detail-only fields (`detail.stack`,
+`detail.industry`) exist so that existing listing cards don't change. Drafts
+are filtered out by `caseStudiesIn()` / `listedCaseStudies`, so the IoT
+section still shows its "in development" sheet.
+
+**Layouts** (each its own component, none repeats a guide §9 pattern):
+- `WebsiteCaseStudy` (+ `WebsiteScreens`): screen-led. A desktop + phone
+  recreation pair in the hero, the audience split (two landing pages,
+  comparison as layout), and an annotated landing page whose numbered markers
+  match the lead-path list. Optional sections (quality-check `<table>`,
+  pages/features, outcomes, before/after, quote) render only with data.
+- `CustomCaseStudy`: "case file" hero (ruled fact panel, status chip), the
+  page's one graphite band = map of parts (client's tools / under the hood /
+  project in the middle; explicitly NOT a flow, since the step order wasn't
+  given), a wordless chat recreation + sample code, and "Where it stands".
+- `IotCaseStudy`: a vertical signal-path ladder (W3C complex-images: real
+  list + written description), problem/objectives, the system layer by layer
+  with layer tags linking back up to the diagram, and tables that stack on
+  phones via `data-label`.
+- Shared: `CaseStudyBreadcrumb`, `CaseStudyNotice`, `IllustrativeTag` (on
+  every recreated visual + one honest sentence per page).
+
+**Listing changes (links only):** a "Read the case study" link in
+`CustomProjects` / `WebsiteProjects` when publishable (only Auroma today);
+`[Client Name]` is never shown on the listing (`hasConfirmedClient`);
+ItemList JSON-LD excludes drafts and points publishable entries at their
+detail URL. No listing text or layout changed.
+
+**Also:** `FinalCTA`'s `<section>` now has `aria-labelledby` (it had none,
+on every page). Markup only.
+
+**Verified:** `tsc` clean, lint clean, `npm run build` passes (34 routes).
+Headless Chrome on `next start` (after killing the stale server: TaskStop
+kills only the npx wrapper, the node child keeps port 3123 and serves old
+chunks): 4 pages × 1440/1280/1024/901/768/601/430/375/320 × light/dark,
+normal and reduced motion, gives 0 issues. That means 0px overflow, one H1, no
+heading skips, every section labelled, no duplicate ids, nothing stuck at
+opacity 0, no empty svgs, no tap target <24px (breadcrumb links were ~20px,
+fixed with `min-h-6`), 0 infinite animations. Screenshots reviewed at 1440,
+375 and 320, light and dark.
+
+**Still needed before publishing** (also in the final report): client names
+for the AI assistant and any IoT project; sir's OK on "Final setup in
+progress" and on the service mappings; Auroma live URL + link permission,
+approved screenshots (desktop + phone, both landing pages, form, email),
+any measured numbers; all IoT facts (iot guide §5 checklist).
+
+## /case-studies overview redesigned as rounded bentos (2026-10-10)
+
+User supplied a reference image (8 slides, rounded bento cards) for LAYOUT
+LANGUAGE only — no colours, text, icons, photos or numbers taken. Detail
+pages, other pages and their copy untouched (verified: none of the new
+overview copy appears in the detail HTML; the AI page is still noindex with
+"[Client Name]").
+
+**Page** (`app/case-studies/page.tsx`): `CaseStudiesIndex` (index opener:
+big H1, category pills, numbered anchor rows with live counts, stat tiles)
+→ `FeaturedCaseStudy` (first publishable entry = Auroma; fact rows + lead
+form illustration + two floating stat tiles) → `WebsiteBento` ("tower +
+ledge") → `CustomBento` ("mirrored slabs") → `IotBento` ("tall columns") →
+`VisualsNote` → `FinalCTA` (the page's only gradient). Shared:
+`CaseStudyChips` (Chips, StatusPill, SampleTag, ArrowCircle, CornerAccent),
+`CaseStudyVisuals` (LeadForm, TryOn, ToolHub, StepChain, IotFlow — static,
+drawn from each entry's facts, all labelled Illustrative).
+
+**Tile tones, no new colour:** graphite, lavender (`bg-brand-primary` +
+`text-brand-graphite` — never n-900, which goes light in dark mode), violet
+(`bg-brand-secondary` + `text-n-0` — works in BOTH themes because both
+tokens flip: white on #6942f1 5.75:1, #15141d on #9d85f6 6.2:1), tint
+`n-100`, outlined `n-0`.
+
+**Data** (`app/lib/case-studies.ts`, USER-PROVIDED 2026-10-10): new
+fields `clientLabel`, `isSample`, `statusPill`, `overview {summary,
+features, tech, steps, landingPages, formFields, visual}`; helpers
+`showSamples`, `samplesIn`, `clientLabelOf`, `countByStatus`,
+`overviewOrder`. **`clientLabel` exists because `clientName` gates the
+detail pages** — putting "Real estate client" in it would have published
+the AI detail page. Every number on the page is a count of data (4 real
+projects, 2 client projects, 1 internal tool, 1 in final setup, 2 landing
+page variants, 4 required form fields, 4 pipeline steps, 2 try-on steps).
+
+**IoT SAMPLE** ("Smart Factory Monitoring System", `isSample: true`):
+renders only when `NODE_ENV !== "production"` or
+`NEXT_PUBLIC_SHOW_SAMPLES=true` (inlined at build time). Never counted,
+never in JSON-LD, no detail page. Verified: normal production build has
+zero occurrences in `.next/server/app`; JSON-LD ends at position 4. In
+production the IoT section is one full-width "In development" card.
+**Delete the entry when a real IoT project exists.**
+
+**Verified:** tsc, lint, build clean (both with and without samples).
+CDP sweep 9 widths × light/dark, normal + reduced motion: 0 issues.
+Contrast sweep 0 failures all widths both themes (min 5.24 light / 5.83
+dark). One fix found by it: SectionHeading's description is `n-500`,
+4.32:1 on the tint band — the bentos render their own `n-600` description
+instead (shared component untouched; its n-500 is still used elsewhere).
+
+**Verification trap (again):** the CDP contrast probe sits inside a JS
+template literal, where `\(` collapses to `(` — the colour regex captured
+"(22", every ratio was NaN and the sweep reported 0 failures. Caught by
+logging the minimum ratio (it stayed at the 99 sentinel). Always log
+coverage + min ratio. After the fix, the Phase 2 detail pages were
+re-swept: all pass (min 4.57).
+
+**Now unused, left in place:** `CaseStudiesIntro`, `CaseStudiesNav`,
+`CustomProjects`, `IotProjects`, `WebsiteProjects` and `countLabel` — the
+overview no longer renders them. Delete on the user's OK. The new cards
+also drop the old per-card Service/Industry links (not in the brief).
+
+## Hero code card → one continuous "welcome to Vrattiks" script (2026-10-10)
+
+Only the right-hand code card (`HeroVisual.tsx`) changed; the hero text,
+layout, `Reveal` wrapper and HeroParticles are untouched. Filename is
+"Vrattiks AI World.js" (user's request).
+
+- **A four-step version (step rail, per-step result chips, "Step n of 4") was
+  built and REJECTED by the user the same day. Don't bring back step UI.** The
+  card is the original single editor again, rebuilt from the `HEAD` version.
+- One script typed in one pass: welcome → `nextStep` explore_services → `nextStep`
+  discover_possibilities → `complete()` ("Welcome to the new world of Vrattiks
+  AI."). The copy is the user's. Services follow `content.ts` (AI Voice Agent, AI Chatbot,
+  Workflow Automation, WhatsApp Automation; the user's "Business Process
+  Automation" isn't a site service). Long lines are wrapped to <= 40 chars
+  (2-line comments, template literals). "Seamless workflows" is the user's own
+  wording, a known slop-list #7 exception.
+- **Original 14-line window kept; the editor auto-scrolls to follow the caret**
+  (38 lines of script). The top edge fades once it scrolls. Card height is constant
+  (473px at 1440, 387px at 375, 350px at 320).
+- **It loops (supersedes "types once, then stops", 2026-10-03):** type → hold
+  4.2s → fade → restart, ~18s typing. Only gaps are 110ms line-end pauses, with no
+  pauses between sections. Mitigations as for HeroParticles: runs only on screen
+  (`useInView`), **pause/play button** in the title bar (WCAG 2.2.2), reduced
+  motion shows the static opening lines until play. Reduced motion is read via
+  `useSyncExternalStore` (server snapshot = reduced) → no hydration mismatch.
+- One status: "Writing…" → "AI system active" (plus "Paused"); the label shows
+  from `sm`, dot-only below. Below 360px code is 10.5px and the header tightens.
+- **One extra hue:** `--code-cyan` (#7fd6f2), scoped to the card (function
+  names). Not added to `@theme`.
+- Verified: tsc + ESLint clean, 0 page/line overflow 320–1440, constant height
+  over a full cycle, light + dark, reduced motion.
+- Seen, not fixed (out of scope): `ServicesSlider` hydration mismatch under
+  reduced motion (pause button label/icon differ server vs client), and the
+  Home page `<script>` tag logs a React dev warning.
+- **Rewritten again the same day — short script, NO scrolling (supersedes
+  every script/scroll/colour bullet above).** The user's brief: start with
+  "Hi, welcome to Vrattiks.", then a function that explores the services, end
+  with "Welcome to the new world of Vrattiks AI." Script is 11 lines, max 39
+  chars: `const world = Vrattiks.open();` → `world.say("Hi, welcome to
+  Vrattiks.")` → `world.explore([...])` with the three hero services (real
+  `content.ts` names) and aligned inline comments "takes calls / chats back /
+  runs itself" → `world.launch("Welcome to the new world of Vrattiks AI.")`
+  **Scrolling is mandatory-off:** the scroll/caret-follow logic is deleted; the
+  window is still the original 14 × 1.75em so the card height is unchanged
+  (473/448/448/387/350px at 1440/1024/768/375/320), lines are now 1.9em.
+  Palette: purple `Vrattiks`/`world`, cyan fns, mint strings, amber `/85`
+  keywords; welcome = semibold mint + glow, closing line = semibold `n-50` +
+  purple glow (the brightest thing in the card). Typing 15 → 26ms/char (short
+  script read too fast), hold 3.2s. Verified in headless Chrome over a full
+  cycle at all five widths: constant height, no vertical/horizontal overflow,
+  last line ≥38px above the window's bottom edge. tsc + ESLint clean.
+- **Pause/play button removed at the user's request (2026-10-10).** WCAG 2.2.2
+  (pause for looping motion over 5s) is now knowingly unmet on this card;
+  reduced motion still gets the static finished script. The status label got
+  `h-6` so the header, and so the card, keeps its exact height.
+
+## "Remove unnecessary space" pass (2026-10-10)
+
+User asked to remove unnecessary space site-wide, after first cutting the
+WhyBusinessesNeedAI card gap to **28 / 40px** (`gap-7 md:gap-10`, was 40/56).
+Measured every route in headless Chrome (CDP, 1440) for section padding,
+empty space inside boxed elements and sibling gaps before editing. Most large
+classes in the code are `scroll-mt-*` (anchor offsets, no visible space).
+
+Changed (spacing only, no copy/colour/type/layout):
+- `ui/Section` `md`: 56/64/80 → **48/56/64** (`py-12 sm:py-14 md:py-16`).
+  Inner pages only; Home's hand-rolled `py-8 md:py-12` unchanged.
+- `FinalCTA` (every page): section 40/64 → **32/48**; gradient card py
+  56/64 → **40/48**.
+- `WhyBusinessesNeedAI` cards: dropped `md:min-h-[168px]`, `md:py-8` →
+  `md:py-6` (cards now fit their one-line content, ~1650 → 1230px section).
+- Home `CaseStudies` placeholder: cover `min-h` 180/280 → **140/220**,
+  body `md:p-12` → `md:p-10`.
+- `PrivacyPolicy` heading → contents `mt-12 lg:mt-16` → `mt-10 lg:mt-12`;
+  `WebsiteCaseStudy` hero figure `md:mt-14` → `md:mt-12` (to the standard).
+
+Left on purpose: Process scroll runway/panel min-h (stepper pacing),
+Testimonials/FeaturedCaseStudy top padding (holds absolute icon/tag),
+WebsiteProjects `md:mt-24` stagger, bento tiles that stretch to row height,
+KpiResults label `min-h` (aligns rows), the IoT sample card (dev-only).
+
+Verified on `next dev`: 0px horizontal overflow at 375/768/1440 on Home,
+Company, a service page, Case Studies (+ Auroma), Contact, Privacy; screenshots
+reviewed; eslint clean on touched files. Home 12093 → 11549px at 1440.
+
+## Flowing-line background — built, then REMOVED (2026-10-10)
+
+A static decorative "flowing ribbon" line-art background (original generated
+SVG, violet/lavender tokens) was added to Home Why Vrattiks, Home FAQ and the
+Contact hero, then **removed at the user's request before verification
+finished**. All edits were reverted; no files remain. This is the third FAQ
+background attempt to be removed — **don't add section background art again
+unless asked.** One finding worth keeping if it is ever retried: FAQ, Our
+Story and ServiceProblems have a `md:sticky` heading that slides down its whole
+column on scroll, so their "empty" left column is the heading's travel path —
+decoration there ends up behind text (and drops the n-500 description below
+4.5:1 where a line crosses it).

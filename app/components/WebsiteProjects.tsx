@@ -7,6 +7,7 @@ import Section from "./ui/Section";
 import SectionHeading from "./ui/SectionHeading";
 import {
   caseStudiesIn,
+  isPublishable,
   relatedLinks,
   type CaseStudy,
 } from "@/app/lib/case-studies";
@@ -167,8 +168,22 @@ export default function WebsiteProjects({
 
                       {/* vrattiks-architecture §5: service + industry involved,
                           plus the live site when an address is supplied. */}
-                      {links.length || study.url || study.industry ? (
+                      {links.length || study.url || study.industry || isPublishable(study) ? (
                         <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-1">
+                          {/* Detail page link — only for a real, publishable
+                              entry (see isPublishable in case-studies.ts). */}
+                          {isPublishable(study) ? (
+                            <li>
+                              <Link
+                                href={`/case-studies/${study.slug}`}
+                                className="focus-glow group inline-flex min-h-11 items-center gap-2 rounded-sm text-[14.5px] font-semibold text-brand-secondary"
+                              >
+                                <span className="underline-offset-4 group-hover:underline">Read the case study</span>
+                                <span className="sr-only">: {study.title}</span>
+                                <Icon name="arrowRight" className="h-4 w-4" />
+                              </Link>
+                            </li>
+                          ) : null}
                           {/* An industry with no page of its own is plain text. */}
                           {study.industry && !study.industry.slug ? (
                             <li className="inline-flex min-h-11 items-center gap-2 text-[14.5px] text-n-600">

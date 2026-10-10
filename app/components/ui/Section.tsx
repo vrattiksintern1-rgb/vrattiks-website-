@@ -37,11 +37,12 @@ const tones = {
    (above docs/index.html §6.4's 56/64/96). The 2026-10-09 site-wide spacing
    pass tightened it, at the user's request, to 56/64/80: mobile and tablet
    now match §6.4 exactly; desktop sits one step under the doc's 96 (−29% vs
-   112). Home's own sections hand-roll a tighter `py-8 md:py-12` (32/48); the
-   two rhythms are deliberately unequal. Old/new values are logged in
-   memory.md. `lg` was left at 96/112/144 because nothing renders it. */
+   112). The 2026-10-10 "remove unnecessary space" pass took it one more step
+   to 48/56/64. Home's own sections hand-roll a tighter `py-8 md:py-12`
+   (32/48); the two rhythms are deliberately unequal. Old/new values are
+   logged in memory.md. `lg` was left at 96/112/144 because nothing renders it. */
 const sizes = {
-  md: "py-14 sm:py-16 md:py-20",
+  md: "py-12 sm:py-14 md:py-16",
   lg: "py-24 sm:py-28 md:py-36",
 } as const;
 

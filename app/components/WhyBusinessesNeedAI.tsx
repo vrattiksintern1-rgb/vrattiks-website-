@@ -53,11 +53,11 @@ export default function WhyBusinessesNeedAI() {
         {/* --stack-top = sticky header height (64 / 80px) + breathing room.
             The gap is the scroll distance between one card docking and the
             next arriving. */}
-        <ol className="mt-10 flex flex-col gap-10 [--stack-top:5rem] md:mt-12 md:gap-14 md:[--stack-top:7rem]">
+        <ol className="mt-10 flex flex-col gap-7 [--stack-top:5rem] md:mt-12 md:gap-10 md:[--stack-top:7rem]">
           {problems.map((problem, i) => (
             <li
               key={problem.title}
-              className="sticky grid grid-cols-1 gap-y-3 rounded-md border border-n-200 bg-n-0 p-6 md:min-h-[168px] md:grid-cols-[96px_minmax(0,1fr)_minmax(0,1.25fr)] md:items-center md:gap-x-8 md:px-10 md:py-8"
+              className="sticky grid grid-cols-1 gap-y-3 rounded-md border border-n-200 bg-n-0 p-6 md:grid-cols-[96px_minmax(0,1fr)_minmax(0,1.25fr)] md:items-center md:gap-x-8 md:px-10 md:py-6"
               style={{
                 top: `calc(var(--stack-top) + ${i * STACK_STEP}px)`,
                 boxShadow: "var(--shadow-md)",

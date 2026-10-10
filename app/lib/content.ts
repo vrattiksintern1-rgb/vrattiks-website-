@@ -217,3 +217,55 @@ export const contactDetails: {
   location: null,
   hours: null,
 };
+
+/* ───────────────────────────────────────────────────────────────────────────
+   The automation pipeline shown in Pipeline.tsx.
+   User-provided capability list: AI-generated content, visual deployment,
+   image sourcing, data logging, email delivery — sequenced here into the order
+   the workflow actually runs.
+   ─────────────────────────────────────────────────────────────────────────── */
+export type PipelineStage = {
+  icon: IconName;
+  /** Uppercase label above the title — the stage's job in one or two words. */
+  kicker: string;
+  title: string;
+  description: string;
+};
+
+export const pipelineStages: PipelineStage[] = [
+  {
+    icon: "target",
+    kicker: "Trigger",
+    title: "A lead arrives",
+    description:
+      "From a form, an ad, or a list you upload — the workflow starts on arrival.",
+  },
+  {
+    icon: "sparkle",
+    kicker: "Generate",
+    title: "The email gets written",
+    description:
+      "AI drafts copy for that specific lead, not a mail-merge template.",
+  },
+  {
+    icon: "image",
+    kicker: "Assemble",
+    title: "Creative is sourced and built",
+    description:
+      "A matching image is pulled in and placed into your template.",
+  },
+  {
+    icon: "database",
+    kicker: "Record",
+    title: "Everything is logged",
+    description:
+      "Lead, copy, and asset are written to your sheet or CRM as it happens.",
+  },
+  {
+    icon: "mail",
+    kicker: "Deliver",
+    title: "The email sends itself",
+    description:
+      "Delivered from your domain, ready for the follow-up sequence.",
+  },
+];

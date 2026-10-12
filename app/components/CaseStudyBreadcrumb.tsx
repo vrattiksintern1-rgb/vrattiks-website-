@@ -6,8 +6,8 @@ import {
 } from "@/app/lib/case-studies";
 
 /* Breadcrumb for /case-studies/[slug]: Case Studies → the listing section →
-   the client. The last step reads `clientName`, so replacing the
-   "[Client Name]" placeholder in case-studies.ts updates it here too.
+   the client. The last step reads `clientName` from case-studies.ts, the
+   one place the name lives.
    It is also the page's link back to the listing (vrattiks-architecture §5).
    Same type scale as the Service/Industry hero breadcrumbs. */
 

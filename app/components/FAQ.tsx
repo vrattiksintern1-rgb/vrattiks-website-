@@ -1,6 +1,8 @@
 import Container from "./ui/Container";
 import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
+import FaqBackdrop from "./FaqBackdrop";
+import FaqPattern from "./FaqPattern";
 
 const faqs = [
   {
@@ -37,42 +39,52 @@ const faqs = [
 
 export default function FAQ() {
   return (
-    <section className="bg-n-50 py-10 md:py-16">
+    <section className="relative isolate overflow-x-clip bg-n-50 py-10 md:py-16">
       {/* Split layout: heading sticks in the left column (below the 80px
           sticky header) while the questions scroll. The questions sit on one
           white panel for contrast against the tinted band; inside it each item
           is a divider row, and the toggle is a +/− drawn from two bars, the
           vertical one rotating flat when open. */}
+      <FaqPattern />
       <Container className="grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)] md:gap-16">
         <div className="md:sticky md:top-28 md:self-start">
           <SectionHeading
             eyebrow="FAQ"
             title="Common questions"
           />
+          <FaqBackdrop />
         </div>
 
-        <div className="rounded-lg border border-n-200 bg-n-0 px-5 shadow-[var(--shadow-md)] sm:px-8">
-          {faqs.map((faq, i) => (
-            <Reveal key={faq.question} delay={i * 0.04} className="border-b border-n-200 last:border-b-0">
-              <details className="group">
-                <summary className="focus-glow flex cursor-pointer list-none items-start justify-between gap-6 rounded-sm py-5 marker:content-none md:py-6 [&::-webkit-details-marker]:hidden">
-                  <span className="text-[16px] leading-[1.45] font-semibold text-n-900 transition-colors duration-150 group-open:text-brand-secondary md:text-[17px]">
-                    {faq.question}
-                  </span>
-                  <span
-                    aria-hidden="true"
-                    className="relative mt-px h-7 w-7 shrink-0 rounded-full border border-n-300 transition-colors duration-150 group-hover:border-brand-secondary group-open:border-brand-secondary group-open:bg-brand-secondary"
-                  >
-                    <span className="absolute top-1/2 left-1/2 h-[1.5px] w-3 -translate-x-1/2 -translate-y-1/2 bg-n-700 group-open:bg-n-0" />
-                    <span className="absolute top-1/2 left-1/2 h-3 w-[1.5px] -translate-x-1/2 -translate-y-1/2 bg-n-700 transition-transform duration-200 group-open:rotate-90 group-open:bg-n-0" />
-                  </span>
-                </summary>
-                <p className="max-w-[60ch] pr-12 pb-6 text-[15px] leading-[1.65] text-n-600">
-                  {faq.answer}
-                </p>
-              </details>
-            </Reveal>
-          ))}
+        <div className="relative">
+          {/* Soft brand glow behind the panel's top-right corner, so the white
+              panel reads as lifted off the band. Decorative. */}
+          <div
+            aria-hidden="true"
+            className="wash-brand pointer-events-none absolute -top-16 -right-24 -z-10 h-[320px] w-[480px] opacity-50"
+          />
+          <div className="rounded-lg border border-n-200 bg-n-0 px-5 shadow-[var(--shadow-md)] sm:px-8">
+            {faqs.map((faq, i) => (
+              <Reveal key={faq.question} delay={i * 0.04} className="border-b border-n-200 last:border-b-0">
+                <details className="group">
+                  <summary className="focus-glow flex cursor-pointer list-none items-start justify-between gap-6 rounded-sm py-5 marker:content-none md:py-6 [&::-webkit-details-marker]:hidden">
+                    <span className="text-[16px] leading-[1.45] font-semibold text-n-900 transition-colors duration-150 group-open:text-brand-secondary md:text-[17px]">
+                      {faq.question}
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      className="relative mt-px h-7 w-7 shrink-0 rounded-full border border-n-300 transition-colors duration-150 group-hover:border-brand-secondary group-open:border-brand-secondary group-open:bg-brand-secondary"
+                    >
+                      <span className="absolute top-1/2 left-1/2 h-[1.5px] w-3 -translate-x-1/2 -translate-y-1/2 bg-n-700 group-open:bg-n-0" />
+                      <span className="absolute top-1/2 left-1/2 h-3 w-[1.5px] -translate-x-1/2 -translate-y-1/2 bg-n-700 transition-transform duration-200 group-open:rotate-90 group-open:bg-n-0" />
+                    </span>
+                  </summary>
+                  <p className="max-w-[60ch] pr-12 pb-6 text-[15px] leading-[1.65] text-n-600">
+                    {faq.answer}
+                  </p>
+                </details>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </Container>
     </section>

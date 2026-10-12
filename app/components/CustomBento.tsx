@@ -1,12 +1,12 @@
+import Link from "next/link";
 import Container from "./ui/Container";
-import Icon from "./ui/Icon";
 import Reveal from "./ui/Reveal";
 import Section from "./ui/Section";
 import SectionHeading from "./ui/SectionHeading";
 import IllustrativeTag from "./IllustrativeTag";
-import { Chips, StatusPill, type Surface } from "./CaseStudyChips";
-import { StepChain, ToolHubVisual } from "./CaseStudyVisuals";
-import { caseStudiesIn, clientLabelOf, type CaseStudy } from "@/app/lib/case-studies";
+import { ArrowCircle, Chips, StatusPill, type Surface } from "./CaseStudyChips";
+import { StepChain } from "./CaseStudyVisuals";
+import { cardSteps, caseStudiesIn, type CaseStudy } from "@/app/lib/case-studies";
 
 /* Custom Projects — bento B, "mirrored slabs": each project is one row of a
    wide main tile (8 cols) and a narrow side tile (4 cols), and the rows
@@ -19,17 +19,14 @@ import { caseStudiesIn, clientLabelOf, type CaseStudy } from "@/app/lib/case-stu
    Different from the Website bento (tower + ledge) and the IoT bento (tall
    columns), and from every pattern on the site (taste-skill §4).
 
-   None of these projects has a publishable detail page yet, so no card is
-   a link — each shows its status pill (user brief 2026-10-10). The AI
-   Sales Assistant makes no results claim: its setup isn't final.
+   The side tile is the link to the project's detail page.
 
    Motion: each slab slides in from its own side, once (kylezantos-design
    §1) — direction follows the mirroring, so it carries meaning. */
 
 function Main({ study, dark }: { study: CaseStudy; dark: boolean }) {
-  const o = study.overview!;
-  const client = clientLabelOf(study);
   const surface: Surface = dark ? "dark" : "light";
+  const steps = cardSteps(study);
   return (
     <article
       id={study.slug}
@@ -39,82 +36,70 @@ function Main({ study, dark }: { study: CaseStudy; dark: boolean }) {
       }`}
     >
       <div className="min-w-0">
-        <p className={`font-body text-label font-semibold tracking-[0.14em] uppercase ${dark ? "text-brand-primary" : "text-brand-secondary"}`}>
-          {study.kind}
-        </p>
+        <div className="flex flex-wrap items-center gap-2">
+          <p className={`font-body text-label font-semibold tracking-[0.14em] uppercase ${dark ? "text-brand-primary" : "text-brand-secondary"}`}>
+            {study.kind}
+          </p>
+        </div>
         <h3
           id={`${study.slug}-title`}
           className={`mt-2 text-[24px] leading-[1.2] tracking-[-0.02em] font-display font-bold md:text-[28px] ${dark ? "text-n-0" : "text-n-900"}`}
         >
           {study.title}
         </h3>
-        <p className={`mt-1 text-[14px] ${dark ? "text-n-300" : "text-n-600"}`}>{client}</p>
-        <p className={`mt-4 text-[15.5px] leading-[1.6] ${dark ? "text-n-200" : "text-n-700"}`}>{o.summary}</p>
-        <Chips items={o.tech} surface={surface} label="Built with" className="mt-5" />
-        {study.statusPill ? (
-          <div className="mt-5">
-            <StatusPill value={study.statusPill} surface={surface} />
-          </div>
-        ) : null}
+        <p className={`mt-1 text-[14px] ${dark ? "text-n-300" : "text-n-600"}`}>{study.clientName}</p>
+        <p className={`mt-4 text-[15.5px] leading-[1.6] ${dark ? "text-n-200" : "text-n-700"}`}>{study.summary.text}</p>
+        <Chips items={study.tags.map((t) => t.text)} surface={surface} label="Tags" className="mt-5" />
+        <div className="mt-5">
+          <StatusPill value={study.statusLabel} surface={surface} />
+        </div>
       </div>
 
-      <figure className="min-w-0">
-        <IllustrativeTag />
-        <div className="mt-4">
-          {o.visual === "tool-hub" ? (
-            <ToolHubVisual
-              overview={o}
-              label={`Illustrative diagram of the tools in the ${study.title}: ${o.tech.join(", ")}. It shows what is connected, not the order of steps.`}
-            />
-          ) : o.steps?.length ? (
-            <StepChain steps={o.steps} tone={dark ? "dark" : "light"} label={`How the ${study.title} works, in order`} />
-          ) : null}
-        </div>
-        <figcaption className={`mt-3 text-[13px] leading-[1.5] ${dark ? "text-n-300" : "text-n-600"}`}>
-          {o.visual === "tool-hub" ? "The parts it's built from, not the order of steps." : "The steps it runs, in order."}
-        </figcaption>
-      </figure>
+      {steps.length ? (
+        <figure className="min-w-0">
+          <IllustrativeTag />
+          <div className="mt-4">
+            <StepChain steps={steps.map((s) => s.label)} tone={dark ? "dark" : "light"} label={`How the ${study.title} works, in order`} />
+          </div>
+          <figcaption className={`mt-3 text-[13px] leading-[1.5] ${dark ? "text-n-300" : "text-n-600"}`}>
+            The steps it runs, in order.
+          </figcaption>
+        </figure>
+      ) : null}
     </article>
   );
 }
 
-/* Side tile: a count when the project has ordered steps, otherwise the
-   project's features as a short list. */
+/* Side tile: the step count, and the link to the detail page. */
 function Side({ study, violet }: { study: CaseStudy; violet: boolean }) {
-  const o = study.overview!;
-  const text = violet ? "text-n-0" : "text-brand-graphite";
+  const steps = cardSteps(study).length;
   return (
-    <div className={`flex h-full flex-col rounded-xl p-6 md:p-7 ${violet ? "bg-brand-secondary" : "bg-brand-primary"} ${text}`}>
-      {o.steps?.length ? (
-        <>
-          <span className="block font-display text-[48px] leading-none font-bold tabular-nums">{o.steps.length}</span>
-          <span className="mt-2 block text-[15px] font-semibold">steps it runs, in order</span>
-          <Chips items={o.features} surface={violet ? "violet" : "lavender"} label={`${study.title} features`} className="mt-auto pt-6" />
-        </>
-      ) : (
-        <>
-          <p className="text-[15px] font-semibold">What it does</p>
-          <ul aria-label={`${study.title} features`} className="mt-3 flex flex-col gap-2.5">
-            {o.features.map((f) => (
-              <li key={f} className="flex gap-2.5 text-[15px] leading-[1.45]">
-                <Icon name="check" className="mt-0.5 h-4 w-4 shrink-0" />
-                {f}
-              </li>
-            ))}
-          </ul>
-          {study.statusPill === "Final setup in progress" ? (
-            <p className="mt-auto pt-6 text-[14px] leading-[1.5]">
-              No results are shown until it&apos;s running and the client has measured them.
-            </p>
-          ) : null}
-        </>
-      )}
-    </div>
+    <Link
+      href={`/case-studies/${study.slug}`}
+      className={`focus-glow group flex h-full flex-col rounded-xl p-6 transition-shadow duration-150 hover:shadow-[var(--shadow-glow)] md:p-7 ${
+        violet ? "bg-brand-secondary text-n-0" : "bg-brand-primary text-brand-graphite"
+      }`}
+    >
+      <span className="flex items-start justify-between gap-4">
+        {steps ? (
+          <span>
+            <span className="block font-display text-[48px] leading-none font-bold tabular-nums">{steps}</span>
+            <span className="mt-2 block text-[15px] font-semibold">steps it runs, in order</span>
+          </span>
+        ) : (
+          <span className="text-[15px] font-semibold">{study.kind}</span>
+        )}
+        <ArrowCircle surface={violet ? "violet" : "lavender"} />
+      </span>
+      <span className="mt-auto pt-8 text-[15px] font-semibold underline-offset-4 group-hover:underline">
+        Read the case study<span className="sr-only">: {study.title}</span>
+      </span>
+    </Link>
   );
 }
 
 export default function CustomBento({ id, eyebrow, title, description }: { id: string; eyebrow: string; title: string; description: string }) {
-  const projects = caseStudiesIn("custom").filter((s) => s.overview);
+  const projects = caseStudiesIn("custom");
   const headingId = `${id}-heading`;
 
   return (

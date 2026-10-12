@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flow lines preview</title>
+<!-- Standalone preview of public/decor/flow-lines-*.svg (not a Next.js route).
+     Regenerate the art with: node scripts/generate-flow-lines.mjs -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=Urbanist:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --n-0: #ffffff; --n-25: #fbfaff; --n-200: #ddd7f1; --n-300: #c3bce0;
+    --n-500: #766e93; --n-600: #565070; --n-900: #16161d; --graphite: #16161d;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--n-25); color: var(--n-900); font-family: "IBM Plex Sans", system-ui, sans-serif; }
+  header { padding: 32px 48px 8px; }
+  h1 { font-family: Urbanist, sans-serif; font-size: 28px; margin: 0 0 4px; }
+  header p { margin: 0; color: var(--n-600); font-size: 14px; }
+  .comp { padding: 24px 48px 40px; }
+  .comp h2 { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--n-500); margin: 0 0 12px; font-weight: 500; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .art { aspect-ratio: 16 / 10; border-radius: 12px; border: 1px solid var(--n-200); background-repeat: no-repeat; background-size: 100% 100%; }
+  .light { background-color: var(--n-25); }
+  .dark { background-color: var(--graphite); border-color: transparent; }
+  .label { font-size: 12px; color: var(--n-500); margin-top: 6px; }
+
+  /* (c) cropped as a side decoration beside a block of text */
+  .side { position: relative; overflow: hidden; margin-top: 16px; border-radius: 12px; border: 1px solid var(--n-200); background: var(--n-0); min-height: 460px; display: flex; align-items: center; }
+  .side.on-dark { background: var(--graphite); border-color: transparent; }
+  .side .deco { position: absolute; inset: 0; pointer-events: none; background-repeat: no-repeat; }
+  .side .copy { position: relative; max-width: 520px; padding: 56px; }
+  .side .copy.right { margin-left: auto; }
+  .eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #6942f1; font-weight: 500; }
+  .side h3 { font-family: Urbanist, sans-serif; font-size: 36px; line-height: 1.1; margin: 10px 0 14px; }
+  .side p { color: var(--n-600); line-height: 1.6; margin: 0; }
+  .on-dark h3 { color: var(--n-0); }
+  .on-dark p { color: var(--n-300); }
+  .on-dark .eyebrow { color: #b79af3; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Flow lines — preview</h1>
+  <p>public/decor/flow-lines-a.svg and flow-lines-b.svg on light, on graphite, and cropped beside text. Opacity in (c) is 0.35 light / 0.5 dark, the proposed starting point for placement.</p>
+</header>
+
+<section class="comp">
+  <h2>Composition A</h2>
+  <div class="pair">
+    <div><div class="art light" style="background-image:url(../../public/decor/flow-lines-a.svg)"></div><div class="label">(a) light, full opacity</div></div>
+    <div><div class="art dark" style="background-image:url(../../public/decor/flow-lines-a.svg)"></div><div class="label">(b) graphite, full opacity</div></div>
+  </div>
+  <div class="side">
+    <div class="deco" style="background-image:url(../../public/decor/flow-lines-a.svg);background-size:1100px auto;background-position:right -260px center;opacity:.35"></div>
+    <div class="copy">
+      <div class="eyebrow">Why Vrattiks</div>
+      <h3>Automation that fits how your business already runs</h3>
+      <p>We map the work your team repeats every day, then build systems that take it off their plate — leads followed up, invoices chased, customers answered — without changing the tools you rely on.</p>
+    </div>
+  </div>
+  <div class="label">(c) light, side decoration, opacity 0.35</div>
+  <div class="side on-dark">
+    <div class="deco" style="background-image:url(../../public/decor/flow-lines-a.svg);background-size:1100px auto;background-position:right -260px center;opacity:.5"></div>
+    <div class="copy">
+      <div class="eyebrow">Why Vrattiks</div>
+      <h3>Automation that fits how your business already runs</h3>
+      <p>We map the work your team repeats every day, then build systems that take it off their plate — leads followed up, invoices chased, customers answered — without changing the tools you rely on.</p>
+    </div>
+  </div>
+  <div class="label">(c) graphite, side decoration, opacity 0.5</div>
+</section>
+
+<section class="comp">
+  <h2>Composition B</h2>
+  <div class="pair">
+    <div><div class="art light" style="background-image:url(../../public/decor/flow-lines-b.svg)"></div><div class="label">(a) light, full opacity</div></div>
+    <div><div class="art dark" style="background-image:url(../../public/decor/flow-lines-b.svg)"></div><div class="label">(b) graphite, full opacity</div></div>
+  </div>
+  <div class="side">
+    <div class="deco" style="background-image:url(../../public/decor/flow-lines-b.svg);background-size:1100px auto;background-position:left -300px center;opacity:.35"></div>
+    <div class="copy right">
+      <div class="eyebrow">Our story</div>
+      <h3>Built for teams that are too busy to change everything</h3>
+      <p>Sample text for the preview only. A short paragraph sits here so we can judge whether the lines stay in the empty space and never compete with what a visitor is reading.</p>
+    </div>
+  </div>
+  <div class="label">(c) light, side decoration, opacity 0.35</div>
+  <div class="side on-dark">
+    <div class="deco" style="background-image:url(../../public/decor/flow-lines-b.svg);background-size:1100px auto;background-position:left -300px center;opacity:.5"></div>
+    <div class="copy right">
+      <div class="eyebrow">Our story</div>
+      <h3>Built for teams that are too busy to change everything</h3>
+      <p>Sample text for the preview only. A short paragraph sits here so we can judge whether the lines stay in the empty space and never compete with what a visitor is reading.</p>
+    </div>
+  </div>
+  <div class="label">(c) graphite, side decoration, opacity 0.5</div>
+</section>
+</body>
+</html>

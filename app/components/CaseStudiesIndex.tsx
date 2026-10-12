@@ -1,31 +1,24 @@
 import Link from "next/link";
 import Container from "./ui/Container";
 import Icon from "./ui/Icon";
-import Reveal from "./ui/Reveal";
 import Section from "./ui/Section";
 import { CornerAccent } from "./CaseStudyChips";
 import {
   caseStudiesIn,
-  countByStatus,
-  listedCaseStudies,
   overviewOrder,
   sectionFor,
 } from "@/app/lib/case-studies";
 
 /* /case-studies opener, after the reference's "Index." slide (layout only):
    a big heading with small tag pills, numbered anchor rows with a short
-   descriptor and a live count, then a row of stat tiles.
+   descriptor and a live count. (The row of stat tiles under it was removed
+   at the user's request, 2026-10-12.)
 
-   EVERY NUMBER IS COUNTED FROM app/lib/case-studies.ts (vrattiks-standards
-   §3): real projects only — drafts and samples are excluded by
-   listedCaseStudies — so adding an entry updates the page. No percentages,
-   time savings or results anywhere.
+   The per-section counts come from app/lib/case-studies.ts
+   (vrattiks-standards §3), so adding or removing an entry updates them.
 
-   Tiles differ by tone, not colour (CLAUDE.md Design Taste; tokens from
-   docs/index.html §3): graphite, lavender, outlined, tint. No gradient here
-   — the page's one gradient moment is the FinalCTA (vrattiks-design-system
-   §3). Motion: stat tiles settle in, staggered, once (kylezantos-design §1);
-   the H1 never fades (§1b). */
+   No gradient here — the page's one gradient moment is the FinalCTA
+   (vrattiks-design-system §3). The H1 never fades (kylezantos-design §1b). */
 
 const pillTone = {
   website: "bg-brand-primary text-brand-graphite",
@@ -34,14 +27,6 @@ const pillTone = {
 } as const;
 
 export default function CaseStudiesIndex() {
-  const total = listedCaseStudies.length;
-  const stats = [
-    { value: total, label: total === 1 ? "Real project on this page" : "Real projects on this page", tone: "bg-brand-graphite text-n-0", sub: "text-n-300" },
-    { value: countByStatus("Client project"), label: "Client projects", tone: "bg-brand-primary text-brand-graphite", sub: "text-brand-graphite" },
-    { value: countByStatus("Internal tool"), label: "Internal tool", tone: "border border-n-200 bg-n-0 text-n-900", sub: "text-n-600" },
-    { value: countByStatus("Final setup in progress"), label: "In final setup", tone: "bg-n-100 text-n-900", sub: "text-n-700" },
-  ].filter((s) => s.value > 0);
-
   return (
     <Section tone="paper" labelledBy="case-studies-heading" className="pb-10 sm:pb-12 md:pb-14">
       <CornerAccent className="top-6 right-4 sm:right-6 md:top-8 md:right-10" />
@@ -72,8 +57,8 @@ export default function CaseStudiesIndex() {
               })}
             </ul>
             <p className="mt-6 max-w-xl text-body-lg text-n-700">
-              Website and custom automation projects, each with what it does and what it&apos;s made
-              with. IoT projects are in development.
+              Website, custom automation and IoT projects, each with what it does, who it&apos;s for
+              and how it&apos;s built.
             </p>
             {/* The page's honest qualifier, said once (vrattiks-standards §3). */}
             <p className="mt-3 max-w-md text-[14px] leading-[1.6] text-n-600">
@@ -111,15 +96,6 @@ export default function CaseStudiesIndex() {
             </ol>
           </nav>
         </div>
-
-        <ul aria-label="Projects at a glance" className="mt-10 grid grid-cols-2 gap-3 md:mt-12 lg:grid-cols-4 lg:gap-4">
-          {stats.map((s, i) => (
-            <Reveal as="li" key={s.label} from="settle" delay={i * 0.06} className={`rounded-lg px-5 py-5 md:px-6 md:py-6 ${s.tone}`}>
-              <span className="block font-display text-[40px] leading-none font-bold tabular-nums md:text-[48px]">{s.value}</span>
-              <span className={`mt-2 block text-[14px] font-medium ${s.sub}`}>{s.label}</span>
-            </Reveal>
-          ))}
-        </ul>
       </Container>
     </Section>
   );

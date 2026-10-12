@@ -2094,7 +2094,7 @@ layout, `Reveal` wrapper and HeroParticles are untouched. Filename is
 "Vrattiks AI World.js" (user's request).
 
 - **A four-step version (step rail, per-step result chips, "Step n of 4") was
-  built and REJECTED by the user the same day. Don't bring back step UI.** The
+  built and REJECTED by the user the same day. Don't bring back step UI.** *(Superseded later the same day: that four-step card was the version the client approved and is now restored. See "Hero code card → approved four-step card RESTORED" below.)* The
   card is the original single editor again, rebuilt from the `HEAD` version.
 - One script typed in one pass: welcome → `nextStep` explore_services → `nextStep`
   discover_possibilities → `complete()` ("Welcome to the new world of Vrattiks
@@ -2184,3 +2184,346 @@ Story and ServiceProblems have a `md:sticky` heading that slides down its whole
 column on scroll, so their "empty" left column is the heading's travel path —
 decoration there ends up behind text (and drops the n-500 description below
 4.5:1 where a line crosses it).
+
+## Hero code card → approved four-step card RESTORED (2026-10-10)
+
+The user's sir approved the **four-step card** (Welcome / Services / Discover /
+Future stepper, pause button, "System initialized" pill), so `HeroVisual.tsx`
+is back to exactly that version. **This supersedes both "don't bring back step
+UI" and the single-script card above.** Keep this card; don't redesign it.
+
+- **Source: not git.** The four-step card was never committed. It lived for
+  about 10 minutes in Claude Code session `59d66eeb` (07:04 to 07:13 UTC) and
+  was replaced before commit `49d418b`. The file was rebuilt byte-for-byte by
+  replaying that session's Write and four Edits. Copy, timings, colours and
+  behaviour are unchanged.
+- Only `HeroVisual.tsx` changed. No CSS change was needed: everything is inline
+  Tailwind plus the existing `focus-glow` / `bg-grid-fade-dark`, and every Icon
+  it uses still exists. Nothing else changed (Hero text, h1 without Reveal,
+  spacing pass, case studies, footer, flow-line files). The lead-follow-up card
+  was already gone, so there were no leftovers to delete.
+- Behaviour as approved: types each step, shows its result (pill / outcomes /
+  finale panel), fades and moves to the next step. After "AI experience
+  activated" it holds 5.2s, then **loops** (~28s cycle). It only runs while on
+  screen. The pause/play button (44x44, aria-label "Pause/Play the welcome
+  animation") toggles with Enter and Space. Reduced motion, SSR and no-JS show
+  the finished step 4, static, until the user presses play.
+- **Rule conflicts, kept as approved (for the client to discuss):** loops
+  (kylezantos-design §1b, exception like HeroParticles); the pulsing current-
+  step ring, the caret blink and the finale shimmer are decorative motion; the
+  card adds 4 icon outcomes in step 3; one off-token hue `--code-cyan`
+  (#7fd6f2), scoped to the card; "Seamless workflows" (slop list #7);
+  sub-12px labels (11/11.5px); card is ~514px tall at 1440 (taller than the
+  single-script card's 473px).
+- Verified on `next dev` with headless Chrome, light + dark: 0px horizontal
+  overflow and no card/text overlap at 1440/1280/1024/901/768/601/430/375/320;
+  height constant at 514px over a full cycle at 1440; stepper advances 1→4;
+  pause works by keyboard with visible focus glow; reduced motion is static.
+  tsc, `npm run lint` and `npm run build` clean.
+- **Pause button replaced by a "Writing…" label (user's request, same day).** A purple dot plus "Writing…" now sits at the right of the title bar, decorative (`aria-hidden`), always shown. Pause/play state and the "Paused" status are deleted. WCAG 2.2.2 (pause for looping motion) is now knowingly unmet. Reduced motion still gets the static final step. Below 360px the header goes to px-4 / gap-3 and the filename to 13px + nowrap so it doesn't wrap at 320. Heights are unchanged (514px at 1440, 515px at 320).
+
+## FAQ background — chat-exchange illustration (2026-10-10)
+
+User asked for an FAQ background "according to website content" (fourth
+attempt; earlier plexus / diamonds / flowing-line versions were all removed).
+
+- New `app/components/FaqBackdrop.tsx`: a static, line-drawn chat exchange —
+  question bubble with "?", typing dots, answer bubble with a check — tying the
+  FAQ to what Vrattiks builds (chatbots, voice, WhatsApp agents). Skeleton
+  lines only, no fake text. Colours are `n-*` / brand tokens via SVG fill/stroke
+  classes, so it flips with the theme. `aria-hidden`, no animation.
+- It renders **inside the sticky heading column, under the heading**, so it
+  moves with the heading and never ends up behind text (the problem found in
+  the flowing-line attempt). Hidden below md (901px), where the layout stacks.
+- A `.wash-brand` glow (50%) sits behind the questions panel's top-right
+  corner. The section gained `relative isolate overflow-x-clip` (not
+  overflow-hidden, which would break the sticky column).
+- Verified on `next dev` in headless Chrome: 1440 light + dark, 1024, 768, 375;
+  0px horizontal overflow at each. tsc + eslint clean.
+- **Band pattern added (same day, user: "add background design").** New
+  `app/components/FaqPattern.tsx`: an inline-SVG `<pattern>` (168x132 tile) of
+  small outline chat bubbles, "?" marks, typing dots and a check bubble,
+  stroked `n-300` at 45% opacity, full-bleed behind the FAQ band, masked to fade
+  out at the top and bottom 20%. Same motif as `FaqBackdrop`, whose bubble
+  fills were made fully opaque (`fill-n-0`) so the pattern doesn't show
+  through them. Shows at every width (incl. mobile). Verified 1440 light/dark,
+  1024, 768, 375: 0px overflow; tsc + eslint clean.
+
+## Contact hero background — clock dial (2026-10-10)
+
+User asked for a contact-section background. An icon pattern (envelope /
+phone / chat tile, `ContactPattern.tsx` + `.mask-contact-pattern`) was built
+first; user asked for something "different and unique", so it was **deleted**
+(file and CSS gone) and replaced with:
+
+- `app/components/ContactDial.tsx`: one oversized, faint **clock dial** behind
+  the `#inquiry` form panel — 60 minute ticks / 12 hour ticks (`n-200`/`n-300`),
+  outer ring, dashed inner ring, and one solid `brand-primary` arc 7→11 o'clock
+  with an end dot ("time won back"; answers the H1 "Tell us where your team
+  loses time"). Solid, not gradient — the submit button stays the one gradient.
+- Rendered as a `-z-10` child of the form panel (`relative`), so the panel
+  covers the centre and only the ring shows around its edges. Arc is on the
+  LEFT because the panel hugs the right edge (on the right it was clipped).
+- **Sizing:** desktop `md:w-[calc(104%+116px)]` puts the ring ~56px outside
+  the panel's side, inside the 64px column gap, so it never crosses the copy
+  column (height-based sizing crossed the intro text at 1024). Mobile `w-[130%]`.
+- Section got `overflow-y-clip` (with Section's `overflow-x-clip`) so the dial
+  can't bleed under the header or into the dark band below. The `.wash-brand`
+  glow behind the panel's top-right corner stays.
+- Verified on `next dev` at 1440 light/dark, 1280, 1024, 920, 768, 375: 0px
+  overflow; ring clear of all text. tsc + eslint clean.
+- **Moved to the LEFT column (same day).** User: the background should be on
+  the left side, "not behind the form". The dial is now a `-z-10` child of the
+  copy column (`relative`), centred on it, `w-[105%] max-w-[640px]`; grey ring
+  and ticks at `opacity-60` as a watermark under the copy; the arc runs
+  **2→5 o'clock** on the ring's right side (starting at 2 keeps it below the
+  intro paragraph at 1024). **Hidden below sm (601px)** — at phone width it sat
+  on the copy. The form panel's `.wash-brand` glow was removed too, so nothing
+  decorative is behind the form; the `md:w-[calc(104%+116px)]` sizing note
+  above is obsolete. Verified 1440 light/dark, 1280, 1024, 920, 768, 375:
+  0px overflow, arc clear of text; tsc + eslint clean.
+- **Clock dial REMOVED, then glow+dot-grid tried and REMOVED (same day).**
+  User disliked the dial; a left-side aurora glow + dot grid was built and
+  dropped before sign-off. Its `.bg-dot-grid-left` / `.glow-*` CSS is gone.
+
+## Contact hero background — string-art ribbons (2026-10-10, current)
+
+User sent a reference image (cyan string-art ribbons on navy, mass on the
+left) and asked for "this type design" on the contact section.
+
+- Art: `public/decor/flow-lines-contact.svg` (31 KB, static vector), from a new
+  portrait composition `"flow-lines-contact"` (900x1000) in
+  `scripts/generate-flow-lines.mjs`. The generator gained optional per-
+  composition `view` and asymmetric `fade` ({left,right,top,bottom}; 0 = no
+  fade on that edge). `flow-lines-a/b.svg` regenerate byte-identical. Brand
+  lavender→violet, not the reference's cyan. Edit anchors + re-run; don't
+  hand-edit the SVG. (Supersedes the 2026-10-10 note that no flow-line files
+  remain — the script and a/b SVGs were in the tree, untracked.)
+- `app/components/ContactBackdrop.tsx`: CSS background div, left-pinned,
+  `bg-[length:auto_100%]` (scales to section height), `w-full` mobile /
+  `md:w-[60%]`, opacity 60% mobile / 80% md+. Nothing behind the form.
+- **Ribbon 1's fold is at x≈50 (left page margin) on purpose.** At x≈170 the
+  dense fold sat behind the intro copy and dropped n-600 text to ~3.8:1.
+  Ribbon 2's fold sits below the contact list. Keep folds out of the copy.
+- Section keeps `overflow-y-clip`. Verified 1440 light/dark, 1280, 1024, 920,
+  768, 375: 0px overflow; tsc + eslint clean.
+
+## Contact hero: second flow-lines ribbon removed (2026-10-12)
+
+User asked to remove the "second" flow-lines decoration (the low one behind
+the Phone/WhatsApp rows and the form) and keep the first.
+
+- Finding: `/contact` has ONE flow-lines render, `<ContactBackdrop />` in
+  `ContactHero`. The "two" were two ribbons inside
+  `public/decor/flow-lines-contact.svg`. No `FlowLines` component exists;
+  `flow-lines-a/b.svg` are not used by any route (only
+  `docs/reference/flow-lines-preview.html`).
+- Removed ribbon 2 from the `"flow-lines-contact"` composition in
+  `scripts/generate-flow-lines.mjs` and regenerated. The new SVG is exactly
+  the old one minus ribbon 2 (ribbon 1 paths/masks byte-identical; 31.1 →
+  17.4 KB); `flow-lines-a/b.svg` byte-identical. `ContactBackdrop` markup
+  (position, `auto 100%` size, 60%/80% opacity) unchanged; comment updated.
+  Removed ribbon 2 for the record: lines 80, spread .6, depth [-.05,.05],
+  rotate [-18,400,820], glow [440,.35], alpha .75, anchors
+  [-320,640,360,170,0] [40,740,240,142,-30] [300,820,100,110,-85]
+  [440,860,22,90,-14] [590,920,150,64,-75] [820,1080,320,30,10]
+  [1150,1300,460,8,30].
+- Ribbon 1's lower fan still passes faintly behind the left edge of the
+  channel rows (and behind the copy on stacked ≤768 layouts), as before.
+- Verified 1440/1280/1024/901/768/601/430/375/320, light + dark: one
+  backdrop, 0px overflow. eslint, tsc, build clean.
+
+## Case Studies content replaced: three projects, placeholder handling (2026-10-12)
+
+User brief: show exactly THREE projects, each with a full detail page; keep
+the /case-studies and detail-page designs. Pages are for the user's sir to
+review on Vercel, so realistic placeholder copy is allowed where real
+details are missing — and must render in production.
+
+**Removed** (git keeps them): old Auroma data (replaced), AI Sales Assistant
+on WhatsApp, Jewellery Virtual Try-On, IoT template (`iot-case-study-
+template`), IoT SAMPLE (`sample-smart-factory-monitoring`); the
+`showSamples` / `NODE_ENV` / `NEXT_PUBLIC_SHOW_SAMPLES` gating; helpers
+`isPublishable`, `hasConfirmedClient`, `CLIENT_NAME_PLACEHOLDER`,
+`withClient`, `samplesIn`, `countLabel`, `listedCaseStudies`,
+`detailCaseStudies`; types `Metric`, `Testimonial`, quality checks,
+before/after, the IoT hardware/firmware/etc. detail types. Components deleted:
+`CaseStudyNotice` (replaced by the Draft chip), and the five unused old
+listing components (`CaseStudiesIntro`, `CaseStudiesNav`, `CustomProjects`,
+`IotProjects`, `WebsiteProjects`). `TryOnVisual` / `ToolHubVisual` /
+`SampleTag` removed. Old slugs now 404 (verified).
+
+**Entries** (USER-PROVIDED 2026-10-12, not independently verified):
+- `auroma-holiday-villas` (website) — client **Trupti Doshi**. Verified:
+  villa project near Auroville, Pondicherry; Next.js; LP-A second-home
+  buyers / LP-B rental investors; form name + WhatsApp + city + investment
+  range required, message optional; WhatsApp exactly 10 digits; Download
+  Brochure downloads the PDF after a valid submit; lead emails via Resend.
+  **Never print the client's email.**
+- `ai-lead-to-landing-page-generator` (custom) — client label "Vrattiks
+  (internal project)". Verified: n8n; CSV leads → AI page per lead (Groq,
+  llama-3.3-70b) → Netlify → Gmail cold outreach; Supabase + Pexels used (roles
+  NOT given); category 3D hero videos via Blender in Docker; Three.js, GSAP,
+  category colour/geometry styles.
+- `pizza-vending-machine` (IoT) — client **Ajay Gupta**. Only name, category
+  and client are verified; the WHOLE entry is placeholder.
+
+**Data model** (`app/lib/case-studies.ts`): uniform base (summary, tags,
+keyFacts, overview, description[4–5], brief, problem, objectives, approach,
+solution steps, features, stack, outcomes, visuals.media, aboutClient,
+services, cta, seo) + category extras (website: audiences, leadPath,
+landingPages, formFields, location; custom: sample, illustration; IoT:
+architecture). Text blocks are `fact()` / `draft()`; items carry `...DRAFT`.
+`outcomes` is `string[]` on purpose (real only; empty → section not rendered).
+`seo` holds verified facts only.
+
+**Safeguards are computed:** `pageDrafts` (detail), `cardDrafts` (overview
+card), `featuredDrafts`, `overviewHasDrafts`. Any placeholder rendered →
+one Draft chip near the title (`DraftTag` in CaseStudyChips, warning
+tokens, 5.43/9.52:1), `robots: noindex, nofollow`, no JSON-LD. A module-load
+check throws (fails `next build`) if `contentStatus` disagrees with the
+blocks. **No sitemap exists in the repo** (and no metadataBase);
+`indexableCaseStudyPaths()` is what a future sitemap must use. Today all
+four pages are noindex: /case-studies (Pizza card) + all three details.
+Card chips: only Pizza (Auroma and lead-gen cards are fully verified).
+
+**Layouts** — section order per the brief: opener → overview → the full
+story → brief → problem/objective → approach → solution → (website: lead
+path) → features → stack → visuals → outcomes (if real) → about the client →
+related → FinalCTA (copy from `cta`). Website = screen-led, light; Custom =
+case file + the pipeline on the one dark band + a code-built "generated
+page" illustration; IoT = layer-tagged features/stack table + the signal-
+path ladder as the Illustrative system diagram. Overview: stat tiles now
+projects / categories / client / internal (all counted); Website bento shows
+the project itself in tower + content (ledge only when other website
+projects exist); Custom side tile is the link; IoT bento = content card +
+tall visual card. All cards link to their detail page. VisualsNote explains
+"Draft" while drafts exist. Services mapping (workflow-automation +
+website-development for lead-gen) and the Pizza industry (Restaurants &
+Food) are OURS — confirm. Pizza has no service link (no IoT service page).
+
+**Verified:** tsc, lint, `npm run build` clean (3 detail routes). `next
+start` + headless Chrome: 4 pages × 1440/1280/1024/901/768/601/430/390/375/
+320 × light/dark, reduced motion: 0px overflow, one H1, no heading skips, no
+duplicate ids, all sections labelled, nothing left at opacity 0, no tap
+target <24px, light min contrast 4.75. Known, not from this change: the
+FinalCTA inverse button measures 2.95:1 in dark mode (shared component,
+earlier accepted exception); the sample code scrolls inside its focusable
+`<pre>` at ≤430px (page itself doesn't overflow). 90 placeholder blocks
+audited: no digits except product names (n8n, llama-3.3-70b), no
+live/launched/deployed, no hype words, no quotes. Home's `CaseStudies.tsx`
+still says "Case studies coming soon" — untouched (other page).
+
+**To publish an entry:** replace each `draft(...)` with `fact(...)` (or
+remove `...DRAFT`) using the real detail, set `contentStatus: "verified"`,
+rebuild. The chip, noindex and missing JSON-LD lift automatically.
+
+- **Stat tiles removed (same day, user request).** The row of four tiles
+  (projects / categories / client / internal) under the /case-studies opener
+  is gone, with its now-unused `countByStatus` helper. The opener ends at the
+  numbered section rows (their "1 project" counts stay). Re-verified: tsc,
+  lint, build clean; overview at all widths x light/dark, 0px overflow, one
+  H1, Draft chips unchanged (2).
+
+## /case-studies: separate opener section folded into Website Projects (2026-10-12)
+
+Layout only — no text, facts or placeholder markings changed. The large
+Auroma opener tile (key-fact rows, chips, status + "Read the case study",
+illustrative lead form with two floating stat tiles) no longer sits as its
+own section between the intro and the bentos; it IS the Website Projects
+bento now ("opener tile": one large outlined tile on the tint band, internal
+two-column split). Auroma appears exactly once on the page (1 heading, 1
+link to its detail page — verified).
+
+- `FeaturedCaseStudy.tsx` deleted; its markup reused inside `WebsiteBento`
+  (`OpenerTile`). The old tower (LP-A/LP-B phones) + content tile and the
+  ledge are gone from the Website bento (they repeated the project).
+- `case-studies.ts`: `featuredCaseStudy` / `featuredDrafts` removed. New
+  `cardFacts()` (website card shows its key facts) feeds `cardDrafts`, so the
+  website card's Draft chip and the overview noindex still follow every
+  block it renders. `overviewHasDrafts` = any card has drafts.
+- Page order: intro → Website (01) → Custom (02) → IoT (03) → VisualsNote →
+  FinalCTA. The intro index already listed only the three sections; numbering
+  unchanged. No "featured" string remains anywhere in `app/`.
+
+Verified: tsc, lint, build clean. /case-studies at 1440/1280/1024/901/768/
+601/430/375/320 × light/dark: 0px overflow, one H1, no heading skips, no
+duplicate ids, light min contrast 5.24 (only the known dark-mode FinalCTA
+button at 2.95). Intro → Website seam uses the standard section padding
+(40/48/56 + 48/56/64), no leftover gap. All six index/pill anchors land the
+section title 76–93px below the sticky header. Draft chips unchanged (2).
+
+## Auroma case study updated from the client's brochure (2026-10-12)
+
+Source: `Auroma_HV_Brochure_Wellness final.pdf`, attached by the user (copy on
+disk at `D:\Auroma_HV_Brochure_Wellness final.pdf`, NOT in the repo; there is
+no `docs/reference/auroma-brochure.pdf`). Only the Auroma entry, its detail
+page and its /case-studies card changed. Custom and IoT untouched.
+
+**Client-provided vs ours.** Brochure material lives in a new optional
+`client` block on `WebsiteStudy` (`ClientBrochure` type in
+`app/lib/case-studies.ts`): positioning, opener key facts, villa specs and
+areas, ten wellness lines (reworded, no brochure sentences), four travel
+times, architect profile, and the gallery. Every block that renders it shows
+`BrochureNote` ("Details supplied by the client's brochure."); each architect
+item carries "As stated by the client" on its own row; every image is captioned
+"… · Render supplied by the client". `visuals.media` stays for OUR screens only
+(empty) — renders must never go there, or the hero would show one as our screen.
+Client text is plain `fact()`, so it doesn't count as placeholder.
+
+**Detail page order** (WebsiteCaseStudy): opener (+ client key facts group) →
+brief (+ positioning pills) → overview (pull paragraph + villa tile + area
+ledger) → wellness bento (10 tiles, 4-col, 1st graphite and 6th lavender, both
+wide) → location chips → "Our work: The full story" → problem/objective →
+approach → solution → lead path → features → stack → about the client
+(+ architect profile) → visuals (illustrative lead form + client renders and
+plans) → related. Tones alternate; no neighbours match.
+
+**Placeholder still on the page** (so Draft chip + noindex + no JSON-LD stay,
+all computed): brief para 3 (how the positioning maps onto LP-A/LP-B — our
+reading, user asked for it but it's unconfirmed), both audience `need` lines,
+`problem`, approach ×4, solution steps 1, 2, 6, full-story paras 2 and 5,
+feature "Built for phones and search". Card has no placeholders (no card chip).
+
+**Excluded on purpose:** testimonials and all quotes (incl. the architect's),
+price and payment plan, handover timeline, GWI/EPA market stats, AQI <50 and
+"8°C cooler" figures, awards/UN/PM/Red Fort/GRIHA/World Youth Congress/TEDx
+Europe, "200+ homes"/"30+ awards" totals, per-phase home counts, contact
+details/QR/URL, all photos of people, third-party landmark and activity photos.
+
+**Images** (`public/case-studies/auroma/`, WebP q80, extracted with PyMuPDF +
+Pillow, already installed; dark page-layout edges trimmed): exterior 178.6 KB
+(p2), living 48.5 (p11), kitchen 16.3 (p11), bedroom 36.8 (p12), bathroom 40.2
+(p13), plunge-pool 77.4 (p14), games-room 107.9 (p14), plan-ground-floor 76.5
+(p15), plan-first-floor 41.0 (p16), location-map 63.7 (p8). The p1/p30 front
+exterior was skipped (Mercedes badge on the car). Plans and map use
+`object-contain`, never cropped.
+
+**Also:** lead-form caption "screens of the live pages" → "screens of the pages"
+(no live/launched claims).
+
+**Verified:** tsc, lint, build clean. `next start` + CDP sweep, 4 case-study
+pages × 1440/1280/1024/901/768/601/430/375/320 × light/dark, reduced motion:
+0px overflow, one H1, no heading skips, no duplicate ids, 10/10 images load
+with alt, light min contrast 5.24. Only the two known pre-existing items
+(dark-mode FinalCTA button 2.95; lead-gen `<pre>` scrolls at ≤430px).
+
+**Needs sign-off before public:** architect profile claims, use of the client's
+renders/plans/map, the client name "Trupti Doshi", the LP-A/LP-B messaging
+split, and that Auroma Phase V is the project the website is for.
+
+## Visible "Draft" chip removed from case studies (2026-10-12)
+
+User request: remove the "Draft" chip. Removed everywhere it rendered: the
+/case-studies H1, the three overview cards (Website/Custom/IoT bentos) and the
+three detail-page heroes. `DraftTag` (CaseStudyChips) and the layouts' `isDraft`
+prop are deleted; VisualsNote's "Projects marked Draft…" sentence is gone.
+
+**Kept on purpose (invisible):** pages that still render placeholder text are
+still `noindex, nofollow` with no JSON-LD (`pageDrafts` / `overviewHasDrafts`),
+and the `contentStatus` build check still runs. So placeholder copy now shows
+with NO visible marker. That is the user's choice; do not re-add the chip
+without asking. To restore it, recover `DraftTag` from git.
+
+Verified: tsc, lint, build clean; 0 chips on all 4 pages at all 9 widths in
+light and dark; 0px overflow; noindex still on all 4 pages.

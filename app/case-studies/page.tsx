@@ -1,31 +1,32 @@
 import type { Metadata } from "next";
 import CaseStudiesIndex from "../components/CaseStudiesIndex";
-import FeaturedCaseStudy from "../components/FeaturedCaseStudy";
 import WebsiteBento from "../components/WebsiteBento";
 import CustomBento from "../components/CustomBento";
 import IotBento from "../components/IotBento";
 import VisualsNote from "../components/VisualsNote";
 import FinalCTA from "../components/FinalCTA";
-import { isPublishable, listedCaseStudies, overviewOrder, sectionFor } from "../lib/case-studies";
+import { overviewHasDrafts, overviewOrder, sectionFor, verifiedCaseStudies } from "../lib/case-studies";
 
 /* Case Studies overview (vrattiks-architecture §1 #06, /case-studies),
    redesigned 2026-10-10 in rounded-bento cards after a reference the user
    supplied (layout language only — no colours, text, icons, photos or
    numbers taken from it).
 
-   Order: index opener → featured project (the first publishable one) →
-   Website / Custom / IoT, each a DIFFERENT bento (tower + ledge, mirrored
-   slabs, tall columns) → the illustrative-visuals note → FinalCTA, the
-   page's one gradient moment (vrattiks-design-system §3).
+   Order: index opener → Website / Custom / IoT, each a DIFFERENT bento
+   (one large opener tile with floating stat tiles, mirrored slabs, tall
+   columns) → the illustrative-visuals note → FinalCTA, the page's one
+   gradient moment (vrattiks-design-system §3). Each project appears once,
+   in its own category's section.
 
    §2 asks for listing → client/industry → challenge → solution →
-   implementation → results → CTA. Each card carries client, summary,
-   features and stack; challenge/solution/results live on detail pages and
-   appear only once confirmed (vrattiks-standards §3). A card links to
-   /case-studies/{slug} only when that page is publishable.
+   implementation → results → CTA. Each card carries title, client,
+   category, summary, tag chips and status, and links to its detail page,
+   where the challenge, solution and stack live (vrattiks-standards §3).
 
-   All data, copy and counts come from app/lib/case-studies.ts. Sample
-   entries (isSample) render only outside production — see IotBento. */
+   All data, copy and counts come from app/lib/case-studies.ts. While any
+   card shows placeholder text (overviewHasDrafts) this page is noindex; it
+   lifts automatically once every card is verified (visible Draft chip removed at the user's request, 2026-10-12). Nothing is gated by environment: production shows the
+   same page as development. */
 
 const description =
   "Custom AI automation, IoT and website projects by Vrattiks Intelligence — what each one does and how it was built.";
@@ -36,6 +37,8 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/case-studies",
   },
+  /* Computed from the data — lifts by itself once no card is a draft. */
+  ...(overviewHasDrafts ? { robots: { index: false, follow: false } } : {}),
   /* Next merges metadata shallowly, so this openGraph object REPLACES the
      root app/opengraph-image.png — the existing brand card is re-attached
      here explicitly (vrattiks-seo: og:image + summary_large_image). */
@@ -54,22 +57,24 @@ export const metadata: Metadata = {
   },
 };
 
-/* Names and anchors only — no clients, ratings or results (vrattiks-seo
-   "Structured data", vrattiks-standards §3). REAL projects only:
-   listedCaseStudies excludes drafts and samples, so the IoT sample never
-   reaches structured data in any build. */
-const caseStudiesJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  name: "Vrattiks Intelligence case studies",
-  url: "/case-studies",
-  itemListElement: listedCaseStudies.map((study, i) => ({
-    "@type": "ListItem",
-    position: i + 1,
-    name: study.title,
-    url: isPublishable(study) ? `/case-studies/${study.slug}` : `/case-studies#${study.slug}`,
-  })),
-};
+/* Names and URLs only — no clients, ratings or results (vrattiks-seo
+   "Structured data", vrattiks-standards §3). Fully verified entries only:
+   no JSON-LD for placeholder entries, and none at all while every entry is
+   still a draft (today). */
+const caseStudiesJsonLd = verifiedCaseStudies.length
+  ? {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      name: "Vrattiks Intelligence case studies",
+      url: "/case-studies",
+      itemListElement: verifiedCaseStudies.map((study, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: study.title,
+        url: `/case-studies/${study.slug}`,
+      })),
+    }
+  : null;
 
 const bentos = {
   website: WebsiteBento,
@@ -80,12 +85,13 @@ const bentos = {
 export default function CaseStudiesPage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(caseStudiesJsonLd) }}
-      />
+      {caseStudiesJsonLd ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(caseStudiesJsonLd) }}
+        />
+      ) : null}
       <CaseStudiesIndex />
-      <FeaturedCaseStudy />
       {overviewOrder.map((cat, i) => {
         const s = sectionFor(cat);
         const Bento = bentos[cat];

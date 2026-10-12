@@ -3,6 +3,7 @@ import Eyebrow from "./ui/Eyebrow";
 import Icon, { type IconName } from "./ui/Icon";
 import Section from "./ui/Section";
 import InquiryForm from "./InquiryForm";
+import ContactBackdrop from "./ContactBackdrop";
 import { contactDetails } from "@/app/lib/content";
 
 const digits = (value: string) => value.replace(/[^\d+]/g, "");
@@ -27,8 +28,11 @@ const channels: { icon: IconName; label: string; value: string | null; href: (v:
    who came here to get in touch never has to scroll to start. The submit
    button is the page's only gradient. */
 export default function ContactHero() {
+  /* overflow-y-clip (with Section's overflow-x-clip) keeps the backdrop's
+     glows from bleeding up under the header or down into the next band. */
   return (
-    <Section tone="paper" labelledBy="contact-heading">
+    <Section tone="paper" labelledBy="contact-heading" className="overflow-y-clip">
+      <ContactBackdrop />
       <Container className="grid grid-cols-1 gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] md:gap-16">
         <div className="md:pt-4">
           <Eyebrow className="mb-5">Contact</Eyebrow>

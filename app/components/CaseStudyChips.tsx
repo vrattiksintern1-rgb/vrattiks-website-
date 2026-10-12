@@ -1,5 +1,5 @@
 import Icon from "./ui/Icon";
-import type { StatusPill as StatusPillValue } from "@/app/lib/case-studies";
+import type { StatusLabel } from "@/app/lib/case-studies";
 
 /* Small shared pieces for the /case-studies overview bento cards.
 
@@ -44,42 +44,24 @@ export function Chips({
   );
 }
 
-/* Status pill. Semantic colours only for their assigned meaning
-   (docs/index.html §3): info = in progress, warning = sample / not real. */
-export function StatusPill({ value, surface = "light" }: { value: StatusPillValue; surface?: Surface }) {
+/* Status pill. Neutral tones only: neither label is a state that needs a
+   semantic colour (docs/index.html §3). */
+export function StatusPill({ value, surface = "light" }: { value: StatusLabel; surface?: Surface }) {
   const tone =
-    value === "Final setup in progress"
-      ? "bg-sem-info-bg text-sem-info-text"
-      : value === "Sample (illustrative)"
-        ? "border border-sem-warning/50 bg-sem-warning-bg text-sem-warning-text"
-        : surface === "dark"
-          ? "border border-n-0/20 text-n-0"
-          : surface === "lavender"
-            ? "border border-brand-graphite/30 text-brand-graphite"
-            : surface === "violet"
-              ? "border border-n-0/40 text-n-0"
-              : value === "Internal tool"
-                ? "bg-n-100 text-n-800"
-                : "border border-n-200 bg-n-0 text-n-800";
+    surface === "dark"
+      ? "border border-n-0/20 text-n-0"
+      : surface === "lavender"
+        ? "border border-brand-graphite/30 text-brand-graphite"
+        : surface === "violet"
+          ? "border border-n-0/40 text-n-0"
+          : value === "Internal project"
+            ? "bg-n-100 text-n-800"
+            : "border border-n-200 bg-n-0 text-n-800";
   return (
     <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[13px] font-semibold whitespace-nowrap ${tone}`}>
       <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-current" />
       <span className="sr-only">Status: </span>
       {value}
-    </span>
-  );
-}
-
-/* "Sample" — on every card, tile and visual of a sample entry, so it can't
-   be mistaken for real work at a glance (user brief 2026-10-10;
-   vrattiks-standards §3). Warning colours pass 4.5:1 in both themes. */
-export function SampleTag({ className = "" }: { className?: string }) {
-  return (
-    <span
-      className={`inline-flex items-center gap-1.5 rounded-full border border-sem-warning/50 bg-sem-warning-bg px-2.5 py-1 font-body text-label font-semibold tracking-[0.12em] text-sem-warning-text uppercase ${className}`}
-    >
-      <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-sem-warning" />
-      Sample
     </span>
   );
 }

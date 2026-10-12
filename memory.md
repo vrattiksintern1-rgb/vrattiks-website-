@@ -2527,3 +2527,52 @@ without asking. To restore it, recover `DraftTag` from git.
 
 Verified: tsc, lint, build clean; 0 chips on all 4 pages at all 9 widths in
 light and dark; 0px overflow; noindex still on all 4 pages.
+
+## Auroma detail page cut back to four sections (2026-10-12)
+
+User request: remove these sections from /case-studies/auroma-holiday-villas:
+client brief, overview, wellness design, location, our work (full story),
+problem and objective, approach and strategy, solution and process, lead path,
+key features, tech stack, visuals (including "The villa, from the client's
+brochure" and "Floor plans and location"). Their components are deleted from
+`WebsiteCaseStudy.tsx`; git keeps them.
+
+**Page now:** opener (+ client key facts group) → outcomes (still empty, so not
+rendered) → about the client (+ architect profile, tone changed paper → tint so
+it doesn't match the paper hero) → related → FinalCTA.
+
+**Kept on purpose:** all the Auroma data in `app/lib/case-studies.ts` (brief,
+audiences, problem, approach, solution, leadPath, features, stack, client
+wellness/distances/gallery, images in `public/case-studies/auroma/`).
+`pageDrafts` still counts the unrendered `draft()` blocks, so the page stays
+noindex with no JSON-LD even though nothing it shows is placeholder now. To
+index it, remove or verify those drafts in the data. `AnnotatedLanding`
+(WebsiteScreens) is now unused.
+
+Verified: tsc and eslint clean.
+
+## Auroma: live link + website layout added (2026-10-12)
+
+User supplied the live URL https://www.auromaholidayvillas.com/ and asked for
+it to be linked, plus a "website layout". That clears the old "Auroma live URL +
+link permission" and "approved screenshots" to-dos.
+
+- `WebsiteStudy` gained `website?: { url, label }` and
+  `layout?: { section, media }[]`.
+- Hero: an outline "Visit auromaholidayvillas.com" button (new tab, sr-only
+  "(opens in a new tab)") under the summary. `visuals.media` now holds real
+  desktop (1440×900) and phone (520×1125) screenshots, so the hero shows real
+  screens and the Illustrative tag is gone.
+- New `Layout` section ("Website layout / The homepage, top to bottom", white)
+  between the hero and About the client: 6 numbered 1440×820 crops of the live
+  homepage in scroll order (hosting, wellness features, the villa, location,
+  the brochure form, plans). The pricing, payment plan, testimonial and
+  contact sections are left out on purpose (no price, quotes or contact
+  details on our pages). The hero screenshot does show the site's own price
+  line.
+- Images: `public/case-studies/auroma/site-*.webp`, all under 200 KB, captured
+  with playwright-core + local Chrome. The script is in the session scratchpad.
+  To refresh them, re-capture with the fixed nav and WhatsApp button hidden.
+
+Verified: tsc + eslint clean; on the dev server at 1440/768/375/320 there was
+0px overflow, no broken images and no console errors.

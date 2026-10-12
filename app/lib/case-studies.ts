@@ -142,6 +142,11 @@ export type WebsiteStudy = CaseStudyBase & {
   leadPath: (Step & { on: LeadAnchor })[];
   landingPages: { label: string; audience: string }[];
   formFields: { name: string; required: boolean; rule?: string }[];
+  /* The live site, linked from the detail hero (opens in a new tab) */
+  website?: { url: string; label: string };
+  /* "Website layout": real crops of the live homepage, in page order.
+     `section` names the part of the page each crop shows. */
+  layout?: { section: string; media: CaseStudyMedia }[];
   client?: ClientBrochure;
 };
 
@@ -389,10 +394,27 @@ export const caseStudies: CaseStudy[] = [
       { name: "Message", required: false },
     ],
     outcomes: [],
-    /* Screens of OUR website only (none approved yet). The villa renders
-       are the client's and live in `client.gallery`, never here — the hero
-       would otherwise show a render as if it were our screen. */
-    visuals: { media: [] },
+    /* Screens of OUR website only. The villa renders are the client's and
+       live in `client.gallery`, never here — the hero would otherwise show
+       a render as if it were our screen. Live URL supplied by the user,
+       2026-10-12; screenshots captured from it at the user's request, at
+       1440 and 390 wide with Playwright. The layout crops leave out the pricing,
+       payment plan, testimonial and contact sections. */
+    visuals: {
+      media: [
+        { src: "/case-studies/auroma/site-desktop.webp", width: 1440, height: 900, device: "desktop", alt: "Screenshot of the Auroma Holiday Villas homepage on a desktop: a render of the villa behind the headline “Own a villa near Auroville. Host it when you're away.”, the villa's key details and a Download Brochure button.", caption: "The live Auroma Holiday Villas homepage." },
+        { src: "/case-studies/auroma/site-mobile.webp", width: 520, height: 1125, device: "mobile", alt: "Screenshot of the same homepage on a phone, with the headline, the villa's key details and the Download Brochure button stacked in one column." },
+      ],
+    },
+    website: { url: "https://www.auromaholidayvillas.com/", label: "auromaholidayvillas.com" },
+    layout: [
+      { section: "Designed for hosting", media: { src: "/case-studies/auroma/site-designed-for-hosting.webp", width: 1440, height: 820, alt: "Screenshot of the “Designed for hosting” section: a dark band with a bedroom render beside the line “Sleeps eight, in three ensuite bedrooms.”" } },
+      { section: "Wellness design features", media: { src: "/case-studies/auroma/site-wellness-design-features.webp", width: 1440, height: 820, alt: "Screenshot of the wellness design features section: a headline over a row of three captioned renders of the living room, a bedroom and the plunge pool." } },
+      { section: "The villa", media: { src: "/case-studies/auroma/site-gallery.webp", width: 1440, height: 820, alt: "Screenshot of the villa section: a short description of the villa, a row of five amenity cards and the start of a render gallery." } },
+      { section: "Location", media: { src: "/case-studies/auroma/site-location.webp", width: 1440, height: 820, alt: "Screenshot of the location section: a dark band with the headline “Ten minutes from the Matrimandir. Fifteen from Pondicherry.”, an illustrated map and lists of nearby places." } },
+      { section: "The brochure form", media: { src: "/case-studies/auroma/site-form.webp", width: 1440, height: 820, alt: "Screenshot of the “Get the brochure” section: the lead form with full name, WhatsApp number, city, investment range and an optional message, and a Send me the brochure button." } },
+      { section: "Plans and areas", media: { src: "/case-studies/auroma/site-plans.webp", width: 1440, height: 820, alt: "Screenshot of the plans section: tabs for the ground, first and second floors and the terrace, above the ground floor plan." } },
+    ],
     /* client-provided (brochure) */
     aboutClient: [
       fact(

@@ -1,8 +1,7 @@
 import Icon from "./ui/Icon";
 import type { WebsiteStudy } from "@/app/lib/case-studies";
 
-/* Code-built, STATIC illustrations for the /case-studies overview cards
-   (LeadFormVisual is also drawn in the Auroma detail page's Visuals) —
+/* Code-built, STATIC illustrations for the /case-studies overview cards —
    no screenshots exist yet (website/custom/iot guides §4, Mode B). Each is
    drawn from the entry's own facts (field names, steps, tools), never from
    invented content, and every caller adds a visible "Illustrative" label.

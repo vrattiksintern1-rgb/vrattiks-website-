@@ -71,7 +71,7 @@ export default function Industries({
                 className="focus-glow group flex h-full items-start gap-4 border-t border-n-200 pt-5 pb-7 transition-colors duration-150 hover:border-brand-secondary sm:flex-col sm:items-stretch sm:gap-4"
               >
                 {showImages && (
-                  <span className="relative aspect-[4/3] w-24 shrink-0 overflow-hidden rounded-sm bg-n-50 sm:aspect-[3/2] sm:w-full md:aspect-[16/9]">
+                  <span className="relative aspect-[3/2] w-24 shrink-0 overflow-hidden rounded-sm bg-n-50 sm:w-full">
                     <Image
                       src={industry.image}
                       alt=""

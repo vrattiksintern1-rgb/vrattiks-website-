@@ -22,7 +22,7 @@ export const services: Service[] = [
     name: "AI Voice Agent",
     slug: "ai-voice-agent",
     icon: "mic",
-    image: { src: "/images/services/ai-voice-agent-assistant.png", width: 1553, height: 1013 },
+    image: { src: "/images/services/ai-voice-agent-assistant.png", width: 1536, height: 1024 },
     description: "Answers and makes calls around the clock, so no customer inquiry waits for a free line.",
     details:
       "The voice agent picks up every call at any hour, answers common questions, takes down the caller's details and passes the call to your team when a person is needed. It can also call new leads back while they're still interested.",
@@ -31,7 +31,7 @@ export const services: Service[] = [
     name: "AI Chatbot",
     slug: "ai-chatbot",
     icon: "chat",
-    image: { src: "/images/services/ai-chatbot.png", width: 1309, height: 1201, position: "50% 20%" },
+    image: { src: "/images/services/ai-chatbot.png", width: 1536, height: 1024 },
     description: "Handles website and app conversations instantly, and hands off to your team when needed.",
     details:
       "The chatbot sits on your website or app and replies the moment a visitor asks something. It answers from your own business information, collects contact details, and brings in your team for anything it shouldn't handle alone.",
@@ -40,7 +40,7 @@ export const services: Service[] = [
     name: "Workflow Automation",
     slug: "workflow-automation",
     icon: "workflow",
-    image: { src: "/images/services/workflow-automation.png", width: 1672, height: 941 },
+    image: { src: "/images/services/workflow-automation.png", width: 1536, height: 1024 },
     description: "Connects the tools you already use so information moves between them without manual work.",
     details:
       "Takes the copy-paste out of your day. When something happens in one tool, like a form being filled, an order coming in or a payment falling due, the next steps run on their own in the others.",
@@ -58,7 +58,7 @@ export const services: Service[] = [
     name: "WhatsApp Automation",
     slug: "whatsapp-automation",
     icon: "whatsapp",
-    image: { src: "/images/services/whatsapp-automation.png", width: 1216, height: 1294, position: "50% 35%" },
+    image: { src: "/images/services/whatsapp-automation.png", width: 1536, height: 1024 },
     description: "Automated replies, updates, and follow-ups on the channel your customers already use.",
     details:
       "Reply to customers on WhatsApp as soon as they message, send order and appointment updates, and follow up with new leads. Nobody has to watch the phone all day.",
@@ -67,7 +67,7 @@ export const services: Service[] = [
     name: "CRM",
     slug: "crm",
     icon: "crm",
-    image: { src: "/images/services/crm.png", width: 1920, height: 1280 },
+    image: { src: "/images/services/crm.png", width: 1536, height: 1024 },
     description: "One place to track every lead and customer, kept up to date automatically.",
     details:
       "Every lead and customer in one place, with each call, chat and message logged against them. Your team can see who needs a reply next, and records update themselves as conversations happen.",
@@ -114,7 +114,9 @@ export type Industry = {
   name: string;
   slug: string;
   icon: IconName;
-  /* Unsplash License stock photo — illustrative, not a client. */
+  /* 1200×800 (3:2) illustration — a photo with example UI cards baked in.
+     Illustrative, not a client. Shown uncropped: every frame that uses it
+     (Industries list, IndustryHero) is 3:2, so keep new images 3:2. */
   image: string;
   application: string;
 };

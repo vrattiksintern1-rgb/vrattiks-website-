@@ -2576,3 +2576,12 @@ link permission" and "approved screenshots" to-dos.
 
 Verified: tsc + eslint clean; on the dev server at 1440/768/375/320 there was
 0px overflow, no broken images and no console errors.
+
+## Service illustrations replaced (2026-10-13)
+
+- All six `public/images/services/*.png` service illustrations (not `connected-services-dashboard.png`) were replaced with a new, consistent 1536×1024 set: a purple-gradient backdrop, a photo on the right, and floating UI cards on the left. Filenames were kept, so `content.ts` only changed `width`/`height`, and the `position` crops were dropped. All six are now exactly 3:2, the same as the `ServiceCard` frame, so the cards show the full image with nothing cropped. The previous versions are in git history.
+
+## Industry photos replaced (2026-10-13)
+
+- All 11 `public/images/industries/*.jpg` were replaced with a new 1200×800 (3:2) set: a purple-tinted photo with example UI cards baked in (problem chip → automation → result). Filenames were kept. The previous Unsplash photos are in git history.
+- Because the UI text is baked into the image, any crop would cut it off. The `Industries` list frame was changed from 4:3 on phones and 16:9 from md up to **3:2 at every width**, matching `IndustryHero`, which was already 3:2. Keep any future industry image 3:2.

@@ -1,12 +1,16 @@
 import Link from "next/link";
+import Button from "./ui/Button";
 import Container from "./ui/Container";
 import Eyebrow from "./ui/Eyebrow";
 import Icon from "./ui/Icon";
 import Reveal from "./ui/Reveal";
 import Section from "./ui/Section";
 import SectionHeading from "./ui/SectionHeading";
+import Tabs from "./ui/Tabs";
+import { primaryCta } from "./FinalCTA";
 import CaseStudyBreadcrumb from "./CaseStudyBreadcrumb";
 import IllustrativeTag from "./IllustrativeTag";
+import { FlowTrace, MessageMock, PanelsOverview } from "./CouponPlatformVisuals";
 import { relatedLinks, sectionFor, type CustomStudy, type Tool } from "@/app/lib/case-studies";
 
 /* Custom-development case-study detail layout (docs/case-study-guides/
@@ -16,16 +20,26 @@ import { relatedLinks, sectionFor, type CustomStudy, type Tool } from "@/app/lib
    on the page's one dark band (CLAUDE.md Design Taste, ref 2).
 
    Section order (user brief 2026-10-12): opener → overview → the full
-   story → brief → problem and objective → approach → solution and process
-   (dark band) → key features → tech stack → visuals → outcomes (only when
-   real) → about the client → related → FinalCTA.
+   story → brief → project breakdown (dark band; since 2026-10-17 ONE tabbed
+   section holding problem and objective, approach, solution and process,
+   key features and tech stack) → visuals → outcomes (only when real) →
+   about the client → related → FinalCTA.
 
    Different from the website layout (screen-led, light throughout) and the
    IoT layout (signal-path ladder): no audience comparison, no numerals in
    rows, no pinned stepper (guide §9).
 
    Motion (kylezantos-design §1): rows rise once, the code sample slides in
-   from the end. Nothing loops; the H1 never fades (§1b). */
+   from the end; tab panels switch instantly with a 150ms fade on user
+   action. Nothing loops; the H1 never fades (§1b).
+
+   Optional, data-driven (added 2026-10-13 for the coupon platform; the
+   lead-generator page has none of these fields and renders as before):
+   features with `items` → the parts of a platform, each with what it
+   covers; `assurance` → a security and quality tile in the Tech stack tab; `illustration: "coupon-platform"` → flow
+   trace + parts overview + message mock (CouponPlatformVisuals);
+   `illustration: "lead-flow"` → the flow trace alone (added 2026-10-17 for
+   Two Rabbits); no `sample` → no code block. */
 
 type Props = { study: CustomStudy };
 
@@ -134,120 +148,173 @@ function Brief({ study }: { study: CustomStudy }) {
   );
 }
 
-/* The job before, and what "done" means (guide §2.2–2.3). */
-function TheJob({ study }: { study: CustomStudy }) {
+/* ── Project breakdown (user brief 2026-10-17) ─────────────────────────────
+   The five sections that used to run from "Problem and objective" to "Tech
+   stack" are ONE tabbed section, on the page's one graphite band (it took
+   over the band the solution steps had, and sits between two white bands:
+   the brief above, the visuals below). Text and data are unchanged; each
+   former section is a tab, and its old heading leads its panel.
+
+   Reference (docs/reference: tabs screenshot, layout language only): a row
+   of tab labels, the active one bold with a thick underline, a dot list
+   below with comfortable spacing, one primary button under the panel.
+
+   Server-rendered: every panel is built here and handed to ui/Tabs, the
+   only client code. Panel text stays inside ~75ch however wide the
+   container is. Lists use round dots; where the data is a paragraph it is
+   split into dots only at sentence boundaries, words unchanged, and a
+   single sentence stays a paragraph. */
+
+/* Round dot bullets on the graphite band. */
+const dot =
+  "relative pl-6 before:absolute before:top-[calc(0.8em-4px)] before:left-0.5 before:h-2 before:w-2 before:rounded-full before:bg-brand-secondary";
+const leadText = "text-[17px] leading-[1.4] font-display font-semibold text-n-0";
+const bodyText = "text-[16px] leading-[1.6] text-n-200";
+const subText = "text-[15px] leading-[1.6] text-n-300";
+const groupLabel = "font-body text-label font-semibold tracking-[0.14em] text-n-400 uppercase";
+
+/* Splits only where a sentence ends: . ! or ? followed by a space and a
+   capital letter or an opening quote. */
+function sentences(text: string) {
+  return text.split(/(?<=[.!?])\s+(?=[A-Z"“])/);
+}
+
+function Prose({ text }: { text: string }) {
+  const parts = sentences(text);
+  if (parts.length < 2) return <p className={bodyText}>{text}</p>;
   return (
-    <Section tone="paper" labelledBy="job-heading">
-      <Container>
-        <SectionHeading id="job-heading" eyebrow="Problem and objective" title="What needed to change" />
-        <div className="mt-10 grid grid-cols-1 gap-10 md:mt-12 md:grid-cols-2 md:gap-16">
-          <div>
-            <h3 className="text-[18px] font-semibold text-n-900">The problem</h3>
-            <p className="mt-2 text-body-lg text-n-700">{study.problem.text}</p>
-          </div>
-          <div>
-            <h3 className="text-[18px] font-semibold text-n-900">The objective</h3>
-            <ul className="mt-2 flex flex-col gap-2 text-body-lg text-n-700">
-              {study.objectives.map((o) => (
-                <li key={o.text} className="flex gap-3">
-                  <Icon name="check" className="mt-1.5 h-4 w-4 shrink-0 text-brand-secondary" />
-                  {o.text}
-                </li>
-              ))}
-            </ul>
+    <ul className={`flex flex-col gap-4 ${bodyText}`}>
+      {parts.map((s) => (
+        <li key={s} className={dot}>
+          {s}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/* A panel: the former section's heading above the content, and beside it
+   from 1280px. Below that a side column would squeeze the content and make
+   the tallest panel (which every panel reserves) much taller. */
+function Panel({ title, description, children }: { title: string; description?: string; children: React.ReactNode }) {
+  return (
+    <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] xl:gap-16">
+      <div>
+        <h3 className="max-w-[24ch] text-[20px] leading-[1.25] tracking-[-0.015em] font-display font-bold text-n-0 md:text-[22px]">
+          {title}
+        </h3>
+        {description ? <p className={`mt-2 max-w-[40ch] ${subText}`}>{description}</p> : null}
+      </div>
+      <div className="min-w-0">{children}</div>
+    </div>
+  );
+}
+
+function ProblemPanel({ study }: Props) {
+  return (
+    <Panel title="What needed to change">
+      <div className="flex max-w-[75ch] flex-col gap-8">
+        <div>
+          <h4 className={leadText}>The problem</h4>
+          <div className="mt-3">
+            <Prose text={study.problem.text} />
           </div>
         </div>
-      </Container>
-    </Section>
+        <div>
+          <h4 className={leadText}>The objective</h4>
+          <ul className={`mt-3 flex flex-col gap-4 ${bodyText}`}>
+            {study.objectives.map((o) => (
+              <li key={o.text} className={dot}>
+                {o.text}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </Panel>
   );
 }
 
-/* Decisions as a ledger: decision left, reason right, one ruled row each. */
-function Approach({ study }: { study: CustomStudy }) {
+/* Decisions, each with its reason under it. */
+function ApproachPanel({ study }: Props) {
   return (
-    <Section tone="white" labelledBy="approach-heading">
-      <Container>
-        <SectionHeading id="approach-heading" eyebrow="Approach and strategy" title="Decisions and the reasons for them" />
-        <dl className="mt-10 border-t border-n-200 md:mt-12">
-          {study.approach.map((d, i) => (
-            <Reveal
-              key={d.title}
-              delay={i * 0.05}
-              className="grid grid-cols-1 gap-1.5 border-b border-n-200 py-5 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] md:gap-16"
-            >
-              <dt className="text-[17px] font-semibold text-n-900">{d.title}</dt>
-              <dd className="text-[15.5px] leading-[1.6] text-n-700">{d.text}</dd>
-            </Reveal>
-          ))}
-        </dl>
-      </Container>
-    </Section>
+    <Panel title="Decisions and the reasons for them">
+      <ul className="flex max-w-[75ch] flex-col gap-7">
+        {study.approach.map((d) => (
+          <li key={d.title} className={dot}>
+            <p className={leadText}>{d.title}</p>
+            <p className={`mt-1 ${bodyText}`}>{d.text}</p>
+          </li>
+        ))}
+      </ul>
+    </Panel>
   );
 }
 
-/* The pipeline, step by step, on the page's one graphite band. Text on the
-   muted n-200/n-300 ramp, hairlines at n-0/10 (Design Taste, ref 2). */
-function Solution({ study }: { study: CustomStudy }) {
+/* The steps, numbered, each with the tool that does it. Two columns from
+   901px, filled top to bottom so the order reads down the first column
+   and then the second. */
+function SolutionPanel({ study }: Props) {
+  const rows = Math.ceil(study.solution.length / 2);
   return (
-    <Section tone="dark" labelledBy="solution-heading" className="overflow-hidden">
-      <div aria-hidden="true" className="bg-grid-fade-dark pointer-events-none absolute inset-0 -z-10" />
-      <Container>
-        <SectionHeading
-          id="solution-heading"
-          tone="dark"
-          eyebrow="Solution and process"
-          title="How it runs, step by step"
-          description="The steps in order, each with the tool that does it."
-        />
-        <ol className="mt-10 flex flex-col md:mt-12">
-          {study.solution.map((s, i) => (
-            <Reveal
-              as="li"
-              key={s.title}
-              delay={i * 0.05}
-              className="grid grid-cols-[2.5rem_minmax(0,1fr)] gap-x-4 border-t border-n-0/10 py-6 md:grid-cols-[3.5rem_minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-x-10"
-            >
-              <span className="font-display text-[22px] leading-none font-bold text-brand-primary tabular-nums md:text-[26px]">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <div className="min-w-0">
-                <h3 className="text-[18px] leading-[1.3] font-semibold text-n-0">{s.title}</h3>
+    <Panel title="How it runs, step by step" description="The steps in order, each with the tool that does it.">
+      <ol
+        style={{ "--rows": rows } as React.CSSProperties}
+        className="grid grid-cols-1 gap-x-12 gap-y-6 md:grid-flow-col md:grid-cols-2 md:grid-rows-[repeat(var(--rows),auto)]"
+      >
+        {study.solution.map((s, i) => (
+          <li key={s.title} className="grid max-w-[75ch] grid-cols-[2.25rem_minmax(0,1fr)]">
+            <span aria-hidden="true" className="font-display text-[17px] leading-[1.4] font-bold text-brand-primary tabular-nums">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+                <h4 className={leadText}>{s.title}</h4>
                 {s.tool ? (
-                  <span className="mt-2 inline-flex rounded-full border border-n-0/15 px-2.5 py-0.5 text-[13px] text-n-200">{s.tool}</span>
+                  <span className="inline-flex rounded-full border border-n-0/15 px-2.5 py-0.5 text-[13px] text-n-200">{s.tool}</span>
                 ) : null}
               </div>
-              <div className="col-start-2 mt-3 min-w-0 text-[15.5px] leading-[1.6] text-n-300 md:col-start-3 md:mt-0">
-                <p className="text-n-200">{s.text}</p>
-                {s.note ? <p className="mt-1.5">{s.note.text}</p> : null}
-              </div>
-            </Reveal>
-          ))}
-        </ol>
-      </Container>
-    </Section>
+              <p className={`mt-1.5 ${bodyText}`}>{s.text}</p>
+              {s.note ? <p className={`mt-1 ${subText}`}>{s.note.text}</p> : null}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </Panel>
   );
 }
 
-function Features({ study }: { study: CustomStudy }) {
+/* Bold lead words kept: each feature's title leads its line. When the
+   features carry `items` (the parts of a platform), each part lists what
+   it covers under it, two per row from 901px. */
+function FeaturesPanel({ study }: Props) {
+  const parts = study.features.some((f) => f.items?.length);
   return (
-    <Section tone="white" labelledBy="features-heading">
-      <Container>
-        <SectionHeading id="features-heading" eyebrow="Key features" title="What it does" />
-        <ul className="mt-10 grid grid-cols-1 gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-4 md:mt-12">
-          {study.features.map((f) => (
-            <li key={f.title} className="border-t border-n-200 pt-4">
-              <h3 className="text-[16px] font-semibold text-n-900">{f.title}</h3>
-              <p className="mt-1.5 text-[15px] leading-[1.6] text-n-600">{f.text}</p>
-            </li>
-          ))}
-        </ul>
-      </Container>
-    </Section>
+    <Panel title={parts ? "The parts, and what each one does" : "What it does"}>
+      <ul className={`grid grid-cols-1 gap-x-12 md:grid-cols-2 ${parts ? "gap-y-8" : "gap-y-6"}`}>
+        {study.features.map((f) => (
+          <li key={f.title} className={`max-w-[75ch] ${parts ? "" : dot}`}>
+            <h4 className={leadText}>{f.title}</h4>
+            <p className={`mt-1 ${parts ? subText : bodyText}`}>{f.text}</p>
+            {f.items?.length ? (
+              <ul className={`mt-3 flex flex-col gap-2.5 ${bodyText}`}>
+                {f.items.map((item) => (
+                  <li key={item} className={dot}>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </li>
+        ))}
+      </ul>
+    </Panel>
   );
 }
 
-/* Tools grouped by their part of the pipeline, each with its job. */
-function Stack({ study }: { study: CustomStudy }) {
+/* Tools grouped by their part of the pipeline, each with its job; the
+   security and quality tile (only with `assurance`) stays in this tab. */
+function StackPanel({ study }: Props) {
   const groups = study.stack.reduce<{ name: string; tools: Tool[] }[]>((acc, t) => {
     const name = t.group ?? "Tools";
     const g = acc.find((x) => x.name === name);
@@ -256,23 +323,90 @@ function Stack({ study }: { study: CustomStudy }) {
     return acc;
   }, []);
   return (
-    <Section tone="paper" labelledBy="stack-heading">
+    <Panel title="The tools, and the job each one does">
+      {/* One column per group up to three; four or more pair up, so a
+          tool's job fits on one line instead of wrapping in a narrow column. */}
+      <div
+        style={{ "--cols": groups.length > 3 ? 2 : groups.length } as React.CSSProperties}
+        className="grid grid-cols-1 gap-8 sm:grid-cols-[repeat(var(--cols),minmax(0,1fr))] sm:gap-x-10"
+      >
+        {groups.map((g) => (
+          <div key={g.name} className="min-w-0">
+            <h4 className={groupLabel}>{g.name}</h4>
+            <ul className="mt-3 flex flex-col gap-4">
+              {g.tools.map((t) => (
+                <li key={t.name} className={dot}>
+                  <p className={leadText}>{t.name}</p>
+                  <p className={`mt-0.5 ${subText}`}>{t.role}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <Assurance study={study} />
+    </Panel>
+  );
+}
+
+/* Security and testing as ONE small tile under the stack. High level only,
+   and the source line says where it comes from — our project
+   documentation, not an audit (vrattiks-standards §3). Hairline border at
+   n-0/10, no fill (Design Taste, ref 2). */
+function Assurance({ study }: Props) {
+  const a = study.assurance;
+  if (!a) return null;
+  const groups = [
+    { name: "Security", items: a.security },
+    { name: "Testing", items: a.testing },
+  ];
+  return (
+    <div className="mt-8 rounded-lg border border-n-0/10 p-5 md:p-6">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h4 className="text-[19px] leading-[1.25] tracking-[-0.015em] font-display font-bold text-n-0">Security and quality</h4>
+        <p className="inline-flex items-center gap-1.5 rounded-full border border-n-0/15 px-3 py-1 text-[13px] font-semibold text-n-200">
+          <Icon name="shield" className="h-3.5 w-3.5 text-brand-primary" />
+          {a.source}
+        </p>
+      </div>
+      <div className="mt-5 grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10">
+        {groups.map((g) => (
+          <div key={g.name}>
+            <h5 className={groupLabel}>{g.name}</h5>
+            <ul className={`mt-3 flex flex-col gap-2 ${subText}`}>
+              {g.items.map((item) => (
+                <li key={item.text} className={dot}>
+                  {item.text}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Breakdown({ study }: Props) {
+  const items = [
+    { id: "problem", label: "Problem and objective", content: <ProblemPanel study={study} /> },
+    { id: "approach", label: "Approach and strategy", content: <ApproachPanel study={study} /> },
+    { id: "solution", label: "Solution and process", content: <SolutionPanel study={study} /> },
+    { id: "features", label: "Key features", content: <FeaturesPanel study={study} /> },
+    { id: "tech-stack", label: "Tech stack", content: <StackPanel study={study} /> },
+  ];
+  return (
+    <Section tone="dark" labelledBy="breakdown-heading" className="scroll-mt-16 overflow-hidden md:scroll-mt-20">
+      <div aria-hidden="true" className="bg-grid-fade-dark pointer-events-none absolute inset-0 -z-10" />
       <Container>
-        <SectionHeading id="stack-heading" eyebrow="Tech stack" title="The tools, and the job each one does" />
-        <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4 md:mt-12">
-          {groups.map((g) => (
-            <div key={g.name}>
-              <h3 className="font-body text-label font-semibold tracking-[0.14em] text-n-600 uppercase">{g.name}</h3>
-              <ul className="mt-3 flex flex-col gap-3">
-                {g.tools.map((t) => (
-                  <li key={t.name} className="rounded-md border border-n-200 bg-n-0 px-4 py-3">
-                    <p className="text-[16px] font-semibold text-n-900">{t.name}</p>
-                    <p className="mt-0.5 text-[14px] leading-[1.5] text-n-600">{t.role}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+        <h2 id="breakdown-heading" className="text-[28px] leading-[1.15] tracking-[-0.02em] font-display font-bold text-n-0 md:text-h2">
+          Project breakdown
+        </h2>
+        <Tabs label="Project breakdown" idPrefix="breakdown" tone="dark" items={items} className="mt-5 md:mt-6" />
+        <div className="mt-10 md:mt-12">
+          <Button href={primaryCta.href} size="lg">
+            {primaryCta.label}
+          </Button>
         </div>
       </Container>
     </Section>
@@ -327,8 +461,23 @@ function Visuals({ study }: { study: CustomStudy }) {
           id="visuals-heading"
           eyebrow="Visuals"
           title="What it looks like, in outline"
-          description="Screens and code here are illustrative recreations; the real system and its data are not shown."
+          description={`${study.sample ? "Screens and code" : "Screens"} here are illustrative recreations; the real system and its data are not shown.`}
         />
+        {study.illustration === "coupon-platform" ? <CouponVisuals study={study} /> : null}
+        {study.illustration === "lead-flow" ? (
+          <Reveal from="settle" className="mt-10 md:mt-12">
+            <figure className="min-w-0">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <figcaption className="text-[14px] text-n-600">How a lead moves through the platform, from the search to the outreach.</figcaption>
+                <IllustrativeTag className="shrink-0" />
+              </div>
+              <div className="mt-4">
+                <FlowTrace steps={study.solution} label={`Illustrative flow of the ${study.title}, in order`} />
+              </div>
+            </figure>
+          </Reveal>
+        ) : null}
+        {study.illustration !== "coupon-platform" && study.illustration !== "lead-flow" ? (
         <div
           className={`mt-10 grid grid-cols-1 gap-12 md:mt-12 md:items-center md:gap-14 ${
             study.illustration ? "md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]" : ""
@@ -348,6 +497,7 @@ function Visuals({ study }: { study: CustomStudy }) {
           </figure>
           ) : null}
 
+          {study.sample ? (
           <Reveal from="end" delay={0.06}>
             <figure className="relative min-w-0">
               <div className="flex items-center justify-between gap-3">
@@ -367,9 +517,54 @@ function Visuals({ study }: { study: CustomStudy }) {
               </pre>
             </figure>
           </Reveal>
+          ) : null}
         </div>
+        ) : null}
       </Container>
     </Section>
+  );
+}
+
+/* Coupon platform (guide §4.2, Mode B): the flow as a trace, full width,
+   then the four parts beside the WhatsApp message. Each figure carries its
+   own Illustrative chip and a caption; all content comes from the entry. */
+function CouponVisuals({ study }: { study: CustomStudy }) {
+  return (
+    <div className="mt-10 flex flex-col gap-12 md:mt-12 md:gap-14">
+      <Reveal from="settle">
+        <figure className="min-w-0">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <figcaption className="text-[14px] text-n-600">The flow, from the QR scan to the updated profile.</figcaption>
+            <IllustrativeTag className="shrink-0" />
+          </div>
+          <div className="mt-4">
+            <FlowTrace steps={study.solution} label={`Illustrative flow of the ${study.title}, in order`} />
+          </div>
+        </figure>
+      </Reveal>
+      <div className="grid grid-cols-1 gap-12 md:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] md:items-center md:gap-14">
+        <Reveal from="start">
+          <figure className="min-w-0">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <figcaption className="text-[14px] text-n-600">The four parts of the platform, in outline.</figcaption>
+              <IllustrativeTag className="shrink-0" />
+            </div>
+            <div className="mt-4">
+              <PanelsOverview parts={study.features.map((f) => f.title)} label="Illustrative overview of the platform's parts" />
+            </div>
+          </figure>
+        </Reveal>
+        {study.sampleMessage ? (
+          <Reveal from="end" delay={0.06}>
+            <figure className="relative min-w-0">
+              <MessageMock message={study.sampleMessage} />
+              <IllustrativeTag className="absolute -top-3 left-1/2 -translate-x-1/2" />
+              <figcaption className="mt-4 text-center text-[14px] text-n-600">{study.sampleMessage.caption}</figcaption>
+            </figure>
+          </Reveal>
+        ) : null}
+      </div>
+    </div>
   );
 }
 
@@ -448,11 +643,7 @@ export default function CustomCaseStudy(props: Props) {
       <Hero {...props} />
       <Story study={study} />
       <Brief study={study} />
-      <TheJob study={study} />
-      <Approach study={study} />
-      <Solution study={study} />
-      <Features study={study} />
-      <Stack study={study} />
+      <Breakdown study={study} />
       <Visuals study={study} />
       <Outcomes study={study} />
       <AboutClient study={study} />

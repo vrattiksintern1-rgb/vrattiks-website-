@@ -13,14 +13,14 @@ import { relatedLinks, sectionFor, type IotStudy } from "@/app/lib/case-studies"
    iot-projects-case-study.md §2). The one idea is the SIGNAL PATH: the
    system is drawn as a vertical ladder, sensor at the top, dashboard at the
    bottom, the link written on each rung — readable at every width because
-   it never shrinks a horizontal diagram (guide §8). Features and stack rows
-   carry layer tags that link to the diagram, so it doubles as the page's
-   index.
+   it never shrinks a horizontal diagram (guide §8). Features carry layer
+   tags that link to the diagram, so it doubles as the page's index.
 
    Section order (user brief 2026-10-12): opener → overview → the full
    story → brief → problem and objectives → approach → solution and process
-   → key features → tech stack → visuals (the diagram) → outcomes (only
-   when real) → about the client → related → FinalCTA.
+   → key features → visuals (the diagram) → outcomes (only when real) →
+   about the client → related → FinalCTA. The tech stack section was
+   removed at the user's request (2026-10-17); `stack` stays in the data.
 
    Stays light (paper / white / tint) — not the custom layout's dark band,
    not the website layout's screens.
@@ -242,45 +242,6 @@ function Features({ study }: { study: IotStudy }) {
   );
 }
 
-/* A real <table> at ≥901px; below that each row stacks and every cell
-   shows its column name from `data-label` (iot guide §8 — no sideways
-   scrolling on phones). */
-function Stack({ study }: { study: IotStudy }) {
-  return (
-    <Section tone="paper" labelledBy="stack-heading">
-      <Container>
-        <SectionHeading id="stack-heading" eyebrow="Tech stack" title="Components, layer by layer" />
-        <table className="mt-10 w-full border-collapse text-left text-[15px] md:mt-12">
-          <caption className="sr-only">Components of the {study.title} system, the layer each belongs to and what it does</caption>
-          <thead className="max-md:sr-only">
-            <tr className="border-b border-n-200 text-[13px] text-n-600">
-              <th scope="col" className="py-2.5 pr-4 font-medium">Component</th>
-              <th scope="col" className="py-2.5 pr-4 font-medium">Layer</th>
-              <th scope="col" className="py-2.5 font-medium">What it does</th>
-            </tr>
-          </thead>
-          <tbody>
-            {study.stack.map((t) => (
-              <tr key={t.name} className="border-b border-n-100 max-md:flex max-md:flex-col max-md:gap-1.5 max-md:py-3">
-                <th scope="row" className="py-3 pr-4 align-top font-semibold break-words text-n-900 max-md:py-0">{t.name}</th>
-                <td data-label="Layer" className="py-3 pr-4 align-top max-md:py-0">
-                  <LayerTag study={study} id={t.group} />
-                </td>
-                <td
-                  data-label="What it does"
-                  className="py-3 align-top break-words text-n-700 max-md:py-0 max-md:before:mr-2 max-md:before:text-[13px] max-md:before:text-n-600 max-md:before:content-[attr(data-label)_':']"
-                >
-                  {t.role}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </Container>
-    </Section>
-  );
-}
-
 /* The signal-path ladder. W3C complex-images pattern: the visual is an
    ordered list of real text (so the structure IS the long description), and
    the written description sits beside it in the figcaption. Always labelled
@@ -417,7 +378,6 @@ export default function IotCaseStudy(props: Props) {
       <Approach study={study} />
       <Solution study={study} />
       <Features study={study} />
-      <Stack study={study} />
       <Visuals study={study} />
       <Outcomes study={study} />
       <AboutClient study={study} />

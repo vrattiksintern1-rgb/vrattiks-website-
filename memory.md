@@ -2585,3 +2585,721 @@ Verified: tsc + eslint clean; on the dev server at 1440/768/375/320 there was
 
 - All 11 `public/images/industries/*.jpg` were replaced with a new 1200×800 (3:2) set: a purple-tinted photo with example UI cards baked in (problem chip → automation → result). Filenames were kept. The previous Unsplash photos are in git history.
 - Because the UI text is baked into the image, any crop would cut it off. The `Industries` list frame was changed from 4:3 on phones and 16:9 from md up to **3:2 at every width**, matching `IndustryHero`, which was already 3:2. Keep any future industry image 3:2.
+
+## Drape Shoppe website case study added (2026-10-13)
+
+User request: add https://www.drapeshoppe.co.in/ to the Website section of
+/case-studies. New entry `drape-shoppe` in `app/lib/case-studies.ts`, page at
+/case-studies/drape-shoppe (same layout as Auroma: hero with a "Visit
+drapeshoppe.co.in" link and real desktop + phone screens → 5 numbered
+homepage crops → about the client → related → FinalCTA).
+
+- All content is read off the live site (Surat home furnishing showroom
+  since 1990, WhatsApp/call/directions enquiries, trade section). No stack,
+  no outcomes, no Vrattiks role stated as fact.
+- **Open question:** the live site's footer says "Website by Two Rabbits
+  Marketing LLP". Our role is the single `draft()` line in `description`, so
+  the page stays noindex/no JSON-LD until the user confirms what Vrattiks did.
+- Left out on purpose: reviews, the owner's Instagram video, the sale
+  offer as a claim, phone, address, GSTN. The hero screenshot does show the
+  site's own (expired, "ends 30 September") sale banner.
+- Images: `public/case-studies/drape-shoppe/site-*.webp` (all < 75 KB),
+  captured with playwright-core + local Chrome; crops are 1440×760.
+- `WebsiteBento` tile: when an entry has no `formFields`, the right column
+  now shows its real desktop screenshot instead of the illustrative form.
+
+Verified: tsc + eslint clean; dev server at 1440/768/375/320 on both pages,
+0px overflow, no broken images, no console errors.
+
+## Peturn website case study added (2026-10-13)
+
+User request: add https://www.peturn.in/ to the Website section of
+/case-studies. New entry `peturn` in `app/lib/case-studies.ts`, page at
+/case-studies/peturn, same layout as Drape Shoppe (hero + real screens →
+6 numbered homepage crops → about the client → related → FinalCTA).
+
+- The live site's footer reads "Designed and Developed by Vrattiks", so our
+  role is stated as fact and the entry is `contentStatus: "verified"` — the
+  detail page is indexable and carries JSON-LD (first case study that is).
+  The /case-studies overview stays noindex because other cards still have
+  drafts.
+- Left out on purpose: the site's "backed by research" statistics
+  (third-party claims), demo dashboard figures as numbers, all contact
+  details. No tech stack or outcomes stated.
+- Images: `public/case-studies/peturn/site-*.webp` (all < 65 KB), 1440×760
+  crops; floating WhatsApp button and sticky nav hidden when captured.
+
+Verified: tsc + eslint clean; dev server at 1440/768/375/320, 0px overflow,
+no broken images, no console errors.
+
+## Chandan Omlet website case study added (2026-10-13)
+
+User request: add https://www.chandanomlet.com/ to the Website section of
+/case-studies. New entry `chandan-omlet` in `app/lib/case-studies.ts`, page
+at /case-studies/chandan-omlet (hero + real screens → 5 numbered homepage
+crops → about the client → related, incl. the Restaurants & Food industry
+page → FinalCTA).
+
+- Footer reads "Website by Vrattiks", so our role is fact and the entry is
+  `verified` (indexable, JSON-LD). Next.js is stated because the page
+  source has `__NEXT_DATA__`, not because the user said so.
+- Left out on purpose: the restaurant's "best" and "100+ dishes" claims as
+  ours, the customer reviews, address and phone.
+- Issues seen on the LIVE site (our build, not fixed here): the header's
+  phone link is the placeholder `tel:123456789`; the nav reads
+  "FRANCHICES"; the about heading "A Legacy of Flavor Since" has no year;
+  menu prices show "--"; no meta description.
+- Dev-server gotcha: after adding a new slug, /case-studies/[slug] 404s
+  (dynamicParams = false) until the dev server recompiles; a second request
+  a few seconds later returns 200.
+
+Verified: tsc + eslint clean; dev server at 1440/768/375/320, 0px overflow,
+no broken images, no console errors.
+
+## Website Projects: one horizontal scroll row (2026-10-13)
+
+User request: on /case-studies, change ONLY the Website Projects section,
+from vertically stacked tiles to one side-scrolling row. Custom, IoT, the
+data and every other page were left alone.
+
+- **New reusable `app/components/ui/ScrollRow.tsx`** ("use client" leaf).
+  It takes `label`, `itemLabel`, a server-rendered `header` and cards as
+  children. Native CSS scroll-snap (x mandatory, snap-start, 4px
+  scroll-padding), `overscroll-x-contain`, and a hidden native scrollbar.
+  Previous/Next circle buttons sit in the header row, scroll by one
+  card + gap with `scrollBy`, smooth unless reduced motion, and use
+  `aria-disabled` at the ends. Buttons and the progress hairline are hidden
+  when the cards fit. No autoplay, no looping, and the vertical wheel is
+  not intercepted (kylezantos-design §1b). Card widths are
+  85% / 46% (sm) / 31% (lg) of the row.
+- **Edge fade** is `.scroll-row-track` in globals.css: a static mask whose
+  start and end fades are switched by `data-fade-start` / `data-fade-end`.
+  The mask clips anything the scroller paints, so its focus ring is drawn
+  on the unmasked `.scroll-row` wrapper via `:has(:focus-visible)`.
+- **No bleed:** the row stays inside `Container`, as `ServicesSlider` does.
+  No section on the site bleeds a scroller to the viewport edge.
+- **The card is now the standard card**, modelled on IoT's `ProjectCard`:
+  homepage screenshot (16:10), kind label, title, client, summary, Industry
+  + key-fact rows (minus "Project type", as before), chips, status pill and
+  one "Read the case study: {title}" link. The old opener's illustrative
+  Auroma lead form and its two count tiles (2 landing pages, required
+  fields) were dropped. `LeadFormVisual` in CaseStudyVisuals.tsx is now
+  unused (parked, not deleted). There is still no visible Draft chip
+  (removed 2026-10-12), so none was added.
+- With 1–3 cards on desktop, the row fits: cards stay 31% wide and
+  left-aligned, with no buttons and no progress bar.
+
+Verified with playwright-core + local Chrome at
+1440/1280/1024/901/768/601/430/390/375/320 (light, dark spot-checks):
+0px page overflow, one row, equal widths and heights, first card flush with
+the heading, next card peeks in, snap settles, buttons/keyboard/shift-wheel
+scroll the row, the vertical wheel scrolls the page, ends disable
+correctly, and the title clears the sticky header on #website-projects.
+Also tested with 1/2/3/4/6 cards using temporary in-component test data
+(since removed). Lint, tsc and build are clean.
+
+## Website cards cut to essentials; details live on the detail page (2026-10-13)
+
+User request: Website Projects cards on /case-studies show only the
+essentials. The scroll row, Custom, IoT and the data are unchanged.
+
+- **Card now:** screenshot, kind label, title, client, full summary, and
+  "Read the case study". Removed from the card: the Industry/key-fact rows,
+  the feature chips and the status pill. The data fields stay in
+  `case-studies.ts`.
+- **Whole card is one link.** The "Read the case study: {title}" link
+  stretches over the card with an `after:absolute after:inset-0` overlay.
+  Hover is a border shift to brand-primary. Focus is a 2px inset
+  brand-secondary outline on the article (`has-[a:focus-visible]`), because
+  a --shadow-glow halo would be clipped by the scroller's overflow. Cards
+  went from ~950–1170px tall to ~550–600px. Width, gap, snap and peek are
+  unchanged, and no padding change was needed.
+- **Detail hero** (`WebsiteCaseStudy` → `Hero`) already listed Client,
+  Category, Status, Industry and every key fact. It now also shows the
+  feature chips (shared `Chips`, label "Features") under the summary. A
+  chip that equals a fact value word for word is skipped so nothing shows
+  twice: "Next.js" (Auroma, Chandan Omlet) and "Surat" (Drape Shoppe,
+  Chandan Omlet).
+- **`pageDrafts` counts `tags` for website entries now**, since that detail
+  layout renders them. Every website tag is a `fact()`, so no noindex or
+  JSON-LD result changed. `cardDrafts` was deliberately left alone: the
+  overview stays noindex on the same rule as before, even though the card no
+  longer renders facts/tags. Narrowing it would change indexing, which the
+  brief said not to touch.
+- There is still no visible Draft chip anywhere (removed 2026-10-12 at the
+  user's request); none was re-added.
+
+Verified: row at 1440/1280/1024/901/768/601/430/375/320 (0px overflow,
+equal heights, snap, buttons, keyboard, ends); one link per card, an image
+click opens the detail page; all 4 detail pages at the same widths (200,
+0px overflow, all items present); light and dark. Lint, tsc and build are
+clean.
+
+## Anjali Mobile QR Coupon & Customer Platform added to Custom Projects (2026-10-13)
+
+Source: our own SOP, "Anjali Mobile — Standard Operating Procedure (SOP)"
+v1.0, attached by the user (not in the repo; there is no
+`docs/reference/anjali-mobile-sop.pdf`). The user stated that its facts are
+verified. Everything is reworded, with no SOP sentences copied.
+
+- **Entry** `anjali-mobile-qr-coupon-platform` (custom), placed FIRST in
+  Custom Projects. clientName "Anjali Mobile", status "Client project" (the
+  SOP doesn't confirm go-live). **Zero placeholder blocks**, so
+  `contentStatus: "verified"`: the detail page is indexable and has
+  BreadcrumbList + Article JSON-LD. The /case-studies overview stays noindex
+  because other cards still have drafts. The Custom index row now reads
+  "2 projects" (data-driven).
+- **Used from the SOP:** overview/description, the three objectives ("100%
+  accuracy" written as a plain goal, "a dependable record of every coupon"),
+  the four components, the 8-step workflow plus "Resend coupon" and the
+  live-connection rule, message-log delivery status, the stack, security (§8)
+  and testing (§9). **Excluded:** login/access, credentials,
+  troubleshooting, deployment, maintenance, FAQ (except the live-connection
+  rule), version history, the roles/access table, customer data, the
+  messaging vendor's name, the SOP date and the mock-redemption count.
+- **Type additions (all optional, so the other entries are unchanged):**
+  `Point.items`; on `CustomStudy`, `sample` is now optional, plus
+  `sampleMessage`, `assurance`, and `illustration: "coupon-platform"`.
+  `CustomCaseStudy` renders the extras only when the data has them: a feature
+  bento (features with `items`), a "Security and quality" tile under the
+  stack (paper, no top padding, label "As described in the project
+  documentation"), and the coupon visuals. The Visuals intro says "Screens
+  and code" only when a code sample exists. The lead-generator page renders
+  as before (verified).
+- **Visuals** (new `CouponPlatformVisuals.tsx`, static server component,
+  each with an Illustrative chip): `FlowTrace` (8-step `<ol>`, 4/2/1-up),
+  `PanelsOverview` (four outlined mini-screens), `MessageMock` (phone-style
+  chat with sample text "Sample store" / "SAMPLE-COUPON", neutral tokens, no
+  messaging-brand colours). There are no real screenshots and nothing is in
+  `public/case-studies/anjali-mobile/`.
+- **Overview card:** this is the existing CustomBento slab. Because the entry
+  is first, the lead-generator slab is now mirrored (light main on the
+  right, lavender side tile). That is the layout's own alternation, not a
+  redesign. There is no scroll row in Custom.
+- **Draft chip:** none was added, since there are no placeholder blocks and
+  the chip was removed site-wide at the user's request on 2026-10-12. There
+  is still no sitemap; `indexableCaseStudyPaths()` now includes this page.
+- **Related services:** WhatsApp Automation and CRM (our mapping, confirm).
+  There is no custom-development service page, and no retail industry page.
+
+Verified: lint, tsc, build clean. `next start` + CDP sweep, 3 pages ×
+1440/1280/1024/901/768/601/430/375/320 × light/dark (+ reduced motion at
+1440/375): 0px overflow, one H1, no heading skips, no duplicate ids, all
+sections labelled, nothing left at opacity 0, no tap target <24px, light
+min contrast 4.75. The only failure is the known dark-mode FinalCTA button
+(2.95). Fixed during review: the sample coupon code truncated at 320px; it
+now wraps.
+
+**Needs sign-off before public:** use of the Anjali Mobile name (and the
+client's OK to be shown), the security and testing claims (confirm with our
+developers that they match the build), the service mapping, and any future
+screenshots.
+
+## Five more website case studies added (2026-10-15)
+
+User request: add https://www.tokicha.in/, https://www.cafebeats.in/,
+https://www.tbsoni.com/, https://www.recorehardware.in/ and
+https://amiras.in/ to Website Projects on /case-studies. Five new entries in
+`app/lib/case-studies.ts`, after Chandan Omlet, same layout as the others
+(hero with Visit link + real desktop/phone screens → numbered homepage
+crops → about the client → related → FinalCTA). The scroll row now has 9
+cards. Slugs: `tokicha`, `cafebeats`, `tbs-jewellers`, `recore-hardware`,
+`amiras`; images in `public/case-studies/{slug}/` (all < 110 KB, WebP q80,
+1440×900 / 520×1125 / 1440×760 crops; playwright-core + local Chrome).
+
+- **Verified (footer credits Vrattiks), indexable with JSON-LD:** Tokicha
+  ("Website by vrattiks.io"), CafeBeats and TB Soni ("Made by Vrattiks"),
+  REcore ("Designed & Developed by Vrattiks"). React stated for Tokicha,
+  CafeBeats and TBS Jewellers (React root read from the page); no stack
+  for REcore (not identifiable).
+- **Amiras is `placeholder`:** a Shopify store whose footer credits no one
+  ("Copyright © 2026 by Amiras Foods"). Our role is the one `draft()` line,
+  so the page is noindex/no JSON-LD until the user confirms what Vrattiks
+  did. The live site also has no meta description.
+- Crops left out on purpose: Amiras trending products (sale prices) and
+  testimonials; Amiras "Perfect Taste" banner (its image is empty on the
+  live site); Tokicha franchise band (investment/ROI figures); CafeBeats
+  awards and reels (photos of people); TB Soni "Legacy" stats; REcore About
+  (photo of people) and contact block. Text leaves out the sites' own
+  counts and claims, prices, addresses, phones and emails.
+- REcore's enquiry form fields are in `formFields` (data only; nothing
+  renders it today).
+- Capture gotchas: CafeBeats' hero is a crossfading slider (wait for the
+  "Where Coffee Meets Rhythm" slide to settle); Amiras' banner is a Swiper
+  (wait for the active slide at x=0); Tokicha's large menu photos paint
+  blank if the page is scroll-walked first, so jump straight to each crop.
+
+Verified: tsc + eslint clean; dev server, /case-studies + 5 detail pages at
+1440/768/375/320 (light + dark at 1440/375, reduced motion): 200, 0px
+overflow, one H1, no broken images, no console errors, no duplicate ids.
+
+## First real testimonial on Home (2026-10-15)
+
+- `Testimonials.tsx` placeholder replaced with a `testimonials` array. First
+  entry, **user-provided, shown exactly as given**: Yogesh Shah, Anjli Mobile —
+  "Increased footfall and repeat customers. Using a coupon/reward system."
+- **User rule:** keep the user's wording and spelling exactly ("Anjli", not the
+  case study's "Anjali"), add no extra details, no link to the case study, and
+  show it **only** in the Home testimonial section — nowhere else on the site.
+- **Redesigned same day** (user asked for a new design): editorial split — left-aligned
+  heading in a 4/12 column, quote in Urbanist at 26/34px in the 8/12 column, a
+  large typographic “ mark, a 2px gradient left edge (the section's only
+  accent), name — company below. No card. Further entries stack under hairline
+  dividers. Checked at 1440/375: 0px overflow.
+- **Three more user-provided entries added** (same rules — verbatim, Home only):
+  Snehal Modi / Grenee, Shaishan Patel / Peturn Website, Furqan Ansari /
+  BTC/USD Trading Automation. The user's spellings "Profesional" and "attrect"
+  are kept as given — flagged to the user, **only fix if they say so**.
+- With four entries the layout became a stacked list: quotes 22/26px, one
+  shared 2px gradient spine and a single “ mark for the whole list, heading
+  pinned `md:sticky top-28`. Checked 1440/768/375: 0px overflow, no console errors.
+- **Redesigned again as a card carousel** (user supplied a reference screenshot):
+  centred eyebrow + "What our clients say" (gradient on "clients"), white quote
+  cards with initials avatars, round Prev/Next arrows at the sides (md+) or under
+  the row (phones), pill dots — one per scroll stop (2 on desktop with 3 cards in
+  view, 4 on phones). Data stays in `Testimonials.tsx`; interactivity lives in the
+  new client component `TestimonialsCarousel.tsx` (native scroll-snap, no
+  autoplay/looping). The reference's subtitle and "View More Testimonials"
+  button were left out — no approved copy and no testimonials page exists.
+  Verified 1440/768/375: 0px overflow, arrows/dots/end states work, no errors.
+- **Moved on Home** (user request): `<Testimonials />` now sits directly after
+  `WhyBusinessesNeedAI` ("The Problem"), before `WhyVrattiks`.
+- **Known pre-existing bug, not fixed (not asked):** `ServicesSlider` throws a
+  hydration mismatch when the visitor has reduced motion on —
+  `useReducedMotion()` is null on the server and true on the client, so the
+  play/pause button label and icon differ. This is the dev overlay's "2 Issues".
+- **Swipe removed** (user request): the testimonial row is now `overflow-hidden`
+  with no scroll-snap or focusable scroll region — touch swipe, trackpad and
+  shift+wheel no longer move it; only the Prev/Next arrows and dots do (verified
+  at 1440 and 375 with a synthesized touch swipe).
+
+## Testimonials redesign — featured quote + client tabs (2026-10-16)
+
+The card carousel was rejected (user's manager): the next card was clipped
+mid-sentence, the arrows sat on the cards, every card was an identical wall of
+text, and reading all four needed arrow clicks.
+
+- **Direction A (featured layout)**, chosen after auditing the neighbours:
+  above is `WhyBusinessesNeedAI` (six white sticky cards), below is
+  `WhyVrattiks` (light split with a pill tray on the right). A bento (B) would
+  be more cards; a staggered two-column (C) would be another light split. A
+  single **graphite stage** is the one idea: value contrast that neither
+  neighbour has, and it costs no gradient (the heading's "clients" stays the
+  only gradient). Matches `ui-ux-pro-max` ("1–2 quotes at generous scale")
+  and `awesome-design` ("single large testimonial").
+- Layout: heading now **left-aligned** (was centred). One `rounded-xl`
+  graphite frame: client list (rail, 1/3) + quote stage (2/3) at ≥1024px; below
+  that the list sits on top of the stage (2 columns 601–1023px, 1 column on
+  phones). Rail caption "Select a client" names the tablist.
+- **Hierarchy without changing words:** a new display-only `lead` field holds
+  the exact opening words of each quote; `QuoteText` sets them as a 22/24/28px
+  Urbanist first line in `n-0`, the rest at `text-body-lg` in `n-300`. The
+  paragraph's textContent is unchanged (verified equal to the data). If `lead`
+  stops matching the start of `quote`, the quote renders plain. Numeric claims
+  ("20x", "24x7") were kept out of the leads until the client approves them.
+- Data stays in the `testimonials` array in `Testimonials.tsx` (server).
+  Selection lives in the new client leaf **`TestimonialTabs.tsx`** (WAI-ARIA
+  tabs: roving tabindex, arrows on both axes, Home/End, selection follows
+  focus). The server renders the tab labels and `figure/blockquote/figcaption`
+  panels and passes them in. **All panels share one grid cell** and the closed
+  ones are `invisible`, so the stage is as tall as the longest quote and
+  switching never shifts the page. `TestimonialsCarousel.tsx` deleted
+  (`ui/ScrollRow` untouched — `WebsiteBento` uses it).
+- Focus ring is a Tailwind `outline-2 outline-brand-primary`, **not**
+  `.focus-glow` — that class's unlayered `outline: none` would beat it, and its
+  25% glow is invisible on graphite.
+- Measure capped at `max-w-[52ch]` = 66–69 real characters per line (`ch` is
+  the "0" width; 66ch measured ~79 characters).
+- `scroll-mt-20` on the section: scrolled to its top at 1440, the 81px sticky
+  header covered the title by 3px.
+- Verified: 1440/1280/1024/901/768/601/430/375/320, light + dark: 0px
+  overflow, nothing outside the viewport, no overlapping tabs, tabs ≥64px tall;
+  contrast on graphite (light/dark) lead 18.0/16.2, body 9.9/9.0, company and
+  caption 6.2/5.6. eslint, `tsc --noEmit`, `npm run build` clean.
+- **Open:** Peturn's quote now reads "attract" though the 2026-10-15 entry above
+  says "attrect" was kept — left as found. Pre-existing and not fixed: the
+  `ServicesSlider` reduced-motion hydration error, and 10 of Home's 12
+  `<section>`s have no `aria-labelledby`.
+
+## Testimonials redesign — editorial stacked list (2026-10-16, later)
+
+The client-tab selector above was rejected (user's manager): it read like a
+settings screen with a lot of empty space. Replaced with an editorial layout
+where **every testimonial is visible on first render** — no tabs, carousel,
+arrows, rotation or controls.
+
+- **Band: full-bleed graphite** (`ui/Section tone="dark"`). Audit: above is
+  `WhyBusinessesNeedAI` (white sticky cards on paper `n-25`), below is
+  `WhyVrattiks` (light split, `n-50` tray) — both light, so graphite is the
+  contrast. In dark mode the band is the lifted `#211e30` against the
+  `#0e0d14` page, still distinct.
+- **≥1024px:** 12-col grid — heading column `lg:col-span-4`, `lg:sticky
+  lg:top-28 lg:self-start` (112px, header is 81px), one empty column, list in
+  `lg:col-span-7 lg:col-start-6`. The grid is the sticky column's containing
+  block, so it releases exactly at the end of the list (measured: 0px past
+  the list bottom, with 4 and with 10 cloned rows; no jump when the viewport
+  is taller than the section). Heading 44/52px with `text-balance` (52px
+  orphaned "say"); a 260px IBM Plex Sans “ in `text-brand-gradient` at 40%
+  opacity under it (Urbanist's “ renders as two straight slashes).
+- **<1024px:** heading on top (not sticky), quote mark hidden, rows single
+  column with the index number above each quote.
+- **Rows:** `<ol>` of `Reveal as="li"` (stagger `min(i,3)×0.08s`, once), each a
+  `<figure>` → `<blockquote>` + `<figcaption>`, hairlines `divide-n-0/10`.
+  Index "01…" generated from array order (IBM Plex Sans tabular-nums, not mono —
+  the design system forbids a third face). Lead = data `lead` if it is the exact
+  start of `quote`, else the first clear sentence (`. ! ?` + capital), else the
+  whole quote is body. Lead 22/24/28px Urbanist semibold `n-0`; body 16/17px
+  `n-300`, leading 1.7, `max-w-[52ch]`. Identity: `bg-brand-primary` monogram,
+  name `n-100` semibold, company `n-400` (side by side from 601px).
+- **globals.css:** `.bg-brand-graphite` now sets `--brand-gradient-text` to the
+  lighter dark-theme stops (`#d3c2fa → #9d85f6`) — the light gradient's violet
+  end is ~3.1:1 on graphite. Only Testimonials uses gradient text on graphite.
+- `TestimonialTabs.tsx` deleted (no other users). Data untouched in
+  `Testimonials.tsx`; rendered textContent verified identical to it.
+- Verified: 1440/1280/1024/901/768/601/430/375/320 — 0px overflow, no element
+  past the viewport edge. Contrast light/dark: lead 18.0/16.2, body 9.9/9.0,
+  name 15.0/13.5, company 6.2/5.6, index 7.7/6.9. One h1, one section h2 via
+  `aria-labelledby`, no duplicate ids. eslint, `tsc --noEmit`, `npm run build`
+  clean. Still open (pre-existing): `ServicesSlider` reduced-motion hydration
+  error — the dev overlay's "2 Issues".
+- **Numeric claims awaiting client approval:** Furqan Ansari — "Saved 20x time"
+  and "runs 24x7". (Snehal Modi's "cost saved in terms of labour cost" and
+  Anjli's "in a few seconds" are measurable-sounding but unquantified.)
+- **2026-10-16 (user request):** testimonial company label changed from
+  "Anjli Mobile" to **"Anjali Mobile"** — the user's own correction, now
+  matching the case study spelling. Earlier "keep Anjli" notes are superseded.
+
+## Testimonials redesign — testimonial collage (2026-10-16, latest)
+
+Replaces the editorial stacked list at the user's request ("my sir wants this
+look"), from a reference image of a testimonial-card collage. Only the layout
+language was taken: no text, photos, names, ratings or signatures. Home is the
+only page that renders `Testimonials`.
+
+- **Band:** new `Section` tone `stage`: `bg-n-100` in light mode, graphite in
+  dark mode via `dark:bg-brand-graphite`. That is deliberately *not* the
+  `.bg-brand-graphite` class, so the dark ramp stays in force and cards can sit
+  one step lighter. Both neighbours (WhyBusinessesNeedAI above, WhyVrattiks
+  below) are plain paper `n-25` sections. Rhythm stays `Section md`
+  (48/56/64), not Home's hand-rolled 32/48, because a tinted band needs the
+  extra air at its edges.
+- **Cards:** one material for all six: `rounded-lg`, hairline `n-200` border
+  (`n-300` dark), `--shadow-md`, `bg-n-0` (light) / `bg-n-200` (dark).
+  Variants: overlap (80px monogram in a 6px card-coloured ring, half over the
+  top edge, centred), quote-mark (120px IBM Plex “ in `text-brand-gradient` +
+  graphite monogram), bubble (16px rotated-square tail; tail centre 44px =
+  monogram centre 44px, so change both together), banner (full row; from
+  1024px the lead gets its own 19rem column, from 1280px the identity sits
+  behind a hairline), split (tinted `n-50`/`n-100` panel; a side panel from
+  1024px, a footer strip below), feature (a `bg-brand-gradient-soft` frame
+  holding a 112px gradient monogram disc in a card-coloured ring, with the
+  name/company under it; the quote runs below; the frame grows to match its
+  neighbours). The first version filled that frame with a solid gradient and
+  only the initials. The user rejected it the same day ("not proper"): it
+  read as an empty placeholder and was the loudest thing on the band. The
+  disc's ring sits on a wrapper span, because inside `.bg-brand-gradient` the
+  n-ramp resets to light values and would turn the ring white in dark mode.
+- **Layout (`collage()`):** a 12-col grid (2-col from md 901px, 1-col below)
+  built from row-filling chunks, so there are no holes at any count: head
+  (feature 6 cols × 2 rows + overlap + bubble), then chunks 2 → 1 → 3
+  (pair 5/7, banner, trio 4/4/4 from xl, 6/6/12 at lg), and a lone leftover
+  after a banner widens it into a pair. 4 = head + banner; 6 = every variant
+  once; 10 = head + pair + banner + trio + banner. Variants follow data
+  position, so DOM order = data order. Tested with temporary data (removed)
+  at 3/4/6/10 × 1440/1280/1024/901/768/601/430/375/320: 0px overflow, nothing
+  past the viewport edge.
+- **Content:** the data array is byte-identical to before. New optional
+  `photo?: { src, alt }` field, filled for none; when set, it renders
+  via `next/image` in place of the monogram/feature panel. The bold first line
+  is only the data's own `lead` (exact prefix); the old "first sentence"
+  regex fallback was removed so nothing is derived.
+- **globals.css:** removed `.bg-brand-graphite { --brand-gradient-text }`
+  (only the old graphite Testimonials used it). Added
+  `:root:not([data-theme="dark"]) .tone-stage { --brand-gradient-text: … }`,
+  a 35/65 lavender–violet mix → 3.5:1 on n-100 (the plain gradient's lavender
+  end is 1.9:1 there).
+- **Contrast (measured, both themes):** body 11.3/8.0, leads and names
+  ≥11.8, company 6.3–7.6, split panel 6.9/7.2, eyebrow 4.8/5.5, monograms
+  ≥5.75. All pass.
+- **Deviations:** centred heading over a grid (requested; it's the only
+  centred section header nearby); `Reveal` (existing client leaf) provides the
+  once-only stagger, since a pure-CSS reveal can't do once-only; lead sizes
+  are arbitrary px (19/22–24/24–28) like the previous version.
+- Pre-existing, untouched: dev overlay "2 Issues" = `ServicesSlider`
+  reduced-motion hydration mismatch + React's warning about the JSON-LD
+  `<script>` in `app/page.tsx`. Home places Testimonials after
+  WhyBusinessesNeedAI, not after Process as `vrattiks-architecture` §2 lists.
+- **Still awaiting client approval:** Furqan Ansari "Saved 20x time" / "runs
+  24x7"; Yogesh Shah "in a few seconds"; Snehal Modi "cost saved in terms of
+  labour cost". Spelling to confirm: "Profesional" (Shaishan Patel's quote),
+  "Grenee" (appears nowhere else on the site), "Peturn Website" (the case
+  study's client is "Peturn").
+
+### Same day, later: one card style for every testimonial (2026-10-16)
+
+The user reviewed the six-variant collage and asked for **every card to be
+the avatar-overlap card** (screenshot of the Snehal Modi card: 80px
+lavender monogram in a 6px card-coloured ring half over the top edge,
+centred lead + quote, name and company centred below). The other five
+variants, `collage()` and the chunk tables were deleted from
+`Testimonials.tsx`. The `stage` band, the `.tone-stage` gradient-ink rule and
+the optional `photo` field stay.
+
+- **Layout (`cellFor`):** from 1024px, rows of two on 7/5 spans, with the
+  wider span going to the **longer quote** in each pair so both cards in a
+  row match in height (strict 7/5 ↔ 5/7 alternation left a ~90px gap in the
+  shorter card). Two equal columns from 901px, one column below; an odd last
+  card spans the row. Tested with temporary data (removed) at 3/4/10 ×
+  1440→320: 0px overflow, nothing clipped. Data verified byte-identical.
+- The 2026-10-16 collage notes above (variants, chunk plan, feature card)
+  describe the superseded version.
+- **Later still (user request):** "all 4 cards in one line". `cellFor` and the
+  7/5 spans were removed. From 1280px (`xl`) the grid has
+  `min(count, 4)` equal columns (`xlCols`), so 4 cards share one row and
+  more than four wrap in fours. 901–1279px is a 2×2 grid, one column below.
+  Card side padding drops to 24px at `xl`. At 1440 each card is 321px wide
+  and 538px tall; at 1280, 281×593. 0px overflow at 1440/1280/1024/390,
+  light and dark.
+- **Later still (user request: "only 4 to 5 lines"):** cards now show a
+  **verbatim excerpt**: the data's `lead` in bold, then the quote's next
+  whole sentences for as long as they fit in `BODY_BUDGET` = 160
+  characters (the first is always kept; the cut always lands on a sentence
+  end, so no ellipsis and no rewording). The full quotes are unchanged in
+  the data. Shown at 1440: Yogesh 2 sentences, Snehal 1, Shaishan 1,
+  Furqan 2 (still includes "Saved 20x time … 24x7"). The user delegated
+  the choice ("do whatever you think is best"). Cards went from 538px to
+  348px tall at 1440. Body has `text-pretty` to avoid one-word last lines.
+
+## Testimonials copy update — four quotes rewritten (2026-10-17)
+
+User-supplied headline + body for all four cards, used exactly as given
+(third person on purpose — never convert to first person). In
+`Testimonials.tsx`, `lead` = the headline and `quote` = headline + " " +
+body. Names, companies, order, avatars and layout untouched; the old
+"Profesional" spelling and the extra case-study sentences are gone. The
+only number is Furqan's "20x" (plus "24x7"), still pending client approval.
+No other file repeats this copy (no metadata, structured data or tests).
+
+- **Visible vs stored:** the 160-character `BODY_BUDGET` excerpt rule was
+  left alone, so each card now shows the headline + **only the first body
+  sentence**; the rest stays in the data. Hidden on the cards: Yogesh's
+  QR/WhatsApp and counter sentences, Snehal's "The result is less manual
+  handling…", Shaishan's demo-dashboard sentence, and Furqan's "20x"
+  sentence. Raising `BODY_BUDGET` would show them; flagged to the user
+  rather than changed.
+- Verified at 1440 and 390, light and dark: 0px overflow, nothing clipped;
+  1440 cards all 321×319 (was 348 tall); 390 cards 266–293px tall.
+  lint, tsc, build clean.
+
+## Custom case studies — five sections collapsed into one tabbed "Project breakdown" (2026-10-17)
+
+User brief + reference screenshot (layout language only: tab row, bold
+active label with a thick underline, dot list, one primary button; its
+orange/blue colours and text were not used). Applies to every
+`category: "custom"` entry (Anjali Mobile, AI Lead-to-Landing-Page
+Generator); Website/IoT layouts and `/case-studies` untouched.
+
+- **Problem and objective · Approach and strategy · Solution and process ·
+  Key features · Tech stack** are now ONE section (`Breakdown` in
+  `CustomCaseStudy.tsx`), in the slot the first of them had. Each former
+  section is a tab; its old h2 title (and the solution description) leads
+  its panel as an h3. The security and quality tile lives in the Tech
+  stack tab. The FlowTrace/PanelsOverview figures were never part of the
+  five (they are in Visuals) and stay there.
+- **Band:** the section is the page's one graphite band (`tone="dark"`), the
+  band Solution used to have. Order is now white (Brief) → graphite
+  (Breakdown) → white (Visuals) → paper (About) → white (Related).
+- New visible h2 **"Project breakdown"** (structural label, no eyebrow).
+  CTA under the panels = the existing primary ask, **"Book a Free
+  Consultation" → /contact**, now exported as `primaryCta` from
+  `FinalCTA.tsx` so both read one source.
+- **`ui/Tabs.tsx`** (new, the only client code, reusable, no library):
+  APG tabs with manual activation (arrows/Home/End move focus, Enter/Space
+  activate), roving tabindex, all panels in the SSR HTML with `hidden`,
+  hash deep links (`#problem #approach #solution #features #tech-stack`,
+  on load + hashchange) and `replaceState` on change (no scroll). Mobile:
+  the row scrolls in its own track (`.scroll-row-track` fades, snap,
+  `scroll-px-10`). **Two traps fixed on the way:** revealing the tab on
+  *pointer* focus scrolled the row between mousedown and mouseup and
+  swallowed the click, so focus-reveal is keyboard-only (`:focus-visible`);
+  and a reveal that doesn't land on a snap point is snapped back, so it
+  always scrolls to the tab's own snap point.
+- **Reserved height (globals.css):** from 901px `.tab-stack > [hidden]`
+  panels are `display:block !important; visibility:hidden` in a shared
+  grid cell. It must sit in `@layer base` — Preflight's `[hidden]{display:
+  none !important}` is in that layer, and an unlayered `!important` loses
+  to a layered one. Bold-width jitter is prevented by an invisible bold
+  `::after` copy with `content: attr(data-label) / ""` (empty alt keeps the
+  accessible name single — verified in the AX tree).
+- Panel heading sits beside the content only from 1280px; below that a
+  side column squeezed the content and pushed the reserved height to
+  776px at 1024. Two-column step/feature grids from 901px; stack groups
+  pair up when there are four. Shortest-vs-tallest gap left by the
+  reservation: ≈180px at 1440, ≈250px at 901 (coupon).
+- Dots are `brand-secondary` (violet, 3.1:1 on graphite — decorative);
+  step numbers stay `brand-primary` as before. Old check icons became dots
+  per the brief. Text and data unchanged: 100/100 and 91/91 source strings
+  found verbatim in the section, none duplicated elsewhere.
+- Verified: 1440/1280/1024/901/768/601/430/375/320 × light/dark × both
+  pages × every tab (touch taps below 901) — 0px overflow, tabs ≥44px,
+  active tab fully in its track, lowest text contrast 5.63:1 (inactive tab,
+  dark theme); keyboard/hash/deep-link suite passes; CTA offset constant
+  across tabs at every width ≥901; JSON-LD/noindex unchanged; lint, tsc,
+  build clean.
+
+## AI Lead-to-Landing-Page Generator removed from Case Studies (2026-10-17)
+
+User request. The whole entry was deleted from `app/lib/case-studies.ts`
+(it is in git at commit f07408c if it is ever wanted back), so it is gone
+from `/case-studies`, from Home, and `/case-studies/ai-lead-to-landing-page-generator`
+now 404s (`dynamicParams = false`). Anjali Mobile is the only Custom
+project; the Custom section still renders well with one card. Entries
+above that describe the lead generator are history only. Left in place,
+now unused by any entry: the `illustration: "generated-page"` drawing and
+the `sample` code block in `CustomCaseStudy.tsx` (both optional, data-driven).
+
+## Two Rabbits Lead Generation added to Custom Projects (2026-10-17)
+
+User request, from our own case study PDF ("Two Rabbits Lead Generation",
+Vrattiks Intelligence LLP). New entry `two-rabbits-lead-generation` in
+`app/lib/case-studies.ts`, after Anjali Mobile; `contentStatus: "verified"`
+(every block restates the PDF). `solution` is the PDF's runtime lead flow
+(6 steps, so the card reads "6 steps it runs"); the 8 delivery phases are
+folded into the story, features and stack. `outcomes` empty — the PDF has
+no results, only build facts. Service mapping (Lead Management, CRM) is
+ours — confirm. New optional `illustration: "lead-flow"` draws the flow with
+`FlowTrace` from CouponPlatformVisuals; without it the Visuals section
+would have rendered empty. No client logo or screenshots added.
+
+## Five more website case studies added (2026-10-17)
+
+User request: add https://www.gurujitutorials.com/,
+https://www.kalpatarucollection.com/, https://www.shukanvilla.com/,
+https://www.bobacoffee.in/ and https://www.trinontechnology.com/ to Website
+Projects. Five new entries in `app/lib/case-studies.ts`, after Amiras, same
+layout and data shape as the 2026-10-15 batch. The website scroll row now
+has 14 cards. Slugs: `guruji-tutorials`, `kalpataru-collection`,
+`shukan-villa`, `boba-coffee`, `trinon-technology`; images in
+`public/case-studies/{slug}/` (all < 101 KB, WebP q80, 1440×900 / 520×1125 /
+1440×760 crops; playwright-core + local Chrome, crops located by heading
+text rather than fixed offsets).
+
+- **Verified (footer credits Vrattiks), indexable with JSON-LD:** Guruji
+  ("Created by vrattiks.io"), Kalpataru ("Created by Vrattiks.io"), Shukan
+  Villa ("Designed & Developed by Vrattiks"), Boba & Coffee ("Website by
+  vrattiks.io"). React for all four (React fiber read from the page).
+- **Trinon Technology is `placeholder`:** its footer credits no one. Our
+  role is the one `draft()` line → noindex/no JSON-LD until the user
+  confirms. Stack not stated (plain HTML/JS); location is "Gujarat" only.
+- Shukan Villa's `clientName` is the developer, **SAI Developers**; the
+  title is the project name (Auroma pattern).
+- Industry links: Guruji → edtech-coaching, Shukan → real-estate, Boba →
+  restaurants-food, Trinon → manufacturing; Kalpataru is "Fashion retail"
+  (no page).
+- Left out on purpose: every site's own counts/stats, ratings and
+  testimonials (Kalpataru Google ratings and reels, Boba testimonials and
+  happy-hour discounts, Trinon stats and client quote), Shukan master plan
+  crop (render only), addresses, phones and emails in text. Guruji's hero
+  screenshot does show its phone number on the Call button and a stock-style
+  doctor photo, as on the live site.
+
+## IoT detail page: Tech stack section removed (2026-10-17)
+
+User request. The "Tech stack — Components, layer by layer" table is gone
+from `IotCaseStudy.tsx` (the only IoT project is `/case-studies/pizza-vending-machine`).
+Order is now … key features (white) → visuals (tint) …, tones still
+alternate. The `stack` data stays in `case-studies.ts` (the type requires
+it, and Custom pages still render theirs); the IoT bento on `/case-studies`
+never showed a stack. Website and Custom layouts untouched.
+
+## Website Projects: pinned scroll-driven row on desktop (2026-10-17)
+
+> **Superseded** by "Website Projects pinned row v2" below (same day). Kept
+> for history; the fit tiers, 1:1 speed and +16px pin offset no longer apply.
+
+User brief. On `/case-studies` only the Website Projects section changed.
+New client leaf `app/components/ui/PinnedRow.tsx` (reusable) wraps the
+server-rendered cards; `WebsiteBento.tsx` now uses it instead of `ScrollRow`
+(card markup, data and Draft logic untouched; `ScrollRow.tsx` untouched).
+
+- **Pinned mode** needs all of: `(min-width:1024px) and (hover:hover) and
+  (pointer:fine) and (prefers-reduced-motion:no-preference)`, cards wider than
+  the content width, and the pinned block fitting under the header. Wrapper
+  height = pinned block + travel; the sticky top is the real header height
+  (81px) + 16px; scroll maps 1:1 to `translate3d` on the `<ul>` (passive
+  listener + rAF, snapped to device pixels, `will-change` only while pinned).
+  Progress hairline + "01 / 14" counter, both `aria-hidden`.
+- **Fit tiers (decision made here, not in the brief):** heading + cards pin
+  together when they fit (e.g. 1440×900, 1024×900, 1920×1080); when only the
+  cards fit (e.g. 1280×800) the heading scrolls away normally and the cards
+  pin alone, clipped at the header edge so it doesn't ghost through the
+  translucent header; when not even the cards fit (e.g. 1280×720, typical
+  1366×657 / 1536×730 laptop viewports, as the cards are ~600–620px tall) it
+  stays the native row. Pinning a block taller than the viewport would hide
+  card content.
+- While pinned, the description sits beside the title (`in-data-pinned:`
+  variants in WebsiteBento) to save ~45px of height. Note:
+  `group-data-[pinned]/pin:` generated no CSS here; `in-data-pinned:` works.
+- **Fallback** = the old ScrollRow (snap, buttons, peek) below 1024px, on
+  touch, with reduced motion, without JS (server render), and when the cards
+  fit (1–3 cards at desktop → static row). Modes re-evaluate on resize, media
+  query change and font load.
+- **Keyboard:** focusing an off-screen card scrolls the page to the matching
+  position; `/case-studies#{slug}` hashes do the same.
+- Verified: 1/2/3/4/6/10/14 cards (temporary `.slice()`, removed) at
+  1440/1280/1024/901/768/601/430/375/320 in light + dark → 0px page overflow
+  everywhere; Tab/Shift+Tab through every card with each fully visible; anchor
+  `#website-projects` leaves the h2 at 173px under an 81px header; counter
+  contrast 6.88:1 light / 8.00:1 dark. Lint, tsc, build clean.
+
+## Website Projects pinned row v2: sized to fit, SCROLL_SPEED (2026-10-17, later)
+
+User brief (replaces every earlier instruction about this section's
+scrolling). Only `/case-studies` Website Projects changed. `ui/PinnedRow.tsx`
+was rewritten in place (still the only implementation); `WebsiteBento.tsx`
+got pinned-only classes. Card text/data, Custom/IoT, `ScrollRow.tsx`
+untouched. There is still no visible Draft chip (removed 2026-10-12), so
+nothing to fit for it.
+
+- **Why v1 was replaced:** it mapped scroll 1:1 (14 cards ≈ 5.9 screens at
+  800px), pinned 16px below the header, and when the block was too tall it
+  pinned the cards without the heading (1280/1440×800) or not at all
+  (1280×700).
+- **Pin:** sticky top = real header height (81px from md up), frame has its
+  own `pt-6`/`pb-6`; Section trims to `py-10` while pinned
+  (`lg:has-[[data-pinned]]:py-10`) so the heading and the next section keep
+  the 64px rhythm. Pin starts exactly when the frame reaches the header and
+  releases the same pixel the last card's right edge reaches the content
+  edge.
+- **`SCROLL_SPEED = 1.4`** (top of PinnedRow; raise = shorter section).
+  Wrapper height = frame height + travel / SCROLL_SPEED. 14 cards: travel
+  4749px at ≥1440 wide (4214px at 1280) → 3393px of pinned scroll ≈ 4.24
+  screens at 1440×800, 3.91 at 1918×868, 3.14 at 1920×1080 (3010px at 1280
+  wide).
+- **Fit by sizing, never cropping:** the frame is content height, capped at
+  100svh − header (not a fixed 100svh: that left ~225px of empty band after
+  the section at 1080). If too tall, every card's screenshot shrinks by the
+  same amount (`--pin-media-h` on `[data-pin-media]`, so titles stay
+  aligned); if it would keep < 60% of its height, PinnedRow sets
+  `data-clamp` and the description clamps to 3 lines
+  (`in-data-clamp:line-clamp-3`); under 96px of screenshot it stays native.
+  Result: clamp only at 700px-tall viewports; screenshot 152px (700),
+  178–202px (800), full 16:10 from 868 up. Card spacing tightened in pinned
+  mode only (`py-5`, `mt-2`/`mt-3`, `pt-3`).
+- **Counter** = cards fully seen ("03 / 14" at start, "14 / 14" at release);
+  bar + counter `aria-hidden`.
+- **Keyboard:** focusing a card always scrolls the page to the in-pin
+  position that shows the whole card (also from above/below the pin, and
+  rounded toward keeping it inside); `#slug` hashes do the same once on
+  load.
+- **Verified:** 4 widths × 5 heights (1280/1440/1918/1920 × 700/800/868/1000/
+  1080), light + dark, at 0/25/50/75/100% → nothing cut, 0 overflow. 1/3/6/14
+  cards (temporary `.slice()`, removed) at 1440…320, light + dark: pinned
+  ≥1024 for 6/14, static/native otherwise, 0px overflow, Tab + Shift+Tab
+  each card fully visible with ring. Reduced motion, touch (1366 coarse) and
+  no-JS → native row. Lint, tsc, build clean.
+- **Open (pre-existing, not touched per brief):** in the native ScrollRow
+  (<1024px) Tab can land on a card that is mostly outside the snap scroller
+  (e.g. card 3 at 768px; snap-mandatory doesn't follow focus). Dev also warns
+  the first card's screenshot is the page's LCP at 1280/1440 and suggests
+  `loading="eager"`.

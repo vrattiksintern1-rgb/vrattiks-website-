@@ -8,6 +8,7 @@ import Reveal from "./ui/Reveal";
 import Section from "./ui/Section";
 import SectionHeading from "./ui/SectionHeading";
 import CaseStudyBreadcrumb from "./CaseStudyBreadcrumb";
+import { Chips } from "./CaseStudyChips";
 import IllustrativeTag from "./IllustrativeTag";
 import { DesktopScreen, PhoneScreen } from "./WebsiteScreens";
 import {
@@ -90,6 +91,14 @@ function Hero({ study }: Props) {
     ...study.keyFacts,
   ].filter((f) => f !== null);
 
+  /* The feature chips from the overview card (moved off it on 2026-10-13).
+     A chip that repeats a fact row word for word is skipped, e.g. "Surat"
+     when Location is Surat, or "Next.js" when Built with lists it, so
+     nothing shows twice on the page (user brief). Chip text is never
+     reworded (vrattiks-standards §3). */
+  const factParts = new Set(facts.flatMap((f) => f.value.split(",").map((v) => v.trim().toLowerCase())));
+  const chips = study.tags.map((t) => t.text).filter((t) => !factParts.has(t.toLowerCase()));
+
   return (
     <Section tone="paper" labelledBy="case-study-heading">
       <Container>
@@ -106,6 +115,7 @@ function Hero({ study }: Props) {
           {study.title}
         </h1>
         <p className="mt-5 max-w-2xl text-body-lg text-n-700">{study.summary.text}</p>
+        <Chips items={chips} label="Features" className="mt-5 max-w-3xl" />
         {/* Outline, not primary: the page's one gradient is the FinalCTA. */}
         {study.website ? (
           <Button href={study.website.url} variant="outline" target="_blank" rel="noopener noreferrer" className="mt-6 min-h-12">

@@ -19,17 +19,15 @@ const navLinks = [
 ];
 
 type MenuItem = { name: string; href: string; icon: IconName };
-type Menu = { id: string; allLabel: string; items: MenuItem[] };
+type Menu = { id: string; items: MenuItem[] };
 
 const menus: Record<string, Menu> = {
   "/services": {
     id: "services",
-    allLabel: "All services",
     items: services.map((s) => ({ name: s.name, href: `/services/${s.slug}`, icon: s.icon })),
   },
   "/industries": {
     id: "industries",
-    allLabel: "All industries",
     items: industries.map((i) => ({ name: i.name, href: `/industries/${i.slug}`, icon: i.icon })),
   },
 };
@@ -111,19 +109,6 @@ function NavDropdown({ label, href, menu }: { label: string; href: string; menu:
         }`}
       >
         <ul className="nav-dropdown max-h-[calc(100svh-7rem)] overflow-y-auto rounded-lg border border-n-100 bg-n-0 p-3 shadow-[var(--shadow-lg)] dark:border-n-0/10 dark:bg-brand-graphite">
-          <li>
-            <Link
-              href={href}
-              onClick={() => setOpen(false)}
-              className="group flex items-center justify-between rounded-sm px-4 py-3 font-display text-[16px] font-semibold text-n-900 transition-colors duration-150 hover:bg-n-50 focus-visible:bg-n-50 focus-visible:outline-2 focus-visible:outline-brand-secondary dark:text-n-0 dark:hover:bg-n-0/[0.06] dark:focus-visible:bg-n-0/[0.06] dark:focus-visible:outline-brand-primary"
-            >
-              {menu.allLabel}
-              <Icon
-                name="arrowRight"
-                className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-0.5"
-              />
-            </Link>
-          </li>
           {menu.items.map((item) => (
             <li key={item.href}>
               <Link
@@ -264,16 +249,6 @@ export default function Header() {
                         </Link>
                       </li>
                     ))}
-                    <li>
-                      <Link
-                        href={link.href}
-                        onClick={closeMobile}
-                        className="focus-glow flex items-center gap-2 rounded-sm px-3 py-3 text-[14.5px] font-medium text-brand-secondary hover:bg-n-50"
-                      >
-                        View {menu.allLabel.toLowerCase()}
-                        <Icon name="arrowRight" className="h-4 w-4" />
-                      </Link>
-                    </li>
                   </ul>
                 </div>
               );

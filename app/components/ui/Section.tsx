@@ -28,6 +28,12 @@ const tones = {
   tint: "bg-n-50 text-n-800",
   /* Inverted graphite band */
   dark: "bg-brand-graphite text-n-200",
+  /* Display stage for raised white cards (Testimonials): a lilac-grey n-100
+     in light mode, graphite in dark. `dark:bg-brand-graphite` is not the
+     `.bg-brand-graphite` class, so the dark ramp stays in force inside and
+     cards on it can sit a step lighter. `.tone-stage` darkens gradient text
+     in light mode (globals.css). */
+  stage: "tone-stage bg-n-100 text-n-800 dark:bg-brand-graphite",
 } as const;
 
 /* Two rhythms only. `lg` is for the page's anchor moments (currently unused);

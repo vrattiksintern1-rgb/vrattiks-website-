@@ -55,13 +55,13 @@ export default function Home() {
       <Hero />
       <KpiResults />
       <WhyBusinessesNeedAI />
+      <Testimonials />
       <WhyVrattiks />
       <ServicesOverview layout="slider" />
       <UseCases />
       <Industries layout="timeline" limit={6} />
       <CaseStudies />
       <Process />
-      <Testimonials />
       <FAQ />
       <FinalCTA />
     </>

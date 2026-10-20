@@ -174,45 +174,6 @@
   a {
     color: inherit;
   }
-
-  /* ui/Tabs: from 901px every panel shares one grid cell and hidden ones
-     keep their box (invisible, still `hidden` to assistive tech), so the
-     stack is as tall as the tallest panel and nothing below it moves when
-     the tabs switch. Preflight's `[hidden] { display: none !important }`
-     lives in this layer, so this more specific !important rule has to as
-     well — an unlayered !important would lose to it. */
-  @media (min-width: 901px) {
-    .tab-stack > [role="tabpanel"][hidden] {
-      display: block !important;
-      visibility: hidden;
-    }
-  }
-}
-
-/* ui/Tabs: the new panel fades in over 150ms on user action only (never on
-   load); reduced motion collapses it with every other animation below. */
-@keyframes tab-panel-in {
-  from {
-    opacity: 0;
-  }
-}
-.tab-stack > [data-enter] {
-  animation: tab-panel-in 150ms ease-out;
-}
-
-/* ui/Tabs: the active tab turns bold. An invisible bold copy of the label
-   (alt text "" keeps it out of the accessible name) holds the bold width
-   from the start, so neighbouring tabs never shift when it changes. */
-.tab-label {
-  display: inline-grid;
-}
-.tab-label::after {
-  content: attr(data-label) / "";
-  font-weight: 700;
-  height: 0;
-  overflow: hidden;
-  visibility: hidden;
-  user-select: none;
 }
 
 /* Gradient fills that Tailwind v4 can't generate a utility for (see vrattiks-design-system §1) */
@@ -281,27 +242,6 @@
 /* Shared focus ring — replaces default outline with the brand glow token, never outline:none alone */
 .focus-glow:focus-visible {
   outline: none;
-  box-shadow: var(--shadow-glow);
-}
-
-/* ui/ScrollRow edge fades. A static mask, no animation: the end fade is on
-   while there is more to the right, the start fade once the row has been
-   scrolled (ScrollRow toggles the two data attributes). The mask would clip
-   a focus ring drawn on the scroller, so the ring goes on the unmasked
-   .scroll-row wrapper instead (vrattiks-accessibility, "Focus states"). */
-.scroll-row-track {
-  --fade-start: 0px;
-  --fade-end: 0px;
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--fade-start), #000 calc(100% - var(--fade-end)), transparent);
-  mask-image: linear-gradient(to right, transparent, #000 var(--fade-start), #000 calc(100% - var(--fade-end)), transparent);
-}
-.scroll-row-track[data-fade-start] {
-  --fade-start: 32px;
-}
-.scroll-row-track[data-fade-end] {
-  --fade-end: 48px;
-}
-.scroll-row:has(> .scroll-row-track:focus-visible) {
   box-shadow: var(--shadow-glow);
 }
 

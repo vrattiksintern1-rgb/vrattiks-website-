@@ -7,7 +7,6 @@ const exploreLinks = [
   { label: "Home", href: "/" },
   { label: "Company", href: "/company" },
   { label: "Industries", href: "/industries" },
-  { label: "Case Studies", href: "/case-studies" },
   { label: "Contact", href: "/contact" },
 ];
 

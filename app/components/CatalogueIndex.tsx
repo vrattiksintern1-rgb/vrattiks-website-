@@ -21,8 +21,9 @@ import { services, useCases, industries } from "@/app/lib/content";
  * size belongs.
  *
  * This satisfies vrattiks-architecture §5 in one block: Home links out to the
- * Services, Use Cases, Industries AND Case Studies overviews, plus every
- * service, use-case and industry detail page.
+ * Services, Use Cases and Industries overviews, plus every service, use-case
+ * and industry detail page. (The Case Studies link went with the page,
+ * 2026-10-20.)
  *
  * THE ONE IDEA: it is purely typographic. No icons, no cards, no borders
  * around items, no accent fills — a single hairline per column and nothing
@@ -131,25 +132,6 @@ export default function CatalogueIndex() {
             </Reveal>
           ))}
         </div>
-
-        {/* vrattiks-architecture §5 also requires a Home → Case Studies link.
-            The CaseStudies SECTION stays disabled until a real engagement is
-            published (an empty "coming soon" block costs more credibility than
-            the missing section does), but the overview must still be reachable
-            from Home or it is an orphan. */}
-        <Reveal delay={0.12} className="mt-14 md:mt-16">
-          <div className="rule-fade" aria-hidden="true" />
-          <p className="mt-8 text-ui leading-normal text-n-600">
-            Client results are published as they are signed off.{" "}
-            <Link
-              href="/case-studies"
-              className="focus-glow rounded-sm font-semibold text-brand-secondary hover:underline"
-            >
-              See our case studies
-            </Link>
-            .
-          </p>
-        </Reveal>
       </Container>
     </Section>
   );

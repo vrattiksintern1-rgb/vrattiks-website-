@@ -3303,3 +3303,62 @@ nothing to fit for it.
   (e.g. card 3 at 768px; snap-mandatory doesn't follow focus). Dev also warns
   the first card's screenshot is the page's LCP at 1280/1440 and suggests
   `loading="eager"`.
+
+## Website Projects pinned row: v2 brief re-checked, native-row focus fix (2026-10-20)
+
+User re-sent the v2 brief ("replaces any earlier instruction"). Step 1
+finding: `ui/PinnedRow.tsx` (v2, 2026-10-17) is the only implementation and
+already meets it, so it was **not changed**. Only `ui/ScrollRow.tsx` changed.
+
+- **Re-verified v2 against the brief:** 1280/1440/1918/1920 × 700/800/868/
+  1000/1080 at 0/25/50/75/100% → heading, full cards and bar inside the
+  viewport, nothing cut, 0 overflow. Pin locks at 81px (real header) and
+  releases on the pixel where Trinon Technology's right edge = content edge
+  (1392 at 1440, 1631 at 1918). Wheel-up tracks within 0.4px. Bar → next
+  section eyebrow 138px (64 + Custom's own padding). `SCROLL_SPEED` still
+  1.4 → 3393px pinned scroll for 14 cards = 4.24 screens at 1440×800, 3.91
+  at 1918×868, 3.14 at 1080 tall, 4.85 at 700 tall. Description clamp is
+  only used at 700px-tall viewports.
+- **Fix (ScrollRow, fallback <1024px / touch / reduced motion):** with
+  snap-mandatory, Chrome's own focus scroll snapped back, so every other Tab
+  left the focused card outside the row (e.g. Drape Shoppe at 375, Peturn
+  at 768). New `onFocus` on the scroller: one frame later, if the card isn't
+  fully inside, `scrollTo` its own snap position (instant). No visual
+  change; arrows, snap and peek untouched.
+- **Verified:** 1/3/6/14 cards (temporary `.slice()`, removed) at 1440…320,
+  light + dark → pinned ≥1024 for 6/14, static for 1/3, native below 1024;
+  0px overflow; Tab + Shift+Tab: every card fully visible with ring in both
+  modes. Reduced motion, touch (1366 coarse), no-JS → native row. Anchors
+  `#website-projects` (h2 at 173px) and `#slug` (card fully in pin).
+  Lint, tsc, build clean.
+- **Still open (pre-existing, outside brief):** first card screenshot is the
+  LCP at 1280/1440; dev suggests `loading="eager"` on it.
+
+## Case Studies removed from the site (2026-10-20, later)
+
+User request: "remove case studies page and also remove casestudies section
+in home page". Confirmed via question: remove the detail pages too, and
+delete all code/data/images only they used. Restore from git history
+(last commit with them: 89d7608) if the section comes back.
+
+- **Routes deleted:** `/case-studies` and `/case-studies/[slug]` (17 detail
+  pages). Both now 404. Build lists 30 pages, none under /case-studies.
+- **Home:** `<CaseStudies />` removed from `app/page.tsx`; Industries is now
+  followed directly by Process. The empty band above "How we work" is
+  Process's own sticky, vertically centred frame, not from this removal.
+- **Links removed:** Header nav, Footer nav, and the "See our case studies"
+  line in `CatalogueIndex` (itself unused on any page).
+- **Deleted (only case studies used them):** CaseStudies, CaseStudiesIndex,
+  CaseStudyBreadcrumb, CaseStudyChips, CaseStudyVisuals,
+  CouponPlatformVisuals, CustomBento, CustomCaseStudy, IotBento,
+  IotCaseStudy, VisualsNote, WebsiteBento, WebsiteCaseStudy, WebsiteScreens,
+  IllustrativeTag, ui/PinnedRow, ui/ScrollRow (incl. today's focus fix),
+  ui/Tabs; `app/lib/case-studies.ts`; `public/case-studies/` (85 files,
+  4.8MB); `.scroll-row-track` and `ui/Tabs` CSS in globals.css.
+- **Kept:** `docs/case-study-guides/` (writing guides), unused `ui/CountUp`.
+- **Not updated (flag to user):** the `vrattiks-architecture` skill and
+  `docs/VRATTIKS_Task_3_Pages_List` still list Case Studies as a required
+  page and Home → Case Studies as a required link. KpiResults' comment still
+  says real numbers wait for "case-study data".
+- Lint, tsc, build clean; Home at 1440/768/375: 0 overflow, no
+  "case stud" text or links, no console errors.

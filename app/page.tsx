@@ -6,7 +6,6 @@ import WhyVrattiks from "./components/WhyVrattiks";
 import ServicesOverview from "./components/ServicesOverview";
 import UseCases from "./components/UseCases";
 import Industries from "./components/Industries";
-import CaseStudies from "./components/CaseStudies";
 import Process from "./components/Process";
 import Testimonials from "./components/Testimonials";
 import FAQ from "./components/FAQ";
@@ -60,7 +59,6 @@ export default function Home() {
       <ServicesOverview layout="slider" />
       <UseCases />
       <Industries layout="timeline" limit={6} />
-      <CaseStudies />
       <Process />
       <FAQ />
       <FinalCTA />

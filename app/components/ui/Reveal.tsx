@@ -5,7 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
 /* Entry directions (kylezantos-design §1: hierarchy, once, 8–20px travel,
    transform/opacity only). `below` is the site-wide default; the others exist
    so a page can vary its reveals per section without new motion components
-   (vrattiks-standards §5) — /case-studies uses one per section:
+   (vrattiks-standards §5):
    - `start` / `end`: a 16px slide in from the left / right
    - `fade`: opacity only, no travel
    - `rule`: scaleX 0 → 1, for hairlines that draw in (pair with `origin-left`)

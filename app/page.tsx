@@ -8,12 +8,14 @@ import UseCases from "./components/UseCases";
 import Industries from "./components/Industries";
 import Process from "./components/Process";
 import Testimonials from "./components/Testimonials";
+import ClientLogos from "./components/ClientLogos";
 import FAQ from "./components/FAQ";
 import FinalCTA from "./components/FinalCTA";
+import { ogImage } from "./lib/site";
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Vrattiks Intelligence — AI Automation for Growing Businesses",
+    absolute: "Vrattiks Intelligence | AI Automation for Growing Businesses",
   },
   description:
     "Vrattiks builds AI voice agents, chatbots, workflow automation, websites, WhatsApp automation, and CRM systems for growing businesses.",
@@ -21,15 +23,17 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "Vrattiks Intelligence — AI Automation for Growing Businesses",
+    title: "Vrattiks Intelligence | AI Automation for Growing Businesses",
     description:
       "AI voice agents, chatbots, workflow automation, websites, WhatsApp automation, and CRM systems for growing businesses.",
     url: "/",
     type: "website",
+    images: [ogImage],
   },
   twitter: {
-    card: "summary",
-    title: "Vrattiks Intelligence — AI Automation for Growing Businesses",
+    card: "summary_large_image",
+    images: [ogImage],
+    title: "Vrattiks Intelligence | AI Automation for Growing Businesses",
     description:
       "AI voice agents, chatbots, workflow automation, websites, WhatsApp automation, and CRM systems for growing businesses.",
   },
@@ -55,6 +59,7 @@ export default function Home() {
       <KpiResults />
       <WhyBusinessesNeedAI />
       <Testimonials />
+      <ClientLogos />
       <WhyVrattiks />
       <ServicesOverview layout="slider" />
       <UseCases />

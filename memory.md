@@ -3362,3 +3362,317 @@ delete all code/data/images only they used. Restore from git history
   says real numbers wait for "case-study data".
 - Lint, tsc, build clean; Home at 1440/768/375: 0 overflow, no
   "case stud" text or links, no console errors.
+
+## Testimonials: designation line added (2026-10-21)
+
+User request: add a role line to the testimonial identity block, and change
+nothing else (quotes, headlines, layout, avatars, animations, other sections).
+
+- **Data** (`app/components/Testimonials.tsx`, the only place these labels
+  appear; no metadata, JSON-LD or tests repeat them): new optional
+  `designation` field; `company` is unchanged. **User-provided, verbatim:**
+  Yogesh Shah → "Owner"; Furqan Ansari → "Independent Trader".
+  Later the same day the user supplied: Snehal Modi → "Owner"; Shaishan
+  Patel → "Owner". All four cards now show three lines. Then the user
+  asked to change every "Owner" to **"Owner of"** (their wording, so the
+  designation and company lines read as one phrase); Furqan's "Independent
+  Trader" is unchanged. The field stays
+  optional, so a future entry without a role renders no empty line.
+- **Caption** (inside `<figcaption>`, as separate spans): name 15px
+  semibold n-900 → designation 14px n-600 (only when set) → company,
+  **now 13px** n-600 (was 14px) so it is the smallest line, as the brief asked.
+  No "of"/"at"/dashes/commas.
+- **Alignment:** from md (901px, where cards share a row) the figcaption has
+  `min-h-[84px]` (24px padding + three line boxes) with content stacked from
+  the top, so names line up across cards with 2 or 3 lines. Below 901px
+  the cards are single-column, so no space is reserved there.
+- **Verified:** 1440/1280/1024/901/768/640/390/375/320: no line wraps or
+  clips, 0px horizontal overflow, names share one y per row. Contrast of
+  n-600 on the card: 7.56:1 light, 6.12:1 dark. Lint, tsc, build clean.
+  The Next dev "2 Issues" badge was already there before the change, and a
+  fresh load logs no console errors.
+
+## Em dashes removed from site copy (2026-10-21)
+
+User asked to remove "—" from the whole website. Every customer-visible em
+dash in `app/` was rewritten (comma, colon, full stop, brackets); Home title
+separator is now " | " to match the layout template. Privacy Policy `terms`
+blocks now all use ":" (the `sep: "—"` variant is gone). Inquiry email shows
+"Company: Not provided" for a blank field. Code comments and the static root
+`index.html` (not part of the Next site) were left alone. **Don't write em
+dashes in new copy.**
+
+## Our Story background — built, then REMOVED (2026-10-21)
+
+A five-elements (tattva shapes) illustration under the sticky heading plus a
+faint tiled shape pattern was added to Our Story (/company), then removed at
+the user's request. `OurStoryBackdrop.tsx` / `OurStoryPattern.tsx` are deleted
+and `OurStory.tsx` is back to its previous state. **Don't add an Our Story
+background again unless asked.**
+
+## Images converted to AVIF (2026-10-22)
+
+- **`next.config.ts`**: `images.formats = ["image/avif", "image/webp"]`. The
+  optimizer now serves AVIF, falls back to WebP, and as a last resort JPEG
+  (checked with `Accept` headers). **This is the change visitors feel:**
+  served bytes went from ~6.4 MB (WebP from originals) to ~3.0 MB (AVIF), about
+  53% less, summed over the variants a 1440px (1x/2x) and 390px (3x) screen request.
+- **Source files**: the 20 rasters the site renders are now `.avif` in `public/`
+  (same width/height, sharp `effort 7`, `chromaSubsampling 4:4:4`).
+  19.22 MB → 1.48 MB on disk (−92%). Logo wordmark q65; every photo and
+  illustration q70. At q65 the q90 hero renders (ServiceHero, IndustryHero) went
+  slightly soft on fine texture (vest mesh, fabric print), so they were raised to q70.
+  Because the optimizer re-encodes anyway, the source conversion barely changes
+  what visitors download (0.8%). The gain is a smaller repo/deploy and faster first encodes.
+- **Originals** backed up in `docs/image-originals/` (same subfolders) until the
+  user confirms the site looks right. After that they can be deleted (they're also in git history).
+- **Verified**: both versions went through the real `/_next/image` optimizer at the
+  widths 1440@1x/2x and 390@3x request. Worst case (construction hero, 1200w q90):
+  PSNR −0.77 dB, SSIM −0.004, mean colour shift < 0.2 ΔE. No banding in the
+  service gradients even with a 2.2x contrast boost. Text on baked-in UI cards stays crisp.
+- **Header logo**: deprecated `priority` (Next 16) replaced with `loading="eager"`.
+  React still emits a preload link for it, so behaviour is unchanged. All other
+  below-the-fold images rely on next/image's default `loading="lazy"` (confirmed in built HTML).
+- **Not converted, on purpose**: `app/favicon.ico`, `app/icon.png`,
+  `app/apple-icon.png`, `app/opengraph-image.png` (social platforms don't take
+  AVIF), all SVGs, and the unreferenced masters `public/brand/vrattiks-icon.png`,
+  `vrattiks-logo-white.png`, `vrattiks-logo.png` (the icon and OG generators
+  are re-run from these), plus `public/video/hero-animation-poster.jpg` (unused).
+- **Gotcha**: the dev optimizer caches by URL. After replacing an image file in
+  place, delete `.next/dev/cache/images` or you'll be comparing the stale version.
+- Lint clean, `tsc --noEmit` clean, `npm run build` passes (30 routes).
+
+## Sitemap and robots.txt (2026-10-22)
+
+- **`app/sitemap.ts`** → `/sitemap.xml`, **`app/robots.ts`** → `/robots.txt`, both
+  prerendered at build. Origin comes from **`app/lib/site.ts`** (`SITE_URL` =
+  `NEXT_PUBLIC_SITE_URL`, fallback `https://vrattiks.io`, trailing slash stripped).
+  `.env.example` documents the variable; `.gitignore` now has `!.env.example` so
+  it's tracked (the existing `.env*` rule was ignoring it).
+- **24 URLs**: home (1.0, weekly), `/services` + `/industries` (0.9), `/use-cases`,
+  `/company`, `/contact` (0.8), 6 service details (0.7), 11 industry details (0.6),
+  `/privacy-policy` (0.3, yearly). Service/industry entries are generated from the
+  `services`/`industries` arrays in `content.ts`, the same source as each route's
+  `generateStaticParams`, so new slugs are listed automatically.
+- `lastModified` = build time (the sitemap is static, so that's the deploy date).
+- **Not listed**: case studies (removed in `073c9af`, there's no
+  `app/lib/case-studies.ts`; add them back to the sitemap if the route returns),
+  `/use-cases/{slug}` (not built), `_not-found`, icon/OG image routes. No page
+  uses `noindex`. **When a new top-level page ships, add it to `sitemap.ts` by hand.**
+- robots.txt: `Allow: /` for all agents, no disallows (`/_next/` stays crawlable
+  so Google can render pages), plus the sitemap link.
+- `NEXT_PUBLIC_*` is inlined at **build** time, so on Vercel it must be set before
+  the build runs (changing it means redeploying).
+- ~~Open: `layout.tsx` has no `metadataBase`~~ Resolved the same day, see below.
+- Verified against `next start`: all 24 URLs 200, no duplicates, XML well-formed,
+  correct content types; `/case-studies`, `/api`, `/use-cases/lead-management` 404.
+  Lint, `tsc --noEmit`, `npm run build` clean.
+
+## metadataBase (2026-10-22)
+
+- `app/layout.tsx` root metadata now sets `metadataBase: new URL(SITE_URL)`
+  (`SITE_URL` from `app/lib/site.ts`, same origin as the sitemap). The old comment
+  saying it was intentionally omitted was replaced, since it no longer held.
+- Effect: canonical, `og:url`, `og:image` and `twitter:image` render as absolute
+  `https://vrattiks.io/...` URLs that match the sitemap entries exactly (home is
+  `https://vrattiks.io`, no trailing slash). The build's "metadataBase is not set
+  ... using http://localhost:3000" warning is gone; no built HTML contains localhost.
+- Seen while checking, not changed: `og:image`/`twitter:image` only appear on the
+  home page. Inner pages that define their own `openGraph`/`twitter` objects emit
+  no image tag, so shared links to them have no preview image. Pre-existing, worth
+  a separate fix.
+- Lint, `tsc --noEmit`, `npm run build` clean.
+
+## Social preview image on every page (2026-10-22)
+
+- **Cause**: Next merges metadata shallowly, so a page that sets its own
+  `openGraph`/`twitter` object replaces the root one, file-based
+  `app/opengraph-image.png` included. Only home kept the image (same segment as the file).
+- **Fix** (the shared-variable pattern from the Next docs, "Merging"):
+  `ogImage` in `app/lib/site.ts` = `/opengraph-image.png`, 1200×630,
+  `image/png`, alt "Vrattiks logo on a dark background". All nine page files
+  (`/`, company, contact, services, industries, use-cases, privacy-policy, and the
+  `services/[slug]` + `industries/[slug]` templates) add `images: [ogImage]` to
+  both `openGraph` and `twitter`.
+- **Twitter card** changed from `summary` to `summary_large_image` on all nine
+  (it was `summary` everywhere, including home, despite the brief assuming otherwise).
+- **Rule for new pages**: any page that defines `openGraph` or `twitter` must
+  spread in `images: [ogImage]` too, or it loses the preview image again.
+- Home's `og:image` is now the plain `https://vrattiks.io/opengraph-image.png`
+  instead of the file convention's hashed `?opengraph-image.<hash>.png`. Side
+  effect: if the image file is replaced, social platforms may keep the cached
+  old one until re-scraped (Facebook Sharing Debugger / LinkedIn Post Inspector).
+- Verified in built HTML for all 24 pages: one `og:image` + one `twitter:image`
+  each, with width/height/alt/type, canonical + `og:url` absolute, no localhost.
+  `/opengraph-image.png` serves 200 `image/png`, byte-identical to the source.
+  Lint, `tsc --noEmit`, `npm run build` clean with zero warnings.
+
+## Client logo wall under Testimonials — user request (2026-10-22)
+
+- New `app/components/ClientLogos.tsx`, rendered on Home directly after
+  `<Testimonials />`. Eight user-supplied logos: Peturn, Café Beats, Chandan,
+  Grenee, Kevin's Kalpataru Collection, Tokicha, Shukran Villa, Bhatt Tech
+  Innovations. Files in `public/images/clients/`, only trimmed and with their
+  solid black/white ground keyed out. Brand colours are never changed.
+- **No tiles** (user request, same day): logos sit straight on the paper
+  section. Logos with black or white lettering have a second file
+  (`*-on-dark.png` / `*-on-light.png`) where only that neutral ink is swapped
+  (white / graphite); `src` shows in the light theme, `darkSrc` under `dark:`.
+  Grenee keeps its white icon card, so one file works for both. Kevin's
+  Kalpataru's small dark-red words are faint on dark; left as-is (brand colour).
+- Three more added same day: Drape Shoppe (supplied white on navy `#003875`;
+  its light-theme file turns the white lettering to that navy, not graphite),
+  Exonic Salon, Auroma Holiday Villas, Anjali Mobile & Electronics, and a sun
+  logo (`sun-logo.png`), Amiras Papad, Boba & Coffee, Trinon Technology. 16 logos.
+- Boba & Coffee arrived on a black disc around a sticker-style logo whose
+  letters are near-black too, so only the disc is removed (filled inward from
+  one point inside it), never all black. Its white sticker outline keeps it
+  readable on both themes.
+- REcore Hardware logo: user sent it as a PDF that never landed on disk; a
+  copy exists in the separate `D:\Recore Hardware Website` project, but
+  reading outside this repo was blocked. Not added; awaiting a file here.
+- **Pending:** the sun logo (yellow/orange rays, no wordmark) was supplied
+  twice without a business name; the user asked to add it anyway. Its alt is
+  the description "Rising sun logo". Swap in the business name when given.
+- Layout: left heading beside the logos at `lg`, stacked above below. Logos
+  are a wrapping flex row (4 per row from 768px, 2 below) so a short last row
+  sits centred; 2 per row on mobile keeps wide logos (Bhatt Tech, Grenee) legible.
+- Verified at 1440 light + dark and 390 light, no horizontal overflow; lint + tsc clean.
+
+## Client logos become a scrolling marquee — user request (2026-10-22)
+
+- `ClientLogos.tsx`: the visible "Our clients" eyebrow and "Businesses we've
+  worked with" h2 are gone. The section is now one full-bleed row of all 16
+  logos scrolling right to left, with no visible copy. The left-heading layout
+  in the entry above is superseded. Nothing else on the page changed.
+- An `sr-only` h2 "Our clients" stays, so the page outline and the section
+  landmark keep a name. It is not visible.
+- **Loop**: the list renders twice (second copy `aria-hidden`, empty alts) and
+  `.marquee-track` animates `translate3d(0 → -50%)` over 70s linear (~47px/s
+  at 1440). Each copy's `pr-*` equals its `gap-x-*`, so the join is seamless;
+  the two copies measured equal width (3221px each at 1440).
+- **CSS** lives in `globals.css` (`.marquee`, `.marquee-track`, `.marquee-list`,
+  `@keyframes marquee`), unlayered on purpose so it overrides the Tailwind
+  utilities on those elements. Edge fade is a `mask-image` (clamp 32–160px),
+  so it works on both themes with no colour. `:hover` sets
+  `animation-play-state: paused`.
+- **Reduced motion**: no animation, no mask, duplicate copy hidden, single copy
+  wraps as a centred static grid (max 1440, 16px gutter, 32px row gap).
+- **Logo size**: every logo is exactly `h-10` (40px) below 768 and `h-12`
+  (48px) from 768; width follows each file's aspect ratio. Each entry in
+  `clients` now carries the file's pixel size (`w`, `h`); `<Image>` gets those
+  as `width`/`height` plus a `sizes` of the rendered width. Passing the
+  *display* size instead triggered Next's dev warning "width or height
+  modified, but not the other" (the optimizer's rounding shifts `w-auto` by 1px).
+- **Images are `loading="eager"` + `fetchPriority="low"`**: the marquee clips
+  logos horizontally, so lazy ones never intersected and stayed blank until
+  they scrolled in. Cost: both theme variants download (~11 extra small files).
+- Verified over CDP at 1440/1280/1024/768/600/430/390/375/360/320, light + dark,
+  motion on + reduced: 0px horizontal overflow everywhere, 16 logos visible,
+  one uniform height, all loaded, every file served at ≥2x its rendered width,
+  no visible text, hover pause measured at 0px movement. Lint, `tsc --noEmit`,
+  `npm run build` clean.
+- **Pre-existing, not touched**: with reduced motion on, `ServicesSlider`'s
+  play/pause button throws a hydration mismatch (server renders "Pause", client
+  "Start"); the JSON-LD `<script>` in `app/page.tsx` logs React's "script tag"
+  dev warning. Worth a separate fix.
+- **Accessibility note**: hover is the only pause control. WCAG 2.2.2 asks for
+  a pause mechanism on auto-moving content over 5s that keyboard/touch users
+  can reach too; reduced-motion users get the static grid. Add a pause button
+  if full 2.2.2 conformance is required.
+
+## Company hero image replaced (2026-10-22)
+
+- `CompanyIntro` now uses `public/images/company/vrattiks-team.avif` (user-supplied
+  1672x941 team photo with baked-in UI cards; sharp AVIF q70, effort 7, 4:4:4, 122 KB).
+  Replaced a first 1600x900 version the same day.
+- Layout: image sits beside the copy from `lg` up (grid 1fr / 1.25fr), stacked
+  below it under `lg`. The box keeps the image's own 1672/941 ratio so the
+  baked-in edge cards are never cropped; side-by-side waits for `lg` because at
+  `md` the column is too narrow for that text to read.
+- Baked-in image text includes an em dash ("new opportunities — always") and a
+  "+32% Team Growth" figure; both are in the artwork, not site copy.
+- Old `ai-business-intelligence.avif` is no longer referenced.
+- **2026-10-23**: replaced again with a new user-supplied 1536x1024 illustration
+  (renamed to `public/images/company/company-hero.avif` so Next's image cache
+  can't serve the old file under the same URL; same sharp settings, 61 KB). Box ratio now 1536/1024; alt text
+  updated to the new baked-in cards. The em dash / "+32%" notes above no longer apply.
+
+## Site-wide responsive pass (2026-10-22)
+
+Layout-only pass over every route (home, company, services + 6, industries + 11,
+use-cases, contact, privacy-policy) at 1920/1440/1280/1024/901/768/601/430/390/375/320,
+light + dark. No copy, colour, font face or design change. Full-page before/after
+screenshots: `docs/audit/responsive/{before,after}/{page}__{width}__{theme}.jpg`
+(528 each), plus viewport shots of menu/dropdown/process/slider/marquee/form in
+`{before,after}/interactions/`. Findings table: `docs/audit/responsive/report.md`.
+
+- **Before state was already clean on layout**: 0px horizontal overflow on all 528
+  combinations, no clipped/overlapping text. The work was tap targets, a few
+  oversized headings, and two touch/reduced-motion bugs.
+- **New `touch:` variant** (globals.css, block-form `@custom-variant`):
+  `@media (width < 64rem), (pointer: coarse)`. Below lg, or any coarse pointer
+  (iPad landscape at 1024), targets are lifted to 44px; a mouse at >=1024 keeps
+  the original tighter rhythm, so laptop/desktop renders unchanged. The short
+  form `@custom-variant touch (@media a, b)` does NOT work: Tailwind splits the
+  comma as a selector list and the CSS fails to parse (500 on every page).
+- Tap-target techniques used, so layout does not move: inline links get vertical
+  padding (`py-3`/`py-[13px]`, inline padding never changes line boxes); small
+  buttons get a 44px box with negative margins equal to the growth (Process nodes:
+  44px button around the unchanged 36px circle, `-my-1`; header chevrons:
+  `w-11 -ml-[13px] -mr-[11px]`, same 20px footprint and icon position); lists
+  that were too tight for 44px rows (footer, contact "What we build", privacy
+  contents, use-case chips) switch to 44px rows under `touch:` only.
+- **Bug: desktop nav dropdown did not open on touch** (iPad landscape, 1024).
+  The tap's emulated mouseenter opened it and the same tap's click toggled it
+  shut. Now opens on hover for `pointerType === "mouse"` only (`onPointerEnter`).
+- **Bug: ServicesSlider hydration mismatch under reduced motion** (noted
+  2026-10-22 above). framer's `useReducedMotion` returned the real value on the
+  first client render, so the play/pause label differed from the server HTML.
+  Replaced with `useSyncExternalStore` (server snapshot `false`).
+- Slider segments are 44px-tall buttons whose `px-1` draws the 8px bar gap; below
+  601px they take their own full-width row (each >=44px wide) with the arrows
+  right-aligned beneath. At >=601px the row is as before.
+- Fluid headings: page H1s `text-[clamp(30px,8vw,36px)]` below md (home hero was
+  5 lines at 320); service/industry H1 `clamp(32px,10vw,40px)`; Company H1
+  `lg:text-[clamp(44px,4.4vw,52px)]` (was 5 lines in its 1024 column, 52px again
+  from ~1180). FinalCTA side padding `clamp(20px,6vw,32px)` below md. Section
+  spacing was not converted to clamp: it already follows the 4px band steps and
+  nothing was uneven, so changing it would only have moved approved layouts.
+- Footer is two columns from 601px (was one column up to 900, right half empty).
+- Contact form fields are 16px under `touch:` (iOS Safari zooms into <16px
+  fields on focus); 15px kept for mouse at desktop.
+- `/services` hero image `sizes` was `(min-width: 768px) 40vw`; between 768 and
+  900 the layout is one column and the image shows at its 448px cap, so 2x phones
+  got a soft 640w file. Now `(min-width: 480px) 448px, 100vw`.
+- **Left as-is, on purpose**: links inside running sentences in the privacy
+  policy (WCAG 2.5.8 inline exception; padding would cover adjacent lines), and
+  sub-44px targets at >=1024 with a mouse (desktop layout kept identical).
+- Audit tooling (scratchpad, not repo): Playwright-core 1.62.1 from
+  `D:\3D-website\peturn website\node_modules` matches the installed Chromium
+  1234 (the npx-cached 1.64 wants 1248). Traps: wait for hydration before
+  scrolling or `whileInView` reveals passed during the scroll stay at opacity 0
+  in the capture (dev server only); in Git Bash pass `MSYS_NO_PATHCONV=1` or a
+  `/` argument becomes `C:/Program Files/Git/`.
+- Not changed, pre-existing: the JSON-LD `<script>` in `app/page.tsx` still logs
+  React's "Encountered a script tag" dev warning.
+- Lint, `tsc --noEmit`, `npm run build` clean.
+
+## Header nav links nudged right (2026-10-22)
+
+User request: desktop nav links (Home, Company, Services, Industries, Contact)
+sit about 32px further right, closer to the theme toggle and CTA. Logo, toggle,
+button and mobile menu untouched.
+
+- **How:** `lg:ml-16` on the desktop `<nav>` in `Header.tsx`. Under the bar's
+  `justify-between`, a 64px left margin takes 64px out of the free space that the
+  two gaps split, so the links move exactly half of it (32px) and the gap to the
+  right group shrinks by 32px. Chosen over `translate-x` because it stays in
+  layout: if the bar ever got tight, flex would account for it instead of
+  painting the links over the toggle.
+- **Measured (Playwright, light + dark, 1920/1680/1440/1366/1280/1152/1024):**
+  every link +32px; logo, toggle and button at identical x; nav width unchanged
+  (363px, every link 44px tall, so no wrap); header 81px; 0px horizontal
+  overflow. Tightest case is 1024: 95px from Contact to the toggle (was 127px),
+  159px from the logo. Mobile menu (390/768) renders identical markup.
+- Lint, `tsc --noEmit`, `npm run build` clean.

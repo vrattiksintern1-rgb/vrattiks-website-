@@ -68,7 +68,7 @@ export default function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
-      className="focus-glow flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-n-200 text-n-700 transition-[color,border-color,box-shadow] duration-150 ease-out hover:border-n-300 hover:text-brand-secondary hover:shadow-[var(--shadow-glow)]"
+      className="focus-glow flex h-10 w-10 shrink-0 touch:h-11 touch:w-11 items-center justify-center rounded-full border border-n-200 text-n-700 transition-[color,border-color,box-shadow] duration-150 ease-out hover:border-n-300 hover:text-brand-secondary hover:shadow-[var(--shadow-glow)]"
     >
       <Icon name="moon" className="h-4.5 w-4.5 dark:hidden" />
       <Icon name="sun" className="hidden h-4.5 w-4.5 dark:block" />

@@ -10,6 +10,7 @@ import FinalCTA from "../../components/FinalCTA";
 import { industries, services, useCases } from "../../lib/content";
 import { industryDetails } from "../../lib/industry-details";
 import { serviceDetails } from "../../lib/service-details";
+import { ogImage } from "../../lib/site";
 
 /* Industry detail template (vrattiks-architecture §2): Hero → Industry
    challenges → Vrattiks solutions → Relevant services → Relevant use cases →
@@ -48,9 +49,11 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       description,
       url,
       type: "website",
+      images: [ogImage],
     },
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
+      images: [ogImage],
       title: `${industry.name} | Vrattiks Intelligence`,
       description,
     },

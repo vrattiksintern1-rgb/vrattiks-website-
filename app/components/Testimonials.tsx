@@ -10,6 +10,9 @@ type Testimonial = {
       matching the start of `quote`, the quote renders plain. */
   lead?: string;
   name: string;
+  /** The person's role, exactly as the user supplied it. Unset until the
+      user gives one — never guessed. Shown between name and company. */
+  designation?: string;
   company: string;
   /** Optional real photo of the person, supplied by the client. Unset, the
       card shows an initials monogram. `alt` describes the person in it. */
@@ -27,6 +30,7 @@ const testimonials: Testimonial[] = [
       "More footfall and more repeat customers. The coupon and reward system gives people a reason to come back to the store. Customers scan a QR code in the store, enter their mobile number and get a digital coupon on WhatsApp straight away. At the counter, the team can look the customer up and redeem the coupon on the spot.",
     lead: "More footfall and more repeat customers.",
     name: "Yogesh Shah",
+    designation: "Owner of",
     company: "Anjali Mobile",
   },
   {
@@ -34,6 +38,7 @@ const testimonials: Testimonial[] = [
       "A franchise ordering system that cuts manual work. Franchise orders are now handled through an ordering system. The result is less manual handling and fewer errors, a saving in labour cost, and better control over the system.",
     lead: "A franchise ordering system that cuts manual work.",
     name: "Snehal Modi",
+    designation: "Owner of",
     company: "Grenee",
   },
   {
@@ -41,6 +46,7 @@ const testimonials: Testimonial[] = [
       "A professional website that builds authority and attracts prospects. The website presents Peturn professionally in the market and draws in prospects. Visitors can click through a demo dashboard to see the kind of reports Peturn builds before they book a consultation.",
     lead: "A professional website that builds authority and attracts prospects.",
     name: "Shaishan Patel",
+    designation: "Owner of",
     company: "Peturn Website",
   },
   {
@@ -48,6 +54,7 @@ const testimonials: Testimonial[] = [
       "Helped build trading discipline. The automation runs 24x7, so trades follow the set rules and are placed on time, even overnight. Furqan reports saving 20x the time and improving execution on time.",
     lead: "Helped build trading discipline.",
     name: "Furqan Ansari",
+    designation: "Independent Trader",
     company: "BTC/USD Trading Automation",
   },
 ];
@@ -140,7 +147,11 @@ function QuoteText({ t }: { t: Testimonial }) {
 }
 
 /* Monogram in a thick card-coloured ring, sitting half over the top edge;
-   everything below it centred. `mt-10` is the half that overhangs. */
+   everything below it centred. `mt-10` is the half that overhangs.
+   Caption: name, then designation (only when set), then company. Where
+   cards share a row (md+) it always reserves three lines — 24px padding +
+   21 + 19.6 + 18.2px line boxes ≈ 84px — and stacks from the top, so names
+   line up across cards whether or not a designation is shown. */
 function TestimonialCard({ t }: { t: Testimonial }) {
   return (
     <figure
@@ -151,9 +162,12 @@ function TestimonialCard({ t }: { t: Testimonial }) {
         className="absolute -top-10 left-1/2 -translate-x-1/2 shadow-[var(--shadow-sm)] ring-[6px] ring-n-0 dark:ring-n-200"
       />
       <QuoteText t={t} />
-      <figcaption className="mt-auto flex flex-col items-center pt-6">
+      <figcaption className="mt-auto flex flex-col items-center justify-start pt-6 md:min-h-[84px]">
         <span className="text-[15px] leading-[1.4] font-semibold text-n-900">{t.name}</span>
-        <span className="text-[14px] leading-[1.4] text-n-600">{t.company}</span>
+        {t.designation ? (
+          <span className="text-[14px] leading-[1.4] text-n-600">{t.designation}</span>
+        ) : null}
+        <span className="text-[13px] leading-[1.4] text-n-600">{t.company}</span>
       </figcaption>
     </figure>
   );

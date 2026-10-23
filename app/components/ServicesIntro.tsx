@@ -44,12 +44,12 @@ export default function ServicesIntro() {
                 instant it paints (kylezantos-design §1b). */}
             <h1
               id="services-heading"
-              className="max-w-[16ch] text-[36px] leading-[1.1] tracking-[-0.02em] font-display font-bold text-n-900 md:text-[52px]"
+              className="max-w-[16ch] text-[clamp(30px,8vw,36px)] leading-[1.1] tracking-[-0.02em] font-display font-bold text-n-900 md:text-[52px]"
             >
               Automation that fits the way you already work
             </h1>
             <p className="mt-6 max-w-xl text-body-lg text-n-600">
-              Start with the one problem costing you the most — missed calls, slow
+              Start with the one problem costing you the most: missed calls, slow
               replies, leads nobody followed up. Each service works on its own, and
               they connect when you&apos;re ready for more.
             </p>
@@ -59,11 +59,11 @@ export default function ServicesIntro() {
               Same treatment as CompanyIntro's image. */}
           <div className="relative aspect-[1176/1338] w-full max-w-md overflow-hidden rounded-xl border border-n-200 bg-n-50 md:justify-self-end">
             <Image
-              src="/images/services/connected-services-dashboard.png"
+              src="/images/services/connected-services-dashboard.avif"
               alt="Laptop showing a business dashboard, with connected app windows passing information into it"
               fill
               preload
-              sizes="(min-width: 768px) 40vw, 100vw"
+              sizes="(min-width: 480px) 448px, 100vw"
               className="object-cover"
             />
           </div>

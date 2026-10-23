@@ -27,12 +27,12 @@ export default function Hero() {
           <span className="mb-5 inline-flex items-center rounded-full bg-n-50 px-4 py-1.5 text-label font-semibold uppercase text-brand-secondary">
             AI Automation for Growing Businesses
           </span>
-          <h1 className="text-[36px] leading-[1.15] tracking-[-0.02em] font-display font-bold text-n-900 md:text-h1">
+          <h1 className="text-[clamp(30px,8vw,36px)] leading-[1.15] tracking-[-0.02em] font-display font-bold text-n-900 md:text-h1">
             We build AI-System that Save time, Reduce work and Grow your business.
           </h1>
           <p className="mt-5 text-body text-n-500">
             Vrattiks builds AI voice agents, chatbots, and workflow automation for
-            growing businesses — so leads get answered, customers get supported,
+            growing businesses, so leads get answered, customers get supported,
             and your operations run without the manual follow-up.
           </p>
           <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center lg:justify-start">

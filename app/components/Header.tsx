@@ -64,11 +64,17 @@ function NavDropdown({ label, href, menu }: { label: string; href: string; menu:
     <div
       ref={wrapperRef}
       className="relative flex h-full items-center"
-      onMouseEnter={() => {
+      /* Mouse only: a tap fires an emulated pointerenter before its click, so
+         opening on any pointer let the tap open the panel and its own click
+         close it again (seen on iPad landscape at 1024px). */
+      onPointerEnter={(e) => {
+        if (e.pointerType !== "mouse") return;
         cancelClose();
         setOpen(true);
       }}
-      onMouseLeave={scheduleClose}
+      onPointerLeave={(e) => {
+        if (e.pointerType === "mouse") scheduleClose();
+      }}
       onBlur={(e) => {
         if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setOpen(false);
       }}
@@ -82,7 +88,7 @@ function NavDropdown({ label, href, menu }: { label: string; href: string; menu:
       <Link
         href={href}
         onClick={() => setOpen(false)}
-        className="focus-glow rounded-sm text-[13.5px] font-medium whitespace-nowrap text-n-700 transition-colors hover:text-brand-secondary"
+        className="focus-glow -mx-1 inline-flex h-11 items-center rounded-sm px-1 text-[13.5px] font-medium whitespace-nowrap text-n-700 transition-colors hover:text-brand-secondary"
       >
         {label}
       </Link>
@@ -93,7 +99,7 @@ function NavDropdown({ label, href, menu }: { label: string; href: string; menu:
         aria-controls={panelId}
         aria-label={`${open ? "Hide" : "Show"} ${label.toLowerCase()}`}
         onClick={() => setOpen((v) => !v)}
-        className="focus-glow -ml-0.5 rounded-sm p-1 text-n-500 transition-colors hover:text-brand-secondary"
+        className="focus-glow -mr-[11px] -ml-[13px] flex h-11 w-11 items-center justify-center rounded-sm text-n-500 transition-colors hover:text-brand-secondary"
       >
         <Icon
           name="chevronDown"
@@ -137,21 +143,22 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-n-100 bg-n-0/90 backdrop-blur">
       <Container className="flex h-16 items-center justify-between md:h-20">
-        <Link href="/" className="focus-glow shrink-0 rounded-sm" aria-label="Vrattiks home">
+        <Link href="/" className="focus-glow flex min-h-11 shrink-0 items-center rounded-sm" aria-label="Vrattiks home">
           <Image
-            src="/brand/vrattiks-logo-wordmark.png"
+            src="/brand/vrattiks-logo-wordmark.avif"
             alt="Vrattiks"
             width={418}
             height={134}
-            priority
+            loading="eager"
             className="h-8 w-auto md:h-9"
           />
         </Link>
 
         {/* Full flat nav needs more room than the 6 flat labels would suggest — deferred to
             Tailwind's default lg (1024px) breakpoint so it never overflows at the 1024px
-            desktop test width (vrattiks-responsive §1); tablet/901-1023px keeps the compact menu. */}
-        <nav aria-label="Primary" className="hidden items-center gap-4 self-stretch lg:flex">
+            desktop test width (vrattiks-responsive §1); tablet/901-1023px keeps the compact menu.
+            ml-16 under justify-between shifts the links 32px right (half the margin), toward the CTA. */}
+        <nav aria-label="Primary" className="hidden items-center gap-4 self-stretch lg:ml-16 lg:flex">
           {navLinks.map((link) =>
             menus[link.href] ? (
               <NavDropdown key={link.href} label={link.label} href={link.href} menu={menus[link.href]} />
@@ -159,7 +166,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="focus-glow rounded-sm text-[13.5px] font-medium whitespace-nowrap text-n-700 transition-colors hover:text-brand-secondary"
+                className="focus-glow -mx-1 inline-flex h-11 items-center rounded-sm px-1 text-[13.5px] font-medium whitespace-nowrap text-n-700 transition-colors hover:text-brand-secondary"
               >
                 {link.label}
               </Link>
@@ -174,14 +181,14 @@ export default function Header() {
           <ThemeToggle />
 
           <div className="hidden lg:block">
-            <Button href="/contact" variant="outline" size="sm">
+            <Button href="/contact" variant="outline" size="sm" className="touch:py-3">
               Book a Consultation
             </Button>
           </div>
 
           <button
             type="button"
-            className="focus-glow -mr-1 rounded-sm p-2 text-n-800 lg:hidden"
+            className="focus-glow -mr-1.5 rounded-sm p-2.5 text-n-800 lg:hidden"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             aria-controls="mobile-nav"
@@ -227,7 +234,7 @@ export default function Header() {
                       aria-controls={listId}
                       aria-label={`${isOpen ? "Hide" : "Show"} ${link.label.toLowerCase()}`}
                       onClick={() => setExpanded(isOpen ? null : menu.id)}
-                      className="focus-glow -mr-2 rounded-sm p-3 text-n-500 hover:text-brand-secondary"
+                      className="focus-glow -mr-2.5 rounded-sm p-3.5 text-n-500 hover:text-brand-secondary"
                     >
                       <Icon
                         name="chevronDown"

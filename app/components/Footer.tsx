@@ -36,11 +36,14 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-n-100 bg-n-0">
-      <Container className="grid grid-cols-1 gap-10 py-14 md:grid-cols-2 md:py-16 lg:grid-cols-[1.4fr_1fr_0.8fr_1.1fr] lg:gap-x-8">
+      {/* Two columns from the tablet band (601px): a single column there left
+          the right half of the footer empty. 44px link rows on touch layouts
+          (`touch:`, globals.css); a mouse at lg+ keeps the 12px-gap rhythm. */}
+      <Container className="grid grid-cols-1 gap-10 py-14 sm:grid-cols-2 md:py-16 lg:grid-cols-[1.4fr_1fr_0.8fr_1.1fr] lg:gap-x-8">
         <div>
-          <Link href="/" className="focus-glow rounded-sm" aria-label="Vrattiks home">
+          <Link href="/" className="focus-glow -my-1.5 inline-flex min-h-11 items-center rounded-sm" aria-label="Vrattiks home">
             <Image
-              src="/brand/vrattiks-logo-wordmark.png"
+              src="/brand/vrattiks-logo-wordmark.avif"
               alt="Vrattiks"
               width={418}
               height={134}
@@ -57,12 +60,12 @@ export default function Footer() {
 
         <div>
           <h3 className="text-[12.5px] font-semibold uppercase tracking-[0.06em] text-n-500">Services</h3>
-          <ul className="mt-4 flex flex-col gap-3">
+          <ul className="mt-4 flex flex-col gap-3 touch:mt-1.5 touch:gap-0">
             {services.map((service) => (
               <li key={service.slug}>
                 <Link
                   href={`/services/${service.slug}`}
-                  className="focus-glow rounded-sm text-[14.5px] text-n-700 hover:text-brand-secondary"
+                  className="focus-glow rounded-sm text-[14.5px] text-n-700 hover:text-brand-secondary touch:inline-flex touch:min-h-11 touch:min-w-11 touch:items-center"
                 >
                   {service.name}
                 </Link>
@@ -73,12 +76,12 @@ export default function Footer() {
 
         <div>
           <h3 className="text-[12.5px] font-semibold uppercase tracking-[0.06em] text-n-500">Explore</h3>
-          <ul className="mt-4 flex flex-col gap-3">
+          <ul className="mt-4 flex flex-col gap-3 touch:mt-1.5 touch:gap-0">
             {exploreLinks.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="focus-glow rounded-sm text-[14.5px] text-n-700 hover:text-brand-secondary"
+                  className="focus-glow rounded-sm text-[14.5px] text-n-700 hover:text-brand-secondary touch:inline-flex touch:min-h-11 touch:min-w-11 touch:items-center"
                 >
                   {link.label}
                 </Link>
@@ -89,11 +92,11 @@ export default function Footer() {
 
         <div>
           <h3 className="text-[12.5px] font-semibold uppercase tracking-[0.06em] text-n-500">Legal</h3>
-          <ul className="mt-4 flex flex-col gap-3">
+          <ul className="mt-4 flex flex-col gap-3 touch:mt-1.5 touch:gap-0">
             <li>
               <Link
                 href="/privacy-policy"
-                className="focus-glow rounded-sm text-[14.5px] text-n-700 hover:text-brand-secondary"
+                className="focus-glow rounded-sm text-[14.5px] text-n-700 hover:text-brand-secondary touch:inline-flex touch:min-h-11 touch:min-w-11 touch:items-center"
               >
                 Privacy Policy
               </Link>
@@ -101,24 +104,24 @@ export default function Footer() {
           </ul>
           <h3 className="mt-8 text-[12.5px] font-semibold uppercase tracking-[0.06em] text-n-500">Contact</h3>
           {(contactDetails.email || contactDetails.phone) && (
-            <ul className="mt-4 flex flex-col gap-3 text-[14.5px]">
+            <ul className="mt-4 flex flex-col gap-3 text-[14.5px] touch:mt-1.5 touch:gap-0">
               {contactDetails.email && (
-                <li>
+                <li className="touch:flex touch:min-h-11 touch:flex-wrap touch:items-center touch:gap-x-1">
                   <span className="text-n-500">Email: </span>
                   <a
                     href={`mailto:${contactDetails.email}`}
-                    className="focus-glow rounded-sm break-words text-n-700 hover:text-brand-secondary"
+                    className="focus-glow rounded-sm break-words text-n-700 hover:text-brand-secondary touch:inline-flex touch:min-h-11 touch:items-center"
                   >
                     {contactDetails.email}
                   </a>
                 </li>
               )}
               {contactDetails.phone && (
-                <li>
+                <li className="touch:flex touch:min-h-11 touch:flex-wrap touch:items-center touch:gap-x-1">
                   <span className="text-n-500">Phone: </span>
                   <a
                     href={`tel:${contactDetails.phone.replace(/[^\d+]/g, "")}`}
-                    className="focus-glow rounded-sm break-words text-n-700 hover:text-brand-secondary"
+                    className="focus-glow rounded-sm break-words text-n-700 hover:text-brand-secondary touch:inline-flex touch:min-h-11 touch:items-center"
                   >
                     {contactDetails.phone}
                   </a>
@@ -126,7 +129,7 @@ export default function Footer() {
               )}
             </ul>
           )}
-          <ul className="-ml-2.5 mt-3 flex items-center gap-1">
+          <ul className="-ml-3 mt-3 flex items-center gap-1">
             {socialLinks.map((social) => (
               <li key={social.label}>
                 <a
@@ -134,7 +137,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Vrattiks on ${social.label} (opens in a new tab)`}
-                  className="focus-glow flex h-10 w-10 items-center justify-center rounded-md transition-opacity duration-150 hover:opacity-80"
+                  className="focus-glow flex h-11 w-11 items-center justify-center rounded-md transition-opacity duration-150 hover:opacity-80"
                 >
                   <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5">
                     {social.label === "Instagram" && (

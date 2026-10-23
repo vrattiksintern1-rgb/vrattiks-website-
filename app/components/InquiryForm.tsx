@@ -12,7 +12,7 @@ const initialState: InquiryState = { status: "idle" };
    (vrattiks-accessibility, "Contrast"); n-300 measures ~1.8:1. Focus is the
    shared border shift + glow (CLAUDE.md Design Taste, reference 3). */
 const fieldBase =
-  "w-full rounded-md border bg-n-0 px-4 py-3 text-[15px] text-n-900 transition-[border-color,box-shadow] duration-150 placeholder:text-n-500 focus:border-brand-secondary focus:shadow-[var(--shadow-glow)] focus:outline-none";
+  "w-full rounded-md border bg-n-0 px-4 py-3 text-[15px] text-n-900 touch:text-base transition-[border-color,box-shadow] duration-150 placeholder:text-n-500 focus:border-brand-secondary focus:shadow-[var(--shadow-glow)] focus:outline-none";
 
 function fieldClass(invalid: boolean) {
   return `${fieldBase} ${invalid ? "border-sem-error-text" : "border-n-500"}`;
@@ -82,7 +82,7 @@ export default function InquiryForm() {
           tabIndex={-1}
           className="text-[24px] leading-[1.2] font-display font-bold text-n-900 focus:outline-none"
         >
-          Thanks — your message is on its way.
+          Thanks, your message is on its way.
         </h3>
         <p className="max-w-md text-[15px] leading-[1.6] text-n-600">
           We&apos;ll reply to the email address you gave us. If it&apos;s urgent, you can also reach us

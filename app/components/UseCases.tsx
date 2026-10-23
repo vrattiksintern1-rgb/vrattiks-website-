@@ -24,7 +24,7 @@ const columns = "md:grid-cols-[minmax(0,1.1fr)_minmax(0,3fr)] md:gap-10";
    every industry". Home passes none. */
 export default function UseCases({
   title = "Common business problems, solved end-to-end",
-  description = "Real situations most growing businesses run into — and how automation changes the outcome.",
+  description = "Real situations most growing businesses run into, and how automation changes the outcome.",
   headingId,
 }: {
   title?: string;

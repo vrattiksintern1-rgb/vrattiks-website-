@@ -16,7 +16,7 @@ const steps: { icon: IconName; title: string; description: string }[] = [
   {
     icon: "search",
     title: "Discover",
-    description: "We map how your business runs today — where time goes and where leads drop off.",
+    description: "We map how your business runs today: where time goes and where leads drop off.",
   },
   {
     icon: "layout",
@@ -117,19 +117,25 @@ export default function Process({ headingId }: { headingId?: string }) {
                       aria-current={state === "active" ? "step" : undefined}
                       className="flex flex-col items-center text-center"
                     >
+                      {/* 44px tap box around the 36px node; -my-1 keeps the
+                          node's footprint, so the rail still meets its centre. */}
                       <button
                         type="button"
                         onClick={() => goTo(i)}
                         aria-label={`Show step ${i + 1}: ${s.title}`}
-                        className={`focus-glow relative z-10 flex h-9 w-9 items-center justify-center rounded-full border-2 font-body text-[12px] font-semibold transition-colors duration-150 ${
-                          state === "active"
-                            ? "border-brand-secondary bg-brand-secondary text-n-0"
-                            : state === "done"
-                              ? "border-brand-secondary bg-n-25 text-brand-secondary"
-                              : "border-n-300 bg-n-25 text-n-500 hover:border-brand-secondary"
-                        }`}
+                        className="focus-glow group relative z-10 -my-1 flex h-11 w-11 items-center justify-center rounded-full"
                       >
-                        {String(i + 1).padStart(2, "0")}
+                        <span
+                          className={`flex h-9 w-9 items-center justify-center rounded-full border-2 font-body text-[12px] font-semibold transition-colors duration-150 ${
+                            state === "active"
+                              ? "border-brand-secondary bg-brand-secondary text-n-0"
+                              : state === "done"
+                                ? "border-brand-secondary bg-n-25 text-brand-secondary"
+                                : "border-n-300 bg-n-25 text-n-500 group-hover:border-brand-secondary"
+                          }`}
+                        >
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
                       </button>
                       <h3
                         className={`sr-only mt-3 px-1 text-[15px] leading-[1.3] font-display font-semibold transition-colors duration-150 md:not-sr-only ${

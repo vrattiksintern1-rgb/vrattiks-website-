@@ -62,7 +62,7 @@ async function deliver(values: Record<InquiryField, string>) {
     `Name: ${values.name}`,
     `Email: ${values.email}`,
     `Phone: ${values.phone}`,
-    `Company: ${values.company || "—"}`,
+    `Company: ${values.company || "Not provided"}`,
     "",
     values.message,
   ].join("\n");

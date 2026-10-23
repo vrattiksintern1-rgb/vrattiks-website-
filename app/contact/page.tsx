@@ -3,6 +3,7 @@ import ContactHero from "../components/ContactHero";
 import ContactConsultation from "../components/ContactConsultation";
 import ContactBusinessInfo from "../components/ContactBusinessInfo";
 import { contactDetails } from "../lib/content";
+import { ogImage } from "../lib/site";
 
 /* vrattiks-architecture §2 (Contact): Contact details → Inquiry form →
    Consultation CTA → Email/phone → Relevant business information.
@@ -27,9 +28,11 @@ export const metadata: Metadata = {
     description,
     url: "/contact",
     type: "website",
+    images: [ogImage],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: [ogImage],
     title: "Contact Vrattiks Intelligence",
     description,
   },

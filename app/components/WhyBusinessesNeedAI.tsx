@@ -47,7 +47,7 @@ export default function WhyBusinessesNeedAI() {
         <SectionHeading
           eyebrow="The Problem"
           title="Growing a business shouldn't mean drowning in busywork"
-          description="Most of this isn't a big, dramatic failure — it's small delays and manual steps that quietly add up, cost leads, and wear down a team."
+          description="Most of this isn't a big, dramatic failure. It's small delays and manual steps that quietly add up, cost leads, and wear down a team."
         />
 
         {/* --stack-top = sticky header height (64 / 80px) + breathing room.
@@ -79,7 +79,7 @@ export default function WhyBusinessesNeedAI() {
 
         <Reveal className="mt-10 max-w-3xl border-l-2 border-brand-secondary pl-5 md:mt-12 md:pl-7">
           <p className="text-[24px] leading-[1.25] tracking-[-0.02em] font-display font-semibold text-n-900 md:text-[30px]">
-            None of this is a people problem — it&apos;s a systems problem.
+            None of this is a people problem. It&apos;s a systems problem.
           </p>
           <p className="mt-3 text-body-lg text-n-600">
             That&apos;s exactly where Vrattiks comes in.

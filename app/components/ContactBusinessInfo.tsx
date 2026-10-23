@@ -29,10 +29,13 @@ export default function ContactBusinessInfo() {
       label: "What we build",
       wide: true,
       value: (
-        <ul className="flex flex-wrap gap-x-4 gap-y-2">
+        <ul className="flex flex-wrap gap-x-4 gap-y-2 touch:-my-2.5 touch:gap-y-0">
           {services.map((service) => (
             <li key={service.slug}>
-              <Link href={`/services/${service.slug}`} className={linkClass}>
+              <Link
+                href={`/services/${service.slug}`}
+                className={`${linkClass} touch:inline-flex touch:min-h-11 touch:min-w-11 touch:items-center`}
+              >
                 {service.name}
               </Link>
             </li>
@@ -44,7 +47,7 @@ export default function ContactBusinessInfo() {
       label: "Industries",
       wide: true,
       value: (
-        <Link href="/industries" className={linkClass}>
+        <Link href="/industries" className={`${linkClass} py-3`}>
           See the industries we work with
         </Link>
       ),

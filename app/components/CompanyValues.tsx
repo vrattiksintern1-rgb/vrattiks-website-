@@ -15,7 +15,7 @@ const elements = [
   {
     element: "Water",
     quality: "Clarity",
-    text: "You can see what is happening — every lead, reply and follow-up.",
+    text: "You can see what is happening: every lead, reply and follow-up.",
   },
   {
     element: "Fire",

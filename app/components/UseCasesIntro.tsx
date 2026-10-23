@@ -21,7 +21,7 @@ export default function UseCasesIntro() {
               instant it paints (kylezantos-design §1b). */}
           <h1
             id="use-cases-heading"
-            className="max-w-[16ch] text-[36px] leading-[1.1] tracking-[-0.02em] font-display font-bold text-n-900 md:text-[52px]"
+            className="max-w-[16ch] text-[clamp(30px,8vw,36px)] leading-[1.1] tracking-[-0.02em] font-display font-bold text-n-900 md:text-[52px]"
           >
             Start with the problem, not the technology
           </h1>
@@ -34,7 +34,7 @@ export default function UseCasesIntro() {
             Prefer to start from your line of business?{" "}
             <Link
               href="/industries"
-              className="focus-glow rounded-sm font-semibold text-brand-secondary underline-offset-4 hover:underline"
+              className="focus-glow rounded-sm py-[13px] font-semibold text-brand-secondary underline-offset-4 hover:underline"
             >
               Browse by industry
             </Link>

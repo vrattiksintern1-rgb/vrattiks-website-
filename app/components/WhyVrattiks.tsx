@@ -30,7 +30,7 @@ export default function WhyVrattiks({
             Automation built for how your business actually runs
           </h2>
           <p className="mt-4 text-body-lg text-n-500">
-            We don&apos;t start with the technology — we start with where your team loses
+            We don&apos;t start with the technology. We start with where your team loses
             time and where customers fall through the cracks. Then we build AI and
             automation systems around that, so the result fits your business instead
             of the other way around.

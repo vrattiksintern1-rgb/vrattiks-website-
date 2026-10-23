@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import PrivacyPolicy from "../components/PrivacyPolicy";
+import { ogImage } from "../lib/site";
 
 /* Legal page, linked from the footer's Legal column. Not part of the
    vrattiks-architecture page list, so no FinalCTA — the page is the policy
@@ -19,9 +20,11 @@ export const metadata: Metadata = {
     description,
     url: "/privacy-policy",
     type: "website",
+    images: [ogImage],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: [ogImage],
     title: "Privacy Policy | Vrattiks Intelligence",
     description,
   },

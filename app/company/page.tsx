@@ -7,6 +7,7 @@ import Founders from "../components/Founders";
 import Employees from "../components/Employees";
 import WhyVrattiks from "../components/WhyVrattiks";
 import FinalCTA from "../components/FinalCTA";
+import { ogImage } from "../lib/site";
 
 /* Section order follows vrattiks-architecture §2 (Company / About Us):
    Introduction → Our story → Mission & Vision → Values/approach →
@@ -26,9 +27,11 @@ export const metadata: Metadata = {
     description,
     url: "/company",
     type: "website",
+    images: [ogImage],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: [ogImage],
     title: "About Vrattiks Intelligence",
     description,
   },

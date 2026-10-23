@@ -19,7 +19,7 @@ export default function IndustriesIntro() {
               instant it paints (kylezantos-design §1b). */}
           <h1
             id="industries-heading"
-            className="max-w-[16ch] text-[36px] leading-[1.1] tracking-[-0.02em] font-display font-bold text-n-900 md:text-[52px]"
+            className="max-w-[16ch] text-[clamp(30px,8vw,36px)] leading-[1.1] tracking-[-0.02em] font-display font-bold text-n-900 md:text-[52px]"
           >
             Automation shaped around your industry
           </h1>
@@ -40,7 +40,7 @@ export default function IndustriesIntro() {
               <li key={industry.slug} className="border-b border-n-200">
                 <Link
                   href={`#${industry.slug}`}
-                  className="focus-glow block rounded-sm py-2.5 text-[14.5px] font-medium text-n-800 transition-colors duration-150 hover:text-brand-secondary"
+                  className="focus-glow block rounded-sm py-2.5 text-[14.5px] font-medium touch:py-[11.5px] text-n-800 transition-colors duration-150 hover:text-brand-secondary"
                 >
                   {industry.name}
                 </Link>

@@ -12,7 +12,7 @@ export type PolicyBlock =
   | { type: "h3"; text: string }
   | { type: "list"; items: string[] }
   /* Bold lead term followed by its explanation, e.g. "Consent — Where you…" */
-  | { type: "terms"; sep: "—" | ":"; items: { term: string; text: string }[] }
+  | { type: "terms"; sep: ":"; items: { term: string; text: string }[] }
   /* Label/value pairs; a value with several lines is an array */
   | { type: "fields"; items: { label: string; value: string | string[] }[] }
   | { type: "note"; label: string; text: string };
@@ -57,7 +57,7 @@ export const privacyPolicy: PolicySection[] = [
       },
       {
         type: "p",
-        text: "We process your data only with your consent, as required to fulfil our contract with you, or as required by applicable law — as described in this Policy. If you do not agree with these practices, please discontinue use of our services and contact us to request deletion of any data we hold about you.",
+        text: "We process your data only with your consent, as required to fulfil our contract with you, or as required by applicable law, as described in this Policy. If you do not agree with these practices, please discontinue use of our services and contact us to request deletion of any data we hold about you.",
       },
     ],
   },
@@ -96,7 +96,7 @@ export const privacyPolicy: PolicySection[] = [
       },
       {
         type: "terms",
-        sep: "—",
+        sep: ":",
         items: [
           {
             term: "When Vrattiks decides how data is used",
@@ -158,7 +158,7 @@ export const privacyPolicy: PolicySection[] = [
       },
       {
         type: "terms",
-        sep: "—",
+        sep: ":",
         items: [
           {
             term: "AI Voice Agent",
@@ -221,7 +221,7 @@ export const privacyPolicy: PolicySection[] = [
       },
       {
         type: "terms",
-        sep: "—",
+        sep: ":",
         items: [
           {
             term: "Consent",
@@ -411,7 +411,7 @@ export const privacyPolicy: PolicySection[] = [
       },
       {
         type: "terms",
-        sep: "—",
+        sep: ":",
         items: [
           {
             term: "leads_retrieval",
@@ -448,7 +448,7 @@ export const privacyPolicy: PolicySection[] = [
       },
       {
         type: "terms",
-        sep: "—",
+        sep: ":",
         items: [
           {
             term: "Meta Platforms Inc.",
@@ -581,7 +581,7 @@ export const privacyPolicy: PolicySection[] = [
       },
       {
         type: "terms",
-        sep: "—",
+        sep: ":",
         items: [
           {
             term: "Display Preference",
@@ -613,7 +613,7 @@ export const privacyPolicy: PolicySection[] = [
       },
       {
         type: "terms",
-        sep: "—",
+        sep: ":",
         items: [
           {
             term: "Right to Access",

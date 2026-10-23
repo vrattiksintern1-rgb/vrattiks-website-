@@ -4,6 +4,7 @@ import ServicesOverview from "../components/ServicesOverview";
 import Process from "../components/Process";
 import FinalCTA from "../components/FinalCTA";
 import { services } from "../lib/content";
+import { ogImage } from "../lib/site";
 
 /* Section order follows vrattiks-architecture §2 (Services):
    Services overview → 6 service cards → Process → CTA. */
@@ -22,9 +23,11 @@ export const metadata: Metadata = {
     description,
     url: "/services",
     type: "website",
+    images: [ogImage],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: [ogImage],
     title: "Services | Vrattiks Intelligence",
     description,
   },

@@ -77,6 +77,9 @@ export default function Industries({
                       alt=""
                       fill
                       sizes="(min-width: 901px) 33vw, (min-width: 601px) 50vw, 96px"
+                      /* The first row is on screen at load on /industries and
+                         holds the page's largest image, so it isn't lazy. */
+                      loading={i < 3 ? "eager" : undefined}
                       className="object-cover"
                     />
                     {/* Inset hairline so the bright photos (finance, construction)

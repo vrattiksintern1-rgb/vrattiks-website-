@@ -21,7 +21,7 @@ export default function OurStory() {
         <div>
           <Reveal>
             <p className="text-[22px] leading-[1.35] tracking-[-0.01em] font-display font-semibold text-n-900 md:text-[26px]">
-              Vrattiks was born from the ancient Indian idea of &lsquo;Vritti&rsquo; — the
+              Vrattiks was born from the ancient Indian idea of &lsquo;Vritti&rsquo;: the
               natural flow of thought, action, and evolution.
             </p>
           </Reveal>
@@ -32,7 +32,7 @@ export default function OurStory() {
               aligned with how businesses truly work.
             </p>
             <p className="mt-4 text-body-lg text-n-600">
-              Inspired by the 5 Elements: Earth, Water, Fire, Air, and Space —
+              Inspired by the 5 Elements: Earth, Water, Fire, Air, and Space,
               everything we build is designed to bring structure, clarity, energy,
               connection, and limitless growth into your operations.
             </p>

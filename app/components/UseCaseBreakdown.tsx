@@ -60,14 +60,19 @@ export default function UseCaseBreakdown() {
                     {related.length > 0 ? (
                       <>
                         <p className={`mt-8 ${subheading} text-n-600`}>Services that do this</p>
-                        <ul className="mt-3 flex flex-wrap gap-2">
+                        {/* On touch layouts the link is a 44px-tall box around
+                            the unchanged 34px pill; gap-y-0 there because the
+                            box itself now spaces the rows. */}
+                        <ul className="mt-3 flex flex-wrap gap-2 touch:mt-1.5 touch:gap-y-0">
                           {related.map((service) => (
                             <li key={service.slug}>
                               <Link
                                 href={`/services/${service.slug}`}
-                                className="focus-glow inline-flex items-center rounded-full border border-n-200 px-3 py-1.5 text-[13px] font-medium text-n-800 transition-[border-color,color] duration-150 hover:border-brand-primary hover:text-brand-secondary"
+                                className="focus-glow group inline-flex items-center rounded-full touch:min-h-11"
                               >
-                                {service.name}
+                                <span className="inline-flex items-center rounded-full border border-n-200 px-3 py-1.5 text-[13px] font-medium text-n-800 transition-[border-color,color] duration-150 group-hover:border-brand-primary group-hover:text-brand-secondary">
+                                  {service.name}
+                                </span>
                               </Link>
                             </li>
                           ))}

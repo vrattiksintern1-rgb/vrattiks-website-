@@ -27,7 +27,7 @@ export default function ServicesOverview({
             id={headingId}
             eyebrow="Services"
             title="Six core services, plus custom automation for the rest"
-            description="Use one on its own or connect them into one system. If a repetitive task doesn't fit these six — payment reminders, appointment booking, daily reports, stock alerts — we can automate that too."
+            description="Use one on its own or connect them into one system. If a repetitive task doesn't fit these six (payment reminders, appointment booking, daily reports, stock alerts), we can automate that too."
             className="max-w-xl"
           />
           {showAllLink ? (

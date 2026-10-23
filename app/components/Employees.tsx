@@ -12,7 +12,7 @@ import SectionHeading from "./ui/SectionHeading";
 const employees = [
   { name: "Bhadiyadra Jay", initials: "BJ", role: "Full Stack AI Engineer" },
   { name: "Kamya Patel", initials: "KP", role: "Full Stack Developer" },
-  { name: "Dhyani Rayka", initials: "DR", role: "Developer" },
+  { name: "Dhyani Rayka", initials: "DR", role: "Frontend Developer" },
 ];
 
 export default function Employees() {

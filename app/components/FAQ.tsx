@@ -8,12 +8,12 @@ const faqs = [
   {
     question: "What does Vrattiks actually do?",
     answer:
-      "We build AI voice agents, chatbots, workflow automation, websites, WhatsApp automation, and CRM systems for growing businesses — so more of the day-to-day runs on its own.",
+      "We build AI voice agents, chatbots, workflow automation, websites, WhatsApp automation, and CRM systems for growing businesses, so more of the day-to-day runs on its own.",
   },
   {
     question: "Do I need technical knowledge to use this?",
     answer:
-      "No. Our team handles the setup and implementation — you use the result through the tools and channels you already work with.",
+      "No. Our team handles the setup and implementation. You use the result through the tools and channels you already work with.",
   },
   {
     question: "How long does implementation take?",

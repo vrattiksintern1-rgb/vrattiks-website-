@@ -4,6 +4,7 @@ import Industries from "../components/Industries";
 import UseCases from "../components/UseCases";
 import FinalCTA from "../components/FinalCTA";
 import { industries } from "../lib/content";
+import { ogImage } from "../lib/site";
 
 /* Section order follows vrattiks-architecture §2 (Industries):
    Industry overview → industry cards → Industry-specific CTA.
@@ -29,9 +30,11 @@ export const metadata: Metadata = {
     description,
     url: "/industries",
     type: "website",
+    images: [ogImage],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: [ogImage],
     title: "Industries | Vrattiks Intelligence",
     description,
   },
@@ -69,7 +72,7 @@ export default function IndustriesPage() {
       <UseCases
         headingId="use-cases-heading"
         title="The same three problems, in every industry"
-        description="Whatever you sell, these are the places customers usually slip through — and what changes once they're automated."
+        description="Whatever you sell, these are the places customers usually slip through, and what changes once they're automated."
       />
       <FinalCTA
         title="Don't see your industry here?"

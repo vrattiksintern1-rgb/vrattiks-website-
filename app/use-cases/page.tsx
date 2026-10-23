@@ -4,6 +4,7 @@ import UseCaseBreakdown from "../components/UseCaseBreakdown";
 import UseCaseJourney from "../components/UseCaseJourney";
 import FinalCTA from "../components/FinalCTA";
 import { useCases } from "../lib/content";
+import { ogImage } from "../lib/site";
 
 /* Section order follows vrattiks-architecture §2 (Use Cases):
    Use-case overview + 3 use-case cards (UseCasesIntro) → Problem → Solution →
@@ -27,9 +28,11 @@ export const metadata: Metadata = {
     description,
     url: "/use-cases",
     type: "website",
+    images: [ogImage],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: [ogImage],
     title: "Use Cases | Vrattiks Intelligence",
     description,
   },

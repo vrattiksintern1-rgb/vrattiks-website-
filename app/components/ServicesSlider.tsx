@@ -1,13 +1,26 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import ServiceCard from "./ServiceCard";
 import Icon from "./ui/Icon";
 import { services } from "@/app/lib/content";
 
 const AUTOPLAY_MS = 3500;
 const n = services.length;
+
+/* Reduced-motion preference read through useSyncExternalStore: the server
+   snapshot (false) is what hydration renders, then the real value follows.
+   framer-motion's useReducedMotion returned the real value on the first
+   client render, so the play/pause label differed from the server HTML and
+   React threw a hydration mismatch for reduced-motion visitors. */
+const reduceQuery = "(prefers-reduced-motion: reduce)";
+function subscribeReduce(onChange: () => void) {
+  const media = matchMedia(reduceQuery);
+  media.addEventListener("change", onChange);
+  return () => media.removeEventListener("change", onChange);
+}
+const getReduce = () => matchMedia(reduceQuery).matches;
+const getServerReduce = () => false;
 
 /* The list is rendered three times so the track can loop forever: we always
    rest inside the middle copy, and when a scroll settles in the first or last
@@ -26,7 +39,7 @@ const slides = [0, 1, 2].flatMap((copy) =>
 export default function ServicesSlider() {
   const trackRef = useRef<HTMLUListElement>(null);
   const settleTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useSyncExternalStore(subscribeReduce, getReduce, getServerReduce);
 
   const [active, setActive] = useState(n);
   /* null until the user presses play/pause; until then reduced-motion users
@@ -176,10 +189,14 @@ export default function ServicesSlider() {
         })}
       </ul>
 
-      <div className="mt-8 flex items-center gap-6">
+      <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
         {/* One segment per service; the active one takes the brand accent —
-            the section's single accent, confined to a hairline. */}
-        <div className="flex flex-1 gap-2">
+            the section's single accent, confined to a hairline. Each segment
+            is a 44px-tall button whose 8px side padding draws the gap between
+            bars (the -mx-1 cancels the outer two), so the tap areas touch
+            without the bars moving. Below 601px the segments take their own
+            full-width row, which keeps every one at least 44px wide. */}
+        <div className="-mx-1 flex basis-[calc(100%+0.5rem)] sm:flex-1">
           {services.map((service, i) => (
             <button
               key={service.slug}
@@ -187,7 +204,7 @@ export default function ServicesSlider() {
               onClick={() => goTo(i)}
               aria-label={`Show ${service.name}`}
               aria-current={i === current ? "true" : undefined}
-              className="focus-glow group flex-1 rounded-sm py-3"
+              className="focus-glow group flex-1 rounded-sm px-1 py-[21px]"
             >
               <span
                 className={`block h-0.5 rounded-full transition-colors duration-150 ${
@@ -197,7 +214,7 @@ export default function ServicesSlider() {
             </button>
           ))}
         </div>
-        <div className="flex shrink-0 gap-2">
+        <div className="ml-auto flex shrink-0 gap-2">
           <button
             type="button"
             onClick={() => scrollToIndex(active - 1)}

@@ -24,7 +24,7 @@ const outcomes: {
     metric: "To first reply, any hour",
     label: "Faster response",
     description:
-      "An enquiry that lands at 11 PM gets a reply in seconds — not at 10 AM the next morning.",
+      "An enquiry that lands at 11 PM gets a reply in seconds, not at 10 AM the next morning.",
   },
   {
     icon: "repeat",
@@ -40,7 +40,7 @@ const outcomes: {
     metric: "Calls and chats answered",
     label: "Always-on coverage",
     description:
-      "Calls and chats are answered 24 hours a day, 7 days a week — Sundays and holidays included.",
+      "Calls and chats are answered 24 hours a day, 7 days a week, Sundays and holidays included.",
   },
   {
     icon: "shield",

@@ -40,12 +40,12 @@ export default function ContactHero() {
               paints (kylezantos-design §1b). */}
           <h1
             id="contact-heading"
-            className="max-w-[14ch] text-[36px] leading-[1.08] tracking-[-0.02em] font-display font-bold text-n-900 md:text-[52px]"
+            className="max-w-[14ch] text-[clamp(30px,8vw,36px)] leading-[1.08] tracking-[-0.02em] font-display font-bold text-n-900 md:text-[52px]"
           >
             Tell us where your team loses time.
           </h1>
           <p className="mt-6 max-w-md text-body-lg text-n-600">
-            Missed calls, slow replies, follow-ups that never happen — tell us what&apos;s
+            Missed calls, slow replies, follow-ups that never happen? Tell us what&apos;s
             getting in the way and we&apos;ll show you what can run on its own.
           </p>
 
@@ -63,7 +63,7 @@ export default function ContactHero() {
                   {channel.value ? (
                     <a
                       href={channel.href(channel.value)}
-                      className="focus-glow rounded-sm text-[16px] font-semibold break-words text-n-900 transition-colors duration-150 hover:text-brand-secondary"
+                      className="focus-glow rounded-sm py-3 text-[16px] font-semibold break-words text-n-900 transition-colors duration-150 hover:text-brand-secondary"
                       {...(channel.label === "WhatsApp" ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                     >
                       {channel.value}

@@ -4,6 +4,16 @@
    inline script in app/layout.tsx), not the OS setting directly. */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
+/* `touch:` = any layout a finger is likely to use: everything below the lg
+   (1024px) desktop nav, plus any width on a coarse pointer (iPad landscape,
+   touch laptops in tablet mode). Used to lift tap targets to 44px while a
+   mouse at desktop widths keeps the original, tighter rhythm. */
+@custom-variant touch {
+  @media (width < 64rem), (pointer: coarse) {
+    @slot;
+  }
+}
+
 @theme {
   /* Brand core */
   --color-brand-primary: #b79af3;
@@ -243,6 +253,61 @@
 .focus-glow:focus-visible {
   outline: none;
   box-shadow: var(--shadow-glow);
+}
+
+/* Client logo marquee (ClientLogos.tsx). The track holds the list twice and
+   moves by exactly one copy (-50%), so the loop is seamless. Edges fade
+   through a mask rather than a colour overlay, so it works on any theme.
+   Hover pauses it. Under reduced motion it becomes a static centred grid:
+   no animation, no mask, duplicate copy hidden, single copy wraps. These
+   rules are unlayered on purpose so they beat the Tailwind utilities on the
+   same elements (flex, w-max, shrink-0, pr-*). */
+.marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 clamp(32px, 10vw, 160px), #000 calc(100% - clamp(32px, 10vw, 160px)), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 clamp(32px, 10vw, 160px), #000 calc(100% - clamp(32px, 10vw, 160px)), transparent);
+}
+
+.marquee-track {
+  animation: marquee 70s linear infinite;
+  will-change: transform;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    -webkit-mask-image: none;
+    mask-image: none;
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-inline: 16px;
+  }
+
+  .marquee-track {
+    display: block;
+    width: auto;
+    animation: none;
+    will-change: auto;
+  }
+
+  .marquee-list {
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 32px;
+    padding-right: 0;
+  }
+
+  .marquee-list[aria-hidden="true"] {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

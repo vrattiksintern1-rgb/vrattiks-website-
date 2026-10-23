@@ -28,7 +28,7 @@ export default function IndustryHero({
             <li>
               <Link
                 href="/industries"
-                className="focus-glow rounded-sm transition-colors duration-150 hover:text-brand-secondary"
+                className="focus-glow rounded-sm py-[13px] transition-colors duration-150 hover:text-brand-secondary"
               >
                 Industries
               </Link>
@@ -51,7 +51,7 @@ export default function IndustryHero({
                 paints (kylezantos-design §1b). */}
             <h1
               id="industry-heading"
-              className="mt-6 text-[40px] leading-[1.05] tracking-[-0.03em] font-display font-semibold text-n-900 md:text-[60px]"
+              className="mt-6 text-[clamp(32px,10vw,40px)] leading-[1.05] tracking-[-0.03em] font-display font-semibold text-n-900 md:text-[60px]"
             >
               {industry.name}
             </h1>

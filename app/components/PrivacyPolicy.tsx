@@ -17,7 +17,12 @@ const linkClass =
 const linkPattern =
   /([\w.+-]+@[\w-]+(?:\.[\w-]+)+|https?:\/\/[^\s]*[^\s.,)]|www\.[^\s]*[^\s.,)])/g;
 
-function Linkified({ text }: { text: string }) {
+/* Links in the contact-detail tables ("fields" blocks: emails, the website)
+   get a 44px tap row on touch layouts. Links inside running sentences are
+   left inline: padding them would spill over the lines above and below. */
+const tapLinkClass = "touch:inline-flex touch:min-h-11 touch:items-center";
+
+function Linkified({ text, tap = false }: { text: string; tap?: boolean }) {
   const parts = text.split(linkPattern);
   return (
     <>
@@ -33,7 +38,7 @@ function Linkified({ text }: { text: string }) {
           <a
             key={i}
             href={href}
-            className={linkClass}
+            className={tap ? `${linkClass} ${tapLinkClass}` : linkClass}
             {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
           >
             {part}
@@ -80,7 +85,7 @@ function Block({ block }: { block: PolicyBlock }) {
           {block.items.map((item) => (
             <li key={item.term}>
               <strong className="font-semibold text-n-900">{item.term}</strong>
-              {block.sep === "—" ? " — " : ": "}
+              {": "}
               <Linkified text={item.text} />
             </li>
           ))}
@@ -98,7 +103,7 @@ function Block({ block }: { block: PolicyBlock }) {
               <dd className="text-n-900">
                 {(Array.isArray(item.value) ? item.value : [item.value]).map((line) => (
                   <span key={line} className="block">
-                    <Linkified text={line} />
+                    <Linkified text={line} tap />
                   </span>
                 ))}
               </dd>
@@ -118,12 +123,12 @@ function Block({ block }: { block: PolicyBlock }) {
 
 function Contents({ className = "" }: { className?: string }) {
   return (
-    <ol className={`flex flex-col gap-1 text-[14px] ${className}`}>
+    <ol className={`flex flex-col gap-1 text-[14px] touch:gap-0 ${className}`}>
       {privacyPolicy.map((section, i) => (
         <li key={section.id}>
           <a
             href={`#${section.id}`}
-            className="focus-glow flex gap-3 rounded-sm py-1 text-n-600 transition-colors duration-150 hover:text-brand-secondary"
+            className="focus-glow flex gap-3 rounded-sm py-1 text-n-600 touch:min-h-11 touch:items-center touch:py-2 transition-colors duration-150 hover:text-brand-secondary"
           >
             <span className="w-5 shrink-0 text-right tabular-nums text-n-500">{i + 1}.</span>
             <span>{section.title}</span>
@@ -148,7 +153,7 @@ export default function PrivacyPolicy() {
           <Eyebrow className="mb-5">Legal</Eyebrow>
           <h1
             id="privacy-heading"
-            className="font-display text-[36px] leading-[1.08] font-bold tracking-[-0.02em] text-n-900 md:text-[52px]"
+            className="font-display text-[clamp(30px,8vw,36px)] leading-[1.08] font-bold tracking-[-0.02em] text-n-900 md:text-[52px]"
           >
             Privacy Policy
           </h1>

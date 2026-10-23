@@ -9,6 +9,7 @@ import ServiceFit from "../../components/ServiceFit";
 import FinalCTA from "../../components/FinalCTA";
 import { industries, services, useCases } from "../../lib/content";
 import { serviceDetails } from "../../lib/service-details";
+import { ogImage } from "../../lib/site";
 
 /* Service detail template (vrattiks-architecture §2): Hero → Problem → How it
    works → Key features → Benefits → Who it's for → CTA.
@@ -46,9 +47,11 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       description,
       url,
       type: "website",
+      images: [ogImage],
     },
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
+      images: [ogImage],
       title: `${service.name} | Vrattiks Intelligence`,
       description,
     },

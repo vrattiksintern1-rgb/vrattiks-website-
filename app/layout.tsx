@@ -3,6 +3,7 @@ import { Urbanist, IBM_Plex_Sans } from "next/font/google";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { themeInitScript } from "./lib/theme";
+import { SITE_URL } from "./lib/site";
 import "./globals.css";
 
 const urbanist = Urbanist({
@@ -17,9 +18,10 @@ const ibmPlexSans = IBM_Plex_Sans({
   weight: ["400", "500", "600"],
 });
 
-// metadataBase intentionally omitted — no confirmed production domain yet;
-// canonical/OG URLs below resolve as relative paths until one is set.
+// metadataBase resolves every page's relative canonical/OG/Twitter URLs against
+// the same origin the sitemap uses (NEXT_PUBLIC_SITE_URL, see app/lib/site.ts).
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Vrattiks Intelligence",
     template: "%s | Vrattiks Intelligence",

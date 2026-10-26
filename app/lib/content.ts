@@ -203,7 +203,7 @@ export const industries: Industry[] = [
 
 /* Contact details, used by the Contact page and the footer. Email and phone
    are confirmed; anything still `null` is unconfirmed (vrattiks-standards §3)
-   and renders as "Pending confirmation" without a link. Write `phone` and
+   and renders as '+91 9106836019' without a link. Write `phone` and
    `whatsapp` as they should be shown, with the country code; the links are
    derived from the digits. Values left null are also kept out of the JSON-LD. */
 export const contactDetails: {

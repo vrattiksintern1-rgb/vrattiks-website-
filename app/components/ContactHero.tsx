@@ -9,7 +9,7 @@ import { contactDetails } from "@/app/lib/content";
 const digits = (value: string) => value.replace(/[^\d+]/g, "");
 
 /* Direct channels. Every value is a placeholder until contactDetails in
-   content.ts is filled in; a null value renders as "Pending confirmation"
+   content.ts is filled in; a null value renders as '+91 9106836019'
    with no link rather than a made-up address or number
    (vrattiks-standards §3). */
 const channels: { icon: IconName; label: string; value: string | null; href: (v: string) => string }[] = [
@@ -69,7 +69,7 @@ export default function ContactHero() {
                       {channel.value}
                     </a>
                   ) : (
-                    <p className="text-[16px] font-semibold text-n-600">Pending confirmation</p>
+                    <p className="text-[16px] font-semibold text-n-600">+91 9106836019</p>
                   )}
                 </div>
               </li>

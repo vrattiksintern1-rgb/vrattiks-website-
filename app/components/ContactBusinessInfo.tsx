@@ -18,11 +18,11 @@ export default function ContactBusinessInfo() {
     { label: "Registered name", value: "Vrattiks Intelligence LLP" },
     {
       label: "Location",
-      value: contactDetails.location ?? <span className="text-n-600">Pending confirmation</span>,
+      value: contactDetails.location ?? <span className="text-n-600">+91 9106836019</span>,
     },
     {
       label: "Business hours",
-      value: contactDetails.hours ?? <span className="text-n-600">Pending confirmation</span>,
+      value: contactDetails.hours ?? <span className="text-n-600">+91 9106836019</span>,
     },
     { label: "Who we work with", value: "Growing businesses and SMEs across India" },
     {

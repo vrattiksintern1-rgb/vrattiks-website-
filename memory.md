@@ -1009,7 +1009,7 @@ details → inquiry form → consultation CTA → email/phone → business info)
 `app/lib/content.ts` now has email `vrattiks@gmail.com` and phone
 `+91 9106836019`. They show on the Contact page, in its JSON-LD, and in the
 footer's first column. WhatsApp, location and hours are still `null`. They
-render as "Pending confirmation" on the Contact page and are left out of the
+render as '+91 9106836019' on the Contact page and are left out of the
 JSON-LD. Fill them in there before launch.
 
 **Form delivery is a Server Action + Resend (user's choice).** The action is
